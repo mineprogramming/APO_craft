@@ -14,7 +14,7 @@ print(e);
 }
 function srandom(seed)//for seedRandom
 {
-var arg1=Math.abs(Math.sin(seed));
+var arg1=Math.abs(Math.sin(seed*3));
 var arg2=Math.abs(seed)/1.5;
 var final=Math.tan(arg1*arg2);
 while(Math.abs(final)>1)
@@ -47,27 +47,32 @@ function error(e)
 //Begin with API for easier coding
 
 //Change parameters if you want
-var gen_medium_height=70;//blocks
+var gen_medium_height=75;//blocks
 var gen_chunk_min_height=45;//blocks
 var gen_chunk_max_height=80;//blocks
 var gen_landscape_height=3;//blocks
-var gen_radius=3;//chunk
-var gen_radius_to_start=3;//chunk
-var gen_cycle_delay=2;//milliseconds
+var gen_radius=3;//chunks
+var gen_radius_to_start=3;//chunks
+var gen_cycle_delay=50;//milliseconds
 var new_level_preparing_time=20*10;//ticks
 var gen_chunks=[];
 var chunk_info=[];
-var gen_bioms_parameters=[
+var gen_bioms_parameters=[];
+function addBiom(grass_array,stone_array,rarity)
+{
+	gen_bioms_parameters.push({grass:grass_array,stone:stone_array,rarity:rarity});
+}
+addBiom([2],[1],15);
+/*
+{grass_layer_ids:[{id:2,data:0}],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:10},//default
 
-{grass_layer_ids:[2,0],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:10},//default
+{grass_layer_ids:[[12,0]],stone_layer_ids:[1,0,[24,0]],rarity:15},//desert
 
-{grass_layer_ids:[12,0],stone_layer_ids:[1,0,[24,0]],rarity:15},//desert
+{grass_layer_ids:[[3,0]],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:2},//burned earth
 
-{grass_layer_ids:[3,0],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:2},//burned earth
+{grass_layer_ids:[[2,0],[3,0],[1,0]],stone_layer_ids:[1,0,1,1,1,3,1,5,46,0],rarity:8},//war area
 
-{grass_layer_ids:[2,0,3,0,1,0],stone_layer_ids:[1,0,1,1,1,3,1,5,46,0],rarity:8},//war area
-
-];
+];*/
 
 var Generation={};
 Generation.getChunkPoints=function(x,z)//return object with chunk points coords
@@ -121,49 +126,63 @@ Generation.getSurfaceHeight=function(x,z)
 	}
 	return null;
 };
-Generation.generateSimpleLandscapeAtChunk=function(x,z,h,k,biom_obj)
+Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 {
-
+//var thread=doInNewThread(function(){
 var chunk=Generation.getChunkPoints(x,z);
 var cx=chunk.x1;
 var cz=chunk.z1;
-for(var zc=0;zc<16;zc+=0.5)
+var h=gen_medium_height;
+for(var zc=0;zc<16;zc++)
 {
-for(var xc=0;xc<16;xc+=0.5)
+for(var xc=0;xc<16;xc++)
 {
-var grass_index=Math.round(srandom(xc+""+zc+""+"2")*biom_obj.grass_layer_ids.length/2);
-var id=biom_obj.grass_layer_ids[grass_index*2];
-var data=biom_obj.grass_layer_ids[grass_index*2+1];
-var height=gen_medium_height+h*Math.abs(Math.sin(x)*srandom(xc+""+zc+""+k)*k);
-
-Level.setTile(cx+xc,height,cz+zc,id,data);
-Level.setTile(cx+xc+1,height,cz+zc,id,data);
-Level.setTile(cx+xc-1,height,cz+zc,id,data);
-Level.setTile(cx+xc,height,cz+zc+1,id,data);
-Level.setTile(cx+xc,height,cz+zc-1,id,data);
+//thread.sleep(gen_cycle_delay);
+var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
+clientMessage("grass "+grass_index+" length "+gen_bioms_parameters.length+" random "+Math.round*biom_obj.grass.length*srandom(xc+""+cz+""+cx+""+cz+""+x+""+z));
+var id=biom_obj.grass[grass_index];
+var height=Math.round(10*srandom(xc+""+zc+""+cx+""+cz));
+if(height>9)
+{
+Level.setTile(cx+xc,h+1,cz+zc,id);
+Level.setTile(cx+xc+1,h+1,cz+zc,id);
+Level.setTile(cx+xc-1,h+1,cz+zc,id);
+Level.setTile(cx+xc,h+1,cz+zc+1,id);
+Level.setTile(cx+xc,h+1,cz+zc-1,id);
+}
+Level.setTile(cx+xc,h,cz+zc,id);
 }
 }
-
+//});
 };
-Generation.generateStoneLayerAtChunk(x,z,biom_obj)
+Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
 {
-	var points
+	var chunk=Generation.getChunkPoints(x,z);
+	var fromX=Math.min(chunk.x1,chunk.x2);
+	var fromZ=Math.min(chunk.z1,chunk.z2);
+	var toX=Math.max(chunk.x1,chunk.x2);
+	var toZ=Math.max(chunk.z1,chunk.z2);
+	
 };
 Generation.box=function(fx,fy,fz,tx,ty,tz,id,data,r)
 {
+var thread=doInNewThread(function(){
  for(var x=Math.min(fx,tx);x<Math.max(fx,tx);x++)
  {
     for(var y=Math.min(fy,ty);y<Math.max(fy,ty);y++)
     {
         for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
         {
-            if(Math.random()*100<r)
+            if(srandom(fx+""+fy+""+fz+""+tx+""+ty+""+tz+""+id+""+data)*100<=r)
             {
             	setTile(x,y,z,id,data);
+				
             }
+			thread.sleep(gen_cycle_delay);
         }     
     }     
  }    
+});
 };
 function tonnel(x,y,z)
 {
@@ -330,10 +349,16 @@ function useItem(x,y,z,i)
 {
 	if(i==280)
 	{
-	Generation.generateSimpleLandscapeAtChunk(x,z,3,1,gen_bioms_parameters[0]);
+	try{
+	Generation.generateSimpleLandscapeAtChunk(x,z,gen_bioms_parameters[0]);
+	clientMessage(x+" "+z);
+	}catch(e){print(e);}
 	}
 }
 function modTick()
 {
 	//Generation.tick();
 }
+
+
+
