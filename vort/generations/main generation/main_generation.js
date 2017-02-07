@@ -16,7 +16,7 @@ function srandom(seed)//for seedRandom
 {
 var arg1=Math.abs(Math.sin(seed*3));
 var arg2=Math.abs(seed)/1.5;
-var final=Math.tan(arg1*arg2);
+var final=Math.tan(arg1*arg2)*2.5;
 while(Math.abs(final)>1)
 {
 final/=1.5;
@@ -62,7 +62,7 @@ function addBiom(grass_array,stone_array,rarity)
 {
 	gen_bioms_parameters.push({grass:grass_array,stone:stone_array,rarity:rarity});
 }
-addBiom([2],[1],15);
+addBiom([2,2,2,3,3,3,3,3,4,48],[1],15);
 /*
 {grass_layer_ids:[{id:2,data:0}],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:10},//default
 
@@ -132,6 +132,7 @@ Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 var chunk=Generation.getChunkPoints(x,z);
 var cx=chunk.x1;
 var cz=chunk.z1;
+clientMessage(cx+" "+cz);
 var h=gen_medium_height;
 for(var zc=0;zc<16;zc++)
 {
@@ -139,9 +140,8 @@ for(var xc=0;xc<16;xc++)
 {
 //thread.sleep(gen_cycle_delay);
 var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
-clientMessage("grass "+grass_index+" length "+gen_bioms_parameters.length+" random "+Math.round*biom_obj.grass.length*srandom(xc+""+cz+""+cx+""+cz+""+x+""+z));
 var id=biom_obj.grass[grass_index];
-var height=Math.round(10*srandom(xc+""+zc+""+cx+""+cz));
+var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
 if(height>9)
 {
 Level.setTile(cx+xc,h+1,cz+zc,id);
