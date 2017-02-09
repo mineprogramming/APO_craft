@@ -16,7 +16,8 @@ function srandom(seed)//for seedRandom
 {
 var arg1=Math.abs(Math.sin(seed*3));
 var arg2=Math.abs(seed)/1.5;
-var final=Math.tan(arg1*arg2)*2.5;
+var arg3=Math.abs(seed/50);
+var final=Math.tan(arg1*arg2+arg3)*2.5;
 while(Math.abs(final)>1)
 {
 final/=1.5;
@@ -44,25 +45,93 @@ function error(e)
 {
 	showSimpleDialog("err",e);
 }
+function convertStreamToString(is) { 
+    var bis = new java.io.BufferedInputStream(is); 
+    var buf = new java.io.ByteArrayOutputStream(); 
+    var res = bis.read(); 
+    while(res != -1) { 
+        buf.write(res); 
+        res = bis.read(); 
+    } 
+    return buf.toString(); 
+}
+function setTileFromJson(name, x1, y1, z1){
+    var str    = ModPE.openInputStreamFromTexturePack("buildings/" + name);
+    var string = convertStreamToString(str);
+    var json   = JSON.parse(string);
+    for(var y = 0; y < json.length; y++){
+        for(var x = 0; x < json[0].length; x++){
+            for(var z = 0; z < json[0][0].length; z++){
+                var id   = json[y][x][z].id;
+                var meta = json[y][x][z].meta;
+                setTile(x1 + x, y1 + y, z1 + z, id, meta); 
+				
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 //Begin with API for easier coding
 
 //Change parameters if you want
 var gen_medium_height=75;//blocks
 var gen_chunk_min_height=45;//blocks
-var gen_chunk_max_height=80;//blocks
-var gen_landscape_height=3;//blocks
+var gen_chunk_max_height=80;//blocks//
+var gen_landscape_height=3;//blocks//
 var gen_radius=3;//chunks
-var gen_radius_to_start=3;//chunks
-var gen_cycle_delay=50;//milliseconds
-var new_level_preparing_time=20*10;//ticks
+var gen_cycle_delay=200;//milliseconds
+var new_level_preparing_time=20*10;//ticks//
+var gen_tick_interval=20*3;//ticks
+var gen_building_json_count=6;
 var gen_chunks=[];
 var chunk_info=[];
 var gen_bioms_parameters=[];
+
 function addBiom(grass_array,stone_array,rarity)
 {
 	gen_bioms_parameters.push({grass:grass_array,stone:stone_array,rarity:rarity});
 }
-addBiom([2,2,2,3,3,3,3,3,4,48],[1],15);
+function getBiomForChunk(x,z)
+{
+	var chunk=Generation.getChunkPoints(x,z);
+	var rarities=[];
+	for(var biom=0;biom<gen_bioms_parameters.length;biom++)
+	{
+		rarities.push(gen_bioms_parameters[biom].rarity);
+	}
+	var random=100*srandom(chunk.x1+""+chunk.x2+""+chunk.z1+""+chunk.z2);
+	var bioms=[];
+	for(var biom=0;biom<rarities.length;biom++)
+	{
+		if(rarities[biom]<random)
+		{
+			bioms.push(biom);
+		}
+	}
+	while(bioms.length==0)
+	{
+		random=100*srandom(Math.abs(chunk.x1)+""+Math.abs(chunk.x2)+""+Math.abs(chunk.z1)+""+Math.abs(chunk.z2)+""+Math.round(random));
+		for(var biom=0;biom<rarities.length;biom++)
+		{
+			if(rarities[biom]<random)
+			{
+				bioms.push(biom);
+			}
+		}
+	}
+	var biom_index=Math.round(bioms.length*srandom(bioms.length+""+random));
+	return gen_bioms_parameters[bioms[biom_index]];
+}
+addBiom([2,3,3,3,3,3,4,48],[1],30);
+
 /*
 {grass_layer_ids:[{id:2,data:0}],stone_layer_ids:[1,0,1,1,1,3,1,5],rarity:10},//default
 
@@ -128,7 +197,7 @@ Generation.getSurfaceHeight=function(x,z)
 };
 Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 {
-//var thread=doInNewThread(function(){
+var thread=doInNewThread(function(){
 var chunk=Generation.getChunkPoints(x,z);
 var cx=chunk.x1;
 var cz=chunk.z1;
@@ -138,7 +207,7 @@ for(var zc=0;zc<16;zc++)
 {
 for(var xc=0;xc<16;xc++)
 {
-//thread.sleep(gen_cycle_delay);
+thread.sleep(gen_cycle_delay);
 var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
 var id=biom_obj.grass[grass_index];
 var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
@@ -153,7 +222,7 @@ Level.setTile(cx+xc,h+1,cz+zc-1,id);
 Level.setTile(cx+xc,h,cz+zc,id);
 }
 }
-//});
+});
 };
 Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
 {
@@ -294,15 +363,28 @@ function doInNewThread(whatToDo)
 	thread.start();
 	return thread;
 }
-Generation.tick=function()
+Generation.logic=function()
 {
+	try{
 	var px=Player.getX();
 	var pz=Player.getZ();
-	
-	
+	for(var cx=px-gen_radius*16;cx<=px+gen_radius*16;cx+=16)
+	{
+		for(var cz=pz-gen_radius*16;cz<=pz+gen_radius*16;cz+=16)
+		{
+			if(!Generation.isChunkReady(cx,cz))
+			{
+				Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
+				setTileFromJson(Math.round(srandom(cx+""+cz)*gen_building_json_count)+".json",cx,cz,gen_medium_height);
+				Generation.setChunkReady(cx,cz,true);
+			}
+		}
+	}
+	}catch(e){
+		clientMessage(e);
+	}
 	
 	/*
-	OLD 
 	var px=Player.getX();
 	var pz=Player.getZ();
 	for(var cx=-gen_radius*16;cx<gen_radius*16;cx+=16)
@@ -355,9 +437,15 @@ function useItem(x,y,z,i)
 	}catch(e){print(e);}
 	}
 }
+var gen_interval=gen_tick_interval;
 function modTick()
 {
-	//Generation.tick();
+	gen_interval--;
+	if(gen_interval==0)
+	{
+	Generation.logic();
+	gen_interval=gen_tick_interval;
+	}
 }
 
 
