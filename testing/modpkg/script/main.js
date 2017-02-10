@@ -17,7 +17,7 @@ function srandom(seed)//for seedRandom
 var arg1=Math.abs(Math.sin(seed*3));
 var arg2=Math.abs(seed)/1.5;
 var arg3=Math.abs(seed/50);
-var final=Math.tan(arg1*arg2)*2.5;
+var final=Math.tan(arg1*arg2+arg3)*2.5;
 while(Math.abs(final)>1)
 {
 final/=1.5;
@@ -56,25 +56,19 @@ function convertStreamToString(is) {
     return buf.toString(); 
 }
 function setTileFromJson(name, x1, y1, z1){
-	clientMessage(name);
     var str    = ModPE.openInputStreamFromTexturePack("buildings/" + name);
     var string = convertStreamToString(str);
     var json   = JSON.parse(string);
-	var thread=doInNewThread(function(){
     for(var y = 0; y < json.length; y++){
         for(var x = 0; x < json[0].length; x++){
             for(var z = 0; z < json[0][0].length; z++){
-				
                 var id   = json[y][x][z].id;
                 var meta = json[y][x][z].meta;
-				if(id!=0){
                 setTile(x1 + x, y1 + y, z1 + z, id, meta); 
-				thread.sleep(gen_cycle_delay);
-				}
+				
             }
         }
     }
-	});
 }
 
 
@@ -92,7 +86,7 @@ var gen_medium_height=75;//blocks
 var gen_chunk_min_height=45;//blocks
 var gen_chunk_max_height=80;//blocks//
 var gen_landscape_height=3;//blocks//
-var gen_radius=2;//chunks
+var gen_radius=3;//chunks
 var gen_cycle_delay=200;//milliseconds
 var new_level_preparing_time=20*10;//ticks//
 var gen_tick_interval=20*3;//ticks
@@ -228,7 +222,6 @@ Level.setTile(cx+xc,h+1,cz+zc-1,id);
 Level.setTile(cx+xc,h,cz+zc,id);
 }
 }
-Generation.setChunkReady(x,z,true);
 });
 };
 Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
@@ -382,11 +375,8 @@ Generation.logic=function()
 			if(!Generation.isChunkReady(cx,cz))
 			{
 				Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
-				var building_number=Math.floor(Math.random()*6)+1;//*gen_building_json_count;
-				clientMessage(building_number+"b"+building_number);
-				var chunk=Generation.getChunkPoints(cx,cz);
-				setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
-				//Generation.setChunkReady(cx,cz,true);
+				setTileFromJson(Math.round(srandom(cx+""+cz)*gen_building_json_count)+".json",cx,cz,gen_medium_height);
+				Generation.setChunkReady(cx,cz,true);
 			}
 		}
 	}

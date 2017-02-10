@@ -1,4 +1,4 @@
-﻿function convertStreamToString(is) { 
+function convertStreamToString(is) { 
     var bis = new java.io.BufferedInputStream(is); 
     var buf = new java.io.ByteArrayOutputStream(); 
     var res = bis.read(); 
@@ -8,7 +8,7 @@
     } 
     return buf.toString(); 
 }
-function SetTileFromJson(name, x1, y1, z1){
+function setTileFromJson(name, x1, y1, z1){
     var str    = ModPE.openInputStreamFromTexturePack("buildings//" + name);
     var string = convertStreamToString(str);
     var json   = JSON.parse(string);

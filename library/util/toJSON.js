@@ -1,4 +1,4 @@
-﻿var x1; var y1; var z1;
+var x1; var y1; var z1;
 var x2; var y2; var z2;
 
 var first = true;
