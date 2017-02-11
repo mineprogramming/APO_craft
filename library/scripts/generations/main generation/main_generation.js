@@ -458,16 +458,18 @@ function newLevel()
 {
 	
 }
+
 function useItem(x,y,z,i)
 {
 	if(i==280)
 	{
 	try{
-	Generation.generateSimpleLandscapeAtChunk(x,z,gen_bioms_parameters[0]);
-	clientMessage(x+" "+z);
-	}catch(e){print(e);}
+		Generation.generateSimpleLandscapeAtChunk(x,z,gen_bioms_parameters[0]);
+		clientMessage(x+" "+z);
+		}catch(e){print(e);}
 	}
 }
+
 var gen_interval=gen_tick_interval;
 function modTick()
 {
