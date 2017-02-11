@@ -3,7 +3,7 @@
 var ID_POST = 254;
 var ID_SIGN = 255;
 
-Block.defineBlock (ID_POST, "Столб", ["stone", 0], 1, true, 0);
+Block.defineBlock (ID_POST, "Столб", ["stone", 0], 1, false, 0);
 Block.defineBlock (ID_SIGN, "Знак", 
     [["stone", 0], ["stone", 0], ["sign", 0], ["sign", 0], ["stone", 0], ["stone", 0],
     ["stone", 0], ["stone", 0], ["sign", 1], ["sign", 1], ["stone", 0], ["stone", 0],
@@ -14,7 +14,7 @@ Block.defineBlock (ID_SIGN, "Знак",
     ["stone", 0], ["stone", 0], ["sign", 6], ["sign", 6], ["stone", 0], ["stone", 0],
     ["stone", 0], ["stone", 0], ["sign", 7], ["sign", 7], ["stone", 0], ["stone", 0],
     ["stone", 0], ["stone", 0], ["sign", 8], ["sign", 8], ["stone", 0], ["stone", 0]], 
-    1, true, 0);
+    1, false, 0);
 
 Block.setShape (ID_POST, 0.45, 0, 0.45, 0.55, 1, 0.55);
 Block.setShape (ID_SIGN, 0, 0, 0.45, 1, 1, 0.55);
