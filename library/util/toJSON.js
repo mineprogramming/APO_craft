@@ -1,3 +1,5 @@
+﻿var num = 0;
+
 var x1; var y1; var z1;
 var x2; var y2; var z2;
 
@@ -22,7 +24,10 @@ function useItem(x,y,z,itemid,blockid,side,itemDamage,blockDamage) {
             
             first = true;
             clientMessage(ChatColor.AQUA + "second point set to " + x + ";" + y + ";" + z);
-            clientMessage(ChatColor.AQUA + "generating JSON...");
+        }
+    }
+    else if(itemid == 271){
+        clientMessage(ChatColor.AQUA + "generating JSON...");
             
             if(x1 > x2){
                 var temp = x1; x1 = x2; x2 = temp;
@@ -35,7 +40,6 @@ function useItem(x,y,z,itemid,blockid,side,itemDamage,blockDamage) {
             }
             
             saveTiles();
-        }
     }
 }
 
@@ -60,7 +64,11 @@ function saveTiles(){
     }
     var string    = JSON.stringify(json);
     var directory = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-    var file      = directory + "/building.json";
+    var file      = directory + "/buildings/" + num++ + ".json";
+    var f         = new java.io.File(directory + "/buildings/");
+    if(!f.exists()){
+        f.mkdirs();
+    }
     try {
         var outputStream = new java.io.FileOutputStream(new java.io.File(file));
         outputStream.write(new java.lang.String(string).getBytes());
