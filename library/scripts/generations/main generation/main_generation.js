@@ -477,7 +477,7 @@ Generation.logic=function()
 			{
 				var chunk=Generation.getChunkPoints(cx,cz);
 				Generation.generateSimpleLandscape(chunk.x1,chunk.z1,chunk.x1+16,chunk.z1+16,gen_bioms_parameters[0]);
-				Generation.generateRoad(cx,cz);
+				//Generation.generateRoad(cx,cz);
 				var building_number=Randomizer.GaussRandom(12) + 1;
 				Generation.setChunkReady(cx,cz,true);
 				setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
@@ -529,7 +529,7 @@ function modTick()
 	Generation.logic();
 	gen_interval=gen_tick_interval;
 	}
-	ModPE.showTipMessage(Math.round(Player.getX())+" "+Math.round(Player.getY())+" "+Math.round(Player.getZ()));
+	//ModPE.showTipMessage(Math.round(Player.getX())+" "+Math.round(Player.getY())+" "+Math.round(Player.getZ()));
 }
 
 
