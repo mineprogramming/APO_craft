@@ -391,7 +391,7 @@ Generation.generateSimpleLandscape=function(fx,fz,tx,tz,biom_obj)
 				var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(fz)+""+Math.abs(fx)+""+Math.abs(zc)+"222"));
 				clientMessage(grass_index+")))");
 				var id=biom_obj.grass[grass_index];
-				var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(tx)+""+Math.abs(tz)));
+				/*var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(tx)+""+Math.abs(tz)));
 				if(height>9)
 				{
 					Level.setTile(xc,h+1,zc,id);
@@ -399,7 +399,7 @@ Generation.generateSimpleLandscape=function(fx,fz,tx,tz,biom_obj)
 					Level.setTile(xc-1,h+1,zc,id);
 					Level.setTile(xc,h+1,zc+1,id);
 					Level.setTile(xc,h+1,zc-1,id);
-				}
+				}*/
 				Level.setTile(xc,h,zc,id);
 				//clientMessage("tile "+(cxc)+" "+(cz+zc)+" h "+h);
 			}
@@ -411,10 +411,11 @@ Generation.generateSimpleLandscape=function(fx,fz,tx,tz,biom_obj)
 Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
 {
 	var chunk=Generation.getChunkPoints(x,z);
-	var fromX=Math.min(chunk.x1,chunk.x2);
-	var fromZ=Math.min(chunk.z1,chunk.z2);
-	var toX=Math.max(chunk.x1,chunk.x2);
-	var toZ=Math.max(chunk.z1,chunk.z2);
+	var x1=chunk.x1-3;
+	var x2=chunk.x2+2;
+	var z1=chunk.z1-3;
+	var z2=chunk.z2+3;
+	Generation.box(x1,gen_medium_height-gen_stone_width,z1,x2,gen_medium_height,z2,1,0,70);
 };
 function sr(n)
 {
