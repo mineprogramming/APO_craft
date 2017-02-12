@@ -281,15 +281,6 @@ Generation.getSurfaceHeight=function(x,z)
 
 Generation.generateSimpleLandscape=function(fx,fz,tx,tz,biom_obj)
 {
-	//var thread=doInNewThread(function(){
-		//var chunk=Generation.getChunkPoints(x,z);
-		//var cx=chunk.x1;
-		//var cz=chunk.z1;
-		//clientMessage(cx+" "+cz);
-	//	var cx=Math.min(tx,fx);
-		//var cz=Math.min(tz,fz);
-	//	clientMessage(cx+" "+cz);
-		//clientMessage(Math.max(tx,fx)+" "+Math.max(tz,fz));
 		var h=gen_medium_height;
 		for(var zc=Math.min(fz,tz);zc<Math.max(fz,tz);zc++)
 		{
