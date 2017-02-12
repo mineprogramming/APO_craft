@@ -25,14 +25,38 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ){
             setTile(x + 3, y, z + i, ID_ASPHALT, 0);
             setTile(x + 4, y, z + i, ID_ASPHALT, 4);
         }
+        if(Math.random() < 0.25){
+            setTile(x + 0, y, z, ID_ASPHALT, 9);
+            setTile(x + 1, y, z, ID_ASPHALT, 9);
+            setTile(x + 3, y, z, ID_ASPHALT, 10);
+            setTile(x + 4, y, z, ID_ASPHALT, 10);
+        }
+        if(Math.random() < 0.25){
+            setTile(x + 0, y, z + 15, ID_ASPHALT, 9);
+            setTile(x + 1, y, z + 15, ID_ASPHALT, 9);
+            setTile(x + 3, y, z + 15, ID_ASPHALT, 10);
+            setTile(x + 4, y, z + 15, ID_ASPHALT, 10);
+        }
     }
     else{
         for(var i = 0; i < 16; i++){
-            setTile(x + i, y, z, ID_ASPHALT, 5);
+            setTile(x + i, y, z + 0, ID_ASPHALT, 5);
             setTile(x + i, y, z + 1, ID_ASPHALT, 0);
             setTile(x + i, y, z + 2, ID_ASPHALT, 2);
             setTile(x + i, y, z + 3, ID_ASPHALT, 0);
             setTile(x + i, y, z + 4, ID_ASPHALT, 6);
+        }
+        if(Math.random() < 0.25){
+            setTile(x, y, z + 0, ID_ASPHALT, 8);
+            setTile(x, y, z + 1, ID_ASPHALT, 8);
+            setTile(x, y, z + 3, ID_ASPHALT, 7);
+            setTile(x, y, z + 4, ID_ASPHALT, 7);
+        }
+        if(Math.random() < 0.25){
+            setTile(x + 15, y, z + 0, ID_ASPHALT, 8);
+            setTile(x + 15, y, z + 1, ID_ASPHALT, 8);
+            setTile(x + 15, y, z + 3, ID_ASPHALT, 7);
+            setTile(x + 15, y, z + 4, ID_ASPHALT, 7);
         }
     }
 }
@@ -65,21 +89,17 @@ Roads.generateSimpleCrossroad = function(x, y, z, roadLeft, roadRight, roadForwa
     if(!roadForward && !roadBack){
         for(var i = 0; i < 5; i++)
             setTile(x + 2, y, z + i, ID_ASPHALT, 1);
-        setTile(x + 1, y, z + 2, ID_ASPHALT, 0);
-        setTile(x + 3, y, z + 2, ID_ASPHALT, 0);
     }
     
     if(!roadLeft && !roadRight){
         for(var i = 0; i < 5; i++)
             setTile(x + i, y, z + 2, ID_ASPHALT, 2);
-        setTile(x + 2, y, z + 1, ID_ASPHALT, 0);
-        setTile(x + 2, y, z + 3, ID_ASPHALT, 0);
     }
 }
 
 function useItem(x,y,z,itemid,blockid,side,itemDamage,blockDamage) {
     if(itemid == 280)
-        Roads.generateSimpleCrossroad(x, y, z, true, false, true, true);
+        Roads.generateSimpleRoad(x, y, z, false);
 }
 
 
