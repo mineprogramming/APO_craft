@@ -14,6 +14,7 @@ Randomizer.GaussRandom(max, depth) - returns a random number from 0 to max,
 
 var Randomizer = {};
 
+
 Randomizer.getWorldSeed = function(){
     var worldsPath = "/storage/sdcard0/games/com.mojang/minecraftWorlds/";
     var leveldat = worldsPath+Level.getWorldDir()+"/level.dat";
