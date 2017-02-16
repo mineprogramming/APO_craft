@@ -225,15 +225,6 @@ Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 				//thread.sleep(gen_cycle_delay);
 				var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
 				var id=biom_obj.grass[grass_index];
-				var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
-				if(height>9)
-				{
-					Level.setTile(cx+xc,h+1,cz+zc,id);
-					Level.setTile(cx+xc+1,h+1,cz+zc,id);
-					Level.setTile(cx+xc-1,h+1,cz+zc,id);
-					Level.setTile(cx+xc,h+1,cz+zc+1,id);
-					Level.setTile(cx+xc,h+1,cz+zc-1,id);
-				}
 				Level.setTile(cx+xc,h,cz+zc,id);
 			}
 		}
