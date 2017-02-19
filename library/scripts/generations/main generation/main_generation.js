@@ -1,5 +1,210 @@
+
+/*
+Randomizer API
+for APO Craft, #mineprogramming
+...You are not welcome here
+*/
+
+/*
+Randomizer.initialize() - initializes java.util.Random with world's seed
+Randomizer.getWorldSeed() - returns unique number for each world
+Randomizer.GaussRandom(max) - returns a random number from 0 to max
+Randomizer.GaussRandom(max, depth) - returns a random number from 0 to max,
+    depth - how more it is possible to get a number close to zero then to max
+*/
+﻿var ID_ASPHALT = 253;
+
+Block.defineBlock (ID_ASPHALT, "Асфальт", 
+    [["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 1], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 2], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 3], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 4], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 5], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 6], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 7], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 8], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 9], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0],
+    ["asphalt", 0], ["asphalt", 10], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0], ["asphalt", 0]], 
+    1, true, 0);
+
+var Roads = {};
+
+Roads.generateSimpleRoad = function(x, y, z, directionZ){
+    if(directionZ){
+        for(var i = 0; i < 16; i++){
+            setTile(x, y, z + i, ID_ASPHALT, 3);
+            setTile(x + 1, y, z + i, ID_ASPHALT, 0);
+            setTile(x + 2, y, z + i, ID_ASPHALT, 1);
+            setTile(x + 3, y, z + i, ID_ASPHALT, 0);
+            setTile(x + 4, y, z + i, ID_ASPHALT, 4);
+			setTile(x + 1, y+1, z + i, 0);
+            setTile(x + 2, y+1, z + i, 0);
+            setTile(x + 3, y+1, z + i, 0);
+            setTile(x + 4, y+1, z + i, 0);
+			
+        }
+        if(srandom(sr(x)+""+sr(y)+""+sr(z)) < 0.25){
+            setTile(x + 0, y, z, ID_ASPHALT, 9);
+            setTile(x + 1, y, z, ID_ASPHALT, 9);
+            setTile(x + 3, y, z, ID_ASPHALT, 10);
+            setTile(x + 4, y, z, ID_ASPHALT, 10);
+        }
+        if(srandom(sr(x)+""+sr(y)+""+sr(z)) < 0.25){
+            setTile(x + 0, y, z + 15, ID_ASPHALT, 9);
+            setTile(x + 1, y, z + 15, ID_ASPHALT, 9);
+            setTile(x + 3, y, z + 15, ID_ASPHALT, 10);
+            setTile(x + 4, y, z + 15, ID_ASPHALT, 10);
+        }
+    }
+    else{
+        for(var i = 0; i < 16; i++){
+            setTile(x + i, y, z + 0, ID_ASPHALT, 5);
+            setTile(x + i, y, z + 1, ID_ASPHALT, 0);
+            setTile(x + i, y, z + 2, ID_ASPHALT, 2);
+            setTile(x + i, y, z + 3, ID_ASPHALT, 0);
+            setTile(x + i, y, z + 4, ID_ASPHALT, 6);
+			setTile(x + i, y+1, z + 1, 0);
+            setTile(x + i, y+1, z + 2, 0);
+            setTile(x + i, y+1, z + 3, 0);
+            setTile(x + i, y+1, z + 4, 0);
+        }
+        if(srandom(x+""+y+""+z) < 0.25){
+            setTile(x, y, z + 0, ID_ASPHALT, 8);
+            setTile(x, y, z + 1, ID_ASPHALT, 8);
+            setTile(x, y, z + 3, ID_ASPHALT, 7);
+            setTile(x, y, z + 4, ID_ASPHALT, 7);
+        }
+        if(srandom(x+""+y+""+z) < 0.25){
+            setTile(x + 15, y, z + 0, ID_ASPHALT, 8);
+            setTile(x + 15, y, z + 1, ID_ASPHALT, 8);
+            setTile(x + 15, y, z + 3, ID_ASPHALT, 7);
+            setTile(x + 15, y, z + 4, ID_ASPHALT, 7);
+        }
+    }
+};
+
+Roads.generateSimpleCrossroad = function(x, y, z, roadLeft, roadRight, roadForward, roadBack){
+    for(var i = 0; i < 5; i++)
+        for(var j = 0; j < 5; j++)
+		{
+            setTile(x + i, y, z + j, ID_ASPHALT, 0);
+			setTile(x+i,y+1,z+j,0);
+		}
+    
+    if(!roadLeft) {
+        for(var i = 0; i < 5; i++)
+		{
+            setTile(x + i, y, z, ID_ASPHALT, 5);
+			
+		}
+    }
+    
+    if(!roadRight) {
+        for(var i = 0; i < 5; i++)
+		{
+            setTile(x + i, y, z + 4, ID_ASPHALT, 6);
+			
+		}
+    }
+    
+    if(!roadForward) {
+        for(var i = 0; i < 5; i++)
+		{
+            setTile(x + 4, y, z + i, ID_ASPHALT, 4);
+			
+		}
+    }
+    
+    if(!roadBack){
+        for(var i = 0; i < 5; i++)
+            setTile(x, y, z + i, ID_ASPHALT, 3);
+    }
+    
+    if(!roadForward && !roadBack){
+        for(var i = 0; i < 5; i++)
+            setTile(x + 2, y, z + i, ID_ASPHALT, 1);
+    }
+    
+    if(!roadLeft && !roadRight){
+        for(var i = 0; i < 5; i++)
+            setTile(x + i, y, z + 2, ID_ASPHALT, 2);
+    }
+};
+
+
+
+
+var Randomizer = {};
+
+
+Randomizer.getWorldSeed = function(){
+    var worldsPath = "/storage/sdcard0/games/com.mojang/minecraftWorlds/";
+    var leveldat = worldsPath+Level.getWorldDir()+"/level.dat";
+    if(!java.io.File(leveldat).exists()){
+        return 0;
+    }
+    var fin = new java.io.FileInputStream(leveldat);
+    var nechs = [];
+    var startSeed = 0;
+    var seed = "";
+    var str = "";
+    var ch;
+    while((ch=fin.read())!=-1){
+        nechs.push(ch);
+        str+=String.fromCharCode(ch);
+    }
+    startSeed = str.split("RandomSeed")[0].length+10;
+    for(var i=3;i>=0;i--){
+        if(nechs[startSeed+i]<16){
+            seed+="0"+nechs[startSeed+i].toString(16)+"";
+        }else{
+            seed+=nechs[startSeed+i].toString(16)+"";
+        }
+    }
+    var endSeed = parseInt(seed, 16);
+    if(endSeed>(Math.pow(16,8)/2-1)){
+        return endSeed-Math.pow(16,8);
+    }
+    return endSeed;
+};
+
+Randomizer.initialize = function(){
+    this.Random = new java.util.Random(this.getWorldSeed());
+};
+
+Randomizer.GaussRandom = function(max, depth){
+    if (typeof depth === 'undefined') {
+        depth = 1;
+    }
+    var result = 0;
+    for(var i = 0; i < depth; i++){
+        result += this.Random.nextInt(max * 2) - max;
+    }
+    return Math.round(Math.abs(result / depth));
+};
+
+Randomizer.initialize();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //APO Craft generation
-//You are not welcome here
+//You are not welcome here 
 
 var ctx=com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 
@@ -21,10 +226,10 @@ function srandom(seed)//for seedRandom
 	var arg1=Math.abs(Math.sin(seed*3));
 	var arg2=Math.abs(seed)/1.5;
 	var arg3=Math.abs(seed/50);
-	var final=Math.tan(arg1*arg2)*2.5;
+	var final=Math.tan(arg1*arg2+arg3)*2.5;
 	while(Math.abs(final)>1)
 	{
-		final/=1.5;
+		final/=2.25;
 	}
 	return (Math.abs(final));
 }
@@ -72,7 +277,7 @@ function setTileFromJson(name, x1, y1, z1){
     for(var y = 0; y < json.length; y++){
         for(var x = 0; x < json[0].length; x++){
             for(var z = 0; z < json[0][0].length; z++){
-				
+
                 var id   = json[y][x][z].id;
                 var meta = json[y][x][z].meta;
 				if(id!=0){
@@ -192,10 +397,7 @@ Generation.getChunkDistance=function(x,z)
 	return distance;
 };
 
-Generation.roadLine=function(fx,fz,tx,tz,width,r)
-{
-	
-};
+
 
 Generation.getSurfaceHeight=function(x,z)
 {
@@ -209,7 +411,10 @@ Generation.getSurfaceHeight=function(x,z)
 	}
 	return null;
 };
-
+function sr(x)
+{
+	return Math.round(Math.abs(x));
+}
 Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 {
 	//var thread=doInNewThread(function(){
@@ -225,6 +430,15 @@ Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 				//thread.sleep(gen_cycle_delay);
 				var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
 				var id=biom_obj.grass[grass_index];
+				var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
+				if(height>9)
+				{
+					Level.setTile(cx+xc,h+1,cz+zc,id);
+					Level.setTile(cx+xc+1,h+1,cz+zc,id);
+					Level.setTile(cx+xc-1,h+1,cz+zc,id);
+					Level.setTile(cx+xc,h+1,cz+zc+1,id);
+					Level.setTile(cx+xc,h+1,cz+zc-1,id);
+				}
 				Level.setTile(cx+xc,h,cz+zc,id);
 			}
 		}
@@ -250,7 +464,7 @@ Generation.box=function(fx,fy,fz,tx,ty,tz,id,data,r)
 			{
 				for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
 				{
-					if(srandom(fx+""+fy+""+fz+""+tx+""+ty+""+tz+""+id+""+data)*100<=r)
+					if(srandom(sr(fx)+""+sr(fy)+""+sr(fz)+""+sr(tx)+""+sr(ty)+""+sr(tz)+""+id+""+data)*100<=r)
 					{
 						setTile(x,y,z,id,data);
 					}
@@ -342,7 +556,7 @@ Generation.setInfo=function(info_obj)
 	}else{
 		gen_chunks.push(info_obj);
 	}
-	
+
 };
 
 Generation.getChunkInfo=function(x,z)
@@ -365,7 +579,7 @@ Generation.getChunkInfo=function(x,z)
 	}
 };
 
-function doInNewThread(whatToDo)
+function doInNewThread(whatToDo)//fuck this shit!
 {
 	var thread=new java.lang.Thread(
 	new java.lang.Runnable({
@@ -377,7 +591,18 @@ function doInNewThread(whatToDo)
 	thread.start();
 	return thread;
 }
-
+Generation.startRoad=function(x,z)
+{
+	var chunk=Generation.getChunkPoints(x,z);
+	Generation.generateSimpleLandscapeAtChunk(x,z,gen_bioms_parameters[0]);
+	Roads.generateSimpleCrossroad(chunk.x1+5,gen_medium_height,chunk.z1+5,true,true,true,true);
+	Generation.setChunkReady(x,z,true);
+	Roads.generateSimpleRoad(chunk.x1+10,gen_medium_height,chunk.z1+5,false);
+	Roads.generateSimpleRoad(chunk.x1+5,gen_medium_height,chunk.z1+10,true);
+	Roads.generateSimpleRoad(chunk.x1+5-16,gen_medium_height,chunk.z1+5,false);
+	Roads.generateSimpleRoad(chunk.x1+5,gen_medium_height,chunk.z1+5-16,true);
+	
+};
 Generation.logic=function()
 {
 	try{
@@ -389,10 +614,16 @@ Generation.logic=function()
 		{
 			if(!Generation.isChunkReady(cx,cz))
 			{
+				
 				var chunk=Generation.getChunkPoints(cx,cz);
-				Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
-				var building_number=Math.floor(srandom(Math.abs(chunk.x1)+""+Math.abs(chunk.z1))*6)+1;//*gen_building_json_count;
-				setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
+				if(srandom(sr(chunk.x1)+""+sr(chunk.x2)+""+sr(chunk.z1)+""+sr(chunk.z2))<0.30)
+				{
+					Generation.startRoad(chunk.x1,chunk.z1);
+				}else{
+					Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
+					var building_number=Math.floor(srandom(Math.abs(chunk.x1)+""+Math.abs(chunk.z1))*6)+1;//*gen_building_json_count;
+					setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
+				}
 			}
 		}
 	}
@@ -418,7 +649,7 @@ Generation.logic=function()
 
 function newLevel()
 {
-	
+
 }
 
 function useItem(x,y,z,i)
@@ -441,4 +672,6 @@ function modTick()
 	Generation.logic();
 	gen_interval=gen_tick_interval;
 	}
+
 }
+
