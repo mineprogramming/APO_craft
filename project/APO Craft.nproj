@@ -6,3 +6,4 @@ settings-compress:false
 settings-mode:modpkg
 include-library:project/Timers
 include-library:nide/ItemsEngine
+include-library:project/MainGeneration
