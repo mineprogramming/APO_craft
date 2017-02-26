@@ -44,9 +44,7 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ){
             setTile(x + 2, y+1, z + i, 0);
             setTile(x + 3, y+1, z + i, 0);
             setTile(x + 4, y+1, z + i, 0);
-			
-			
-        }
+		}
         if(srandom(sr(x)+""+sr(y)+""+sr(z)) < 0.25){
             setTile(x + 0, y, z, ID_ASPHALT, 9);
             setTile(x + 1, y, z, ID_ASPHALT, 9);
@@ -282,7 +280,6 @@ function setTileFromJson(name, x1, y1, z1){
     var str    = ModPE.openInputStreamFromTexturePack("buildings/" + name);
     var string = convertStreamToString(str);
     var json   = JSON.parse(string);
-	//var thread=doInNewThread(function(){
     for(var y = 0; y < json.length; y++){
         for(var x = 0; x < json[0].length; x++){
             for(var z = 0; z < json[0][0].length; z++){
@@ -291,7 +288,6 @@ function setTileFromJson(name, x1, y1, z1){
                 var meta = json[y][x][z].meta;
 				if(id!=0){
                 bufferSetTile(x1 + x, y1 + y, z1 + z, id, meta); 
-				//thread.sleep(gen_cycle_delay);
 				}
             }
         }
@@ -319,7 +315,7 @@ var gen_tick_interval=20*3;//ticks
 var gen_building_json_count=13;
 var gen_ores=[];
 var buffer=[];
-var build_speed=50;//>>
+var build_speed=50;
 var gen_chunks=[];
 var chunk_info=[];
 var gen_bioms_parameters=[];
@@ -448,41 +444,33 @@ function sr(x)
 }
 Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 {
-	//var thread=doInNewThread(function(){
-		var chunk=Generation.getChunkPoints(x,z);
-		var cx=chunk.x1;
-		var cz=chunk.z1;
-
-		//clientMessage(cx+" "+cz);
-//=======
-//>>>>>>> branch 'master' of https://github.com/Ihor01/APO_craft.git
-		var h=gen_medium_height;
-		for(var zc=0;zc<16;zc++)
+	var chunk=Generation.getChunkPoints(x,z);
+	var cx=chunk.x1;
+	var cz=chunk.z1;
+	var h=gen_medium_height;
+	for(var zc=0;zc<16;zc++)
+	{
+		for(var xc=0;xc<16;xc++)
 		{
-			for(var xc=0;xc<16;xc++)
+			var condition=getTile(cx+xc,gen_medium_height,cz+zc)!=ID_ASPHALT;
+			if(condition)
 			{
-				//thread.sleep(gen_cycle_delay);
-				var condition=getTile(cx+xc,gen_medium_height,cz+zc)!=ID_ASPHALT;
-				//print(condition);
-				if(condition)
-				{
-				var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
-				var id=biom_obj.grass[grass_index];
-				var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
-				if(height>9)
-				{
-					bufferSetTile(cx+xc,h+1,cz+zc,id);
-					bufferSetTile(cx+xc+1,h+1,cz+zc,id);
-					bufferSetTile(cx+xc-1,h+1,cz+zc,id);
-					bufferSetTile(cx+xc,h+1,cz+zc+1,id);
-					bufferSetTile(cx+xc,h+1,cz+zc-1,id);
-				}
-				bufferSetTile(cx+xc,h,cz+zc,id);
-				}
+			var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
+			var id=biom_obj.grass[grass_index];
+			var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
+			if(height>9)
+			{
+				bufferSetTile(cx+xc,h+1,cz+zc,id);
+				bufferSetTile(cx+xc+1,h+1,cz+zc,id);
+				bufferSetTile(cx+xc-1,h+1,cz+zc,id);
+				bufferSetTile(cx+xc,h+1,cz+zc+1,id);
+				bufferSetTile(cx+xc,h+1,cz+zc-1,id);
+			}
+			bufferSetTile(cx+xc,h,cz+zc,id);
 			}
 		}
-		Generation.setChunkReady(x,z,true);
-	//});
+	}
+	Generation.setChunkReady(x,z,true);
 };
 function addOre(id,data,rarity,size)
 {
@@ -525,22 +513,19 @@ Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
 
 Generation.box=function(fx,fy,fz,tx,ty,tz,id,data,r)
 {
-	//var thread=doInNewThread(function(){
-		for(var x=Math.min(fx,tx);x<Math.max(fx,tx);x++)
+	for(var x=Math.min(fx,tx);x<Math.max(fx,tx);x++)
+	{
+		for(var y=Math.min(fy,ty);y<Math.max(fy,ty);y++)
 		{
-			for(var y=Math.min(fy,ty);y<Math.max(fy,ty);y++)
+			for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
 			{
-				for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
+				if(srandom(sr(fx)+""+sr(fy)+""+sr(fz)+""+sr(tx)+""+sr(ty)+""+sr(tz)+""+id+""+data)*100<=r)
 				{
-					if(srandom(sr(fx)+""+sr(fy)+""+sr(fz)+""+sr(tx)+""+sr(ty)+""+sr(tz)+""+id+""+data)*100<=r)
-					{
-						bufferSetTile(x,y,z,id,data);
-					}
-					//thread.sleep(gen_cycle_delay);
+					bufferSetTile(x,y,z,id,data);
 				}
 			}
-		}  
-	//});
+		}
+	}  
 };
 
 function tonnel(x,y,z)
@@ -647,18 +632,7 @@ Generation.getChunkInfo=function(x,z)
 	}
 };
 
-function doInNewThread(whatToDo)//fuck this shit!
-{
-	var thread=new java.lang.Thread(
-	new java.lang.Runnable({
-		run:function(){
-				whatToDo();
-			}
-		})
-	);
-	thread.start();
-	return thread;
-}
+
 function road(x,z,bz)
 {
 	Roads.generateSimpleRoad(x,gen_medium_height,z,bz);
@@ -768,11 +742,7 @@ Generation.logic=function()
 				var chunk=Generation.getChunkPoints(cx,cz);
 				if(srandom(sr(chunk.x1)+""+sr(chunk.x2)+""+sr(chunk.z1)+""+sr(chunk.z2))<0.30)
 				{
-//<<<<<<< HEAD
 					Generation.startRoad(chunk.x1,chunk.z1,50);
-//=======
-					//Generation.startRoad(chunk.x1,chunk.z1);
-//>>>>>>> branch 'master' of https://github.com/Ihor01/APO_craft.git
 				}else{
 					Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
 					var building_number=Math.floor(srandom(Math.abs(chunk.x1)+""+sr(chunk.x2*chunk.x1/2)+""+Math.abs(chunk.z1))*(gen_building_json_count-1))+1;//*gen_building_json_count;
