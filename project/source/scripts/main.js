@@ -1,17 +1,4 @@
 ﻿
-/*
-Randomizer API
-for APO Craft, #mineprogramming
-...You are not welcome here
-*/
-
-/*
-Randomizer.initialize() - initializes java.util.Random with world's seed
-Randomizer.getWorldSeed() - returns unique number for each world
-Randomizer.GaussRandom(max) - returns a random number from 0 to max
-Randomizer.GaussRandom(max, depth) - returns a random number from 0 to max,
-    depth - how more it is possible to get a number close to zero then to max
-*/
 var ID_ASPHALT = 253;
 
 Block.defineBlock (ID_ASPHALT, "Асфальт", 
@@ -93,7 +80,7 @@ Roads.generateSimpleCrossroad = function(x, y, z, roadLeft, roadRight, roadForwa
     Generation.setChunkReady(x,z,true);
     for(var i = 0; i < 5; i++)
         for(var j = 0; j < 5; j++)
-        {
+        { 
             setTile(x + i, y, z + j, ID_ASPHALT, 0);
             setTile(x+i,y+1,z+j,0);
         }
@@ -137,74 +124,6 @@ Roads.generateSimpleCrossroad = function(x, y, z, roadLeft, roadRight, roadForwa
             setTile(x + i, y, z + 2, ID_ASPHALT, 2);
     }
 };
-
-
-
-
-var Randomizer = {};
-
-
-Randomizer.getWorldSeed = function(){
-    var worldsPath = "/storage/sdcard0/games/com.mojang/minecraftWorlds/";
-    var leveldat = worldsPath+Level.getWorldDir()+"/level.dat";
-    if(!java.io.File(leveldat).exists()){
-        return 0;
-    }
-    var fin = new java.io.FileInputStream(leveldat);
-    var nechs = [];
-    var startSeed = 0;
-    var seed = "";
-    var str = "";
-    var ch;
-    while((ch=fin.read())!=-1){
-        nechs.push(ch);
-        str+=String.fromCharCode(ch);
-    }
-    startSeed = str.split("RandomSeed")[0].length+10;
-    for(var i=3;i>=0;i--){
-        if(nechs[startSeed+i]<16){
-            seed+="0"+nechs[startSeed+i].toString(16)+"";
-        }else{
-            seed+=nechs[startSeed+i].toString(16)+"";
-        }
-    }
-    var endSeed = parseInt(seed, 16);
-    if(endSeed>(Math.pow(16,8)/2-1)){
-        return endSeed-Math.pow(16,8);
-    }
-    return endSeed;
-};
-
-Randomizer.initialize = function(){
-    this.Random = new java.util.Random(this.getWorldSeed());
-};
-
-Randomizer.GaussRandom = function(max, depth){
-    if (typeof depth === 'undefined') {
-        depth = 1;
-    }
-    var result = 0;
-    for(var i = 0; i < depth; i++){
-        result += this.Random.nextInt(max * 2) - max;
-    }
-    return Math.round(Math.abs(result / depth));
-};
-
-Randomizer.initialize();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -303,22 +222,22 @@ function setTileFromJson(name, x1, y1, z1){
 //Begin with API for easier coding
 
 //Change parameters if you want
-var gen_medium_height=75;//blocks
-var gen_chunk_width=10;
-var gen_chunk_min_height=45;//blocks
-var gen_chunk_max_height=80;//blocks//
-var gen_landscape_height=3;//blocks//
-var gen_radius=2;//chunks//>>
-var gen_cycle_delay=200;//milliseconds
-var new_level_preparing_time=20*10;//ticks//
-var gen_tick_interval=20*3;//ticks
-var gen_building_json_count=13;
-var gen_ores=[];
-var buffer=[];
-var build_speed=50;
-var gen_chunks=[];
-var chunk_info=[];
-var gen_bioms_parameters=[];
+var gen_medium_height        = 75;//blocks
+var gen_chunk_width          = 2;
+var gen_chunk_min_height     = 45;//blocks
+var gen_chunk_max_height     = 80;//blocks//
+var gen_landscape_height     = 3;//blocks//
+var gen_radius               = 2;//chunks//>>
+var gen_cycle_delay          = 200;//milliseconds
+var new_level_preparing_time = 20*10;//ticks//
+var gen_tick_interval        = 20*3;//ticks
+var gen_building_json_count  = 13;
+var gen_ores                 = [];
+var buffer                   = [];
+var build_speed              = 50;
+var gen_chunks               = [];
+var chunk_info               = [];
+var gen_bioms_parameters     = [];
 
 function addBiom(grass_array,stone_array,ores_array,rarity,chunk_logic)
 {
@@ -460,11 +379,11 @@ Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
             var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
             if(height>9)
             {
-                bufferSetTile(cx+xc,h+1,cz+zc,id);
-                bufferSetTile(cx+xc+1,h+1,cz+zc,id);
-                bufferSetTile(cx+xc-1,h+1,cz+zc,id);
-                bufferSetTile(cx+xc,h+1,cz+zc+1,id);
-                bufferSetTile(cx+xc,h+1,cz+zc-1,id);
+                //bufferSetTile(cx+xc,h+1,cz+zc,id);
+                //bufferSetTile(cx+xc+1,h+1,cz+zc,id);
+                //bufferSetTile(cx+xc-1,h+1,cz+zc,id);
+                //bufferSetTile(cx+xc,h+1,cz+zc+1,id);
+                //bufferSetTile(cx+xc,h+1,cz+zc-1,id);
             }
             bufferSetTile(cx+xc,h,cz+zc,id);
             }

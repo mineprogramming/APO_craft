@@ -31,9 +31,9 @@ Block.defineBlock (ID_ASPHALT, "Асфальт",
 var Roads = {};
 
 Roads.generateSimpleRoad = function(x, y, z, directionZ){
-	Generation.setChunkReady(x,z,true);
+	
 	    if(directionZ){
-			Generation.setChunkReady(x,z+16,true);
+			
 		    for(var i = 0; i < 16; i++){
             setTile(x, y, z + i, ID_ASPHALT, 3);
             setTile(x + 1, y, z + i, ID_ASPHALT, 0);
@@ -44,7 +44,11 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ){
             setTile(x + 2, y+1, z + i, 0);
             setTile(x + 3, y+1, z + i, 0);
             setTile(x + 4, y+1, z + i, 0);
-		}
+			
+			
+//<<<<<<< HEAD
+//=======
+        }
         if(srandom(sr(x)+""+sr(y)+""+sr(z)) < 0.25){
             setTile(x + 0, y, z, ID_ASPHALT, 9);
             setTile(x + 1, y, z, ID_ASPHALT, 9);
@@ -59,7 +63,7 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ){
         }
     }
     else{
-		Generation.setChunkReady(x+16,z,true);
+		
 		    for(var i = 0; i < 16; i++){
 			
             setTile(x + i, y, z + 0, ID_ASPHALT, 5);
@@ -90,7 +94,7 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ){
 Roads.generateSimpleCrossroad = function(x, y, z, roadLeft, roadRight, roadForward, roadBack){
 	/*Generation.generateSimpleLandscapeAtChunk(x,z,gen_bioms_parameters[0]);
 	Generation.generateStoneLayerAtChunk(x,z);*/
-	Generation.setChunkReady(x,z,true);
+	
     for(var i = 0; i < 5; i++)
         for(var j = 0; j < 5; j++)
 		{
@@ -229,14 +233,14 @@ function runUI(f)
 
 function srandom(seed)//for seedRandom
 {
-	seed=/*sr(Randomizer.getWorldSeed())*/+seed;
+	
 	var arg1=Math.abs(Math.sin(seed*3));
 	var arg2=Math.abs(seed)/1.5;
 	var arg3=Math.abs(seed/50);
 	var final=Math.tan(arg1*arg2+arg3/1.5)*2.5;
 	while(Math.abs(final)>1)
 	{
-		final/=2.5;
+		final/=2.75;
 	}
 	return (Math.abs(final));
 }
@@ -280,6 +284,7 @@ function setTileFromJson(name, x1, y1, z1){
     var str    = ModPE.openInputStreamFromTexturePack("buildings/" + name);
     var string = convertStreamToString(str);
     var json   = JSON.parse(string);
+	//var thread=doInNewThread(function(){
     for(var y = 0; y < json.length; y++){
         for(var x = 0; x < json[0].length; x++){
             for(var z = 0; z < json[0][0].length; z++){
@@ -288,6 +293,7 @@ function setTileFromJson(name, x1, y1, z1){
                 var meta = json[y][x][z].meta;
 				if(id!=0){
                 bufferSetTile(x1 + x, y1 + y, z1 + z, id, meta); 
+				//thread.sleep(gen_cycle_delay);
 				}
             }
         }
@@ -304,7 +310,7 @@ function setTileFromJson(name, x1, y1, z1){
 
 //Change parameters if you want
 var gen_medium_height=75;//blocks
-var gen_chunk_width=10;
+var gen_chunk_width=5;
 var gen_chunk_min_height=45;//blocks
 var gen_chunk_max_height=80;//blocks//
 var gen_landscape_height=3;//blocks//
@@ -315,10 +321,11 @@ var gen_tick_interval=20*3;//ticks
 var gen_building_json_count=13;
 var gen_ores=[];
 var buffer=[];
-var build_speed=50;
+var build_speed=50;//>>
 var gen_chunks=[];
 var chunk_info=[];
 var gen_bioms_parameters=[];
+var gen_roads_rarity=0.30;
 
 function addBiom(grass_array,stone_array,ores_array,rarity,chunk_logic)
 {
@@ -399,15 +406,15 @@ Generation.getChunkPoints=function(x,z)//return object with chunk points coords
 Generation.isChunkReady=function(x,z)//return boolean value
 {
 	var chunk=Generation.getChunkPoints(x,z);
-	return getTile(chunk.x1,0,chunk.z1)==57;
+	return getTile(chunk.x1,1,chunk.z1)==57;
 };
 
 Generation.setChunkReady=function(x,z,ready)
 {
 	var chunk=Generation.getChunkPoints(x,z);
 	if(ready){
-		setTile(chunk.x1,0,chunk.z1,57);
-		setTile(chunk.x1,1,chunk.z1,7);
+		setTile(chunk.x1,1,chunk.z1,57);
+		setTile(chunk.x1,2,chunk.z1,7);
 	}else{
 		setTile(chunk.x1,0,chunk.z1,0);
 	}
@@ -444,33 +451,41 @@ function sr(x)
 }
 Generation.generateSimpleLandscapeAtChunk=function(x,z,biom_obj)
 {
-	var chunk=Generation.getChunkPoints(x,z);
-	var cx=chunk.x1;
-	var cz=chunk.z1;
-	var h=gen_medium_height;
-	for(var zc=0;zc<16;zc++)
-	{
-		for(var xc=0;xc<16;xc++)
+	//var thread=doInNewThread(function(){
+		var chunk=Generation.getChunkPoints(x,z);
+		var cx=chunk.x1;
+		var cz=chunk.z1;
+
+		//clientMessage(cx+" "+cz);
+//=======
+//>>>>>>> branch 'master' of https://github.com/Ihor01/APO_craft.git
+		var h=gen_medium_height;
+		for(var zc=0;zc<16;zc++)
 		{
-			var condition=getTile(cx+xc,gen_medium_height,cz+zc)!=ID_ASPHALT;
-			if(condition)
+			for(var xc=0;xc<16;xc++)
 			{
-			var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
-			var id=biom_obj.grass[grass_index];
-			var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
-			if(height>9)
-			{
-				bufferSetTile(cx+xc,h+1,cz+zc,id);
-				bufferSetTile(cx+xc+1,h+1,cz+zc,id);
-				bufferSetTile(cx+xc-1,h+1,cz+zc,id);
-				bufferSetTile(cx+xc,h+1,cz+zc+1,id);
-				bufferSetTile(cx+xc,h+1,cz+zc-1,id);
-			}
-			bufferSetTile(cx+xc,h,cz+zc,id);
+				//thread.sleep(gen_cycle_delay);
+				//var condition=getTile(cx+xc,gen_medium_height,cz+zc)!=ID_ASPHALT;
+				//print(condition);
+				//if(condition)
+				//{
+				var grass_index=Math.round((biom_obj.grass.length-1)*srandom(Math.abs(xc)+""+Math.abs(cz)+""+Math.abs(cx)+""+Math.abs(cz)+"222"));
+				var id=biom_obj.grass[grass_index];
+				var height=Math.round(10*srandom(Math.abs(xc)+""+Math.abs(zc)+""+Math.abs(cx)+""+Math.abs(cz)));
+				/*if(height>9)
+				{
+					bufferSetTile(cx+xc,h+1,cz+zc,id);
+					bufferSetTile(cx+xc+1,h+1,cz+zc,id);
+					bufferSetTile(cx+xc-1,h+1,cz+zc,id);
+					bufferSetTile(cx+xc,h+1,cz+zc+1,id);
+					bufferSetTile(cx+xc,h+1,cz+zc-1,id);
+				}*/
+				bufferSetTile(cx+xc,h,cz+zc,id);
+				//}
 			}
 		}
-	}
-	Generation.setChunkReady(x,z,true);
+		Generation.setChunkReady(x,z,true);
+	//});
 };
 function addOre(id,data,rarity,size)
 {
@@ -513,19 +528,22 @@ Generation.generateStoneLayerAtChunk=function(x,z,biom_obj)
 
 Generation.box=function(fx,fy,fz,tx,ty,tz,id,data,r)
 {
-	for(var x=Math.min(fx,tx);x<Math.max(fx,tx);x++)
-	{
-		for(var y=Math.min(fy,ty);y<Math.max(fy,ty);y++)
+	//var thread=doInNewThread(function(){
+		for(var x=Math.min(fx,tx);x<Math.max(fx,tx);x++)
 		{
-			for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
+			for(var y=Math.min(fy,ty);y<Math.max(fy,ty);y++)
 			{
-				if(srandom(sr(fx)+""+sr(fy)+""+sr(fz)+""+sr(tx)+""+sr(ty)+""+sr(tz)+""+id+""+data)*100<=r)
+				for(var z=Math.min(fz,tz);z<Math.max(fz,tz);z++)
 				{
-					bufferSetTile(x,y,z,id,data);
+					if(srandom(sr(fx)+""+sr(fy)+""+sr(fz)+""+sr(tx)+""+sr(ty)+""+sr(tz)+""+id+""+data)*100<=r)
+					{
+						bufferSetTile(x,y,z,id,data);
+					}
+					//thread.sleep(gen_cycle_delay);
 				}
 			}
-		}
-	}  
+		}  
+	//});
 };
 
 function tonnel(x,y,z)
@@ -632,7 +650,18 @@ Generation.getChunkInfo=function(x,z)
 	}
 };
 
-
+function doInNewThread(whatToDo)//fuck this shit!
+{
+	var thread=new java.lang.Thread(
+	new java.lang.Runnable({
+		run:function(){
+				whatToDo();
+			}
+		})
+	);
+	thread.start();
+	return thread;
+}
 function road(x,z,bz)
 {
 	Roads.generateSimpleRoad(x,gen_medium_height,z,bz);
@@ -727,6 +756,32 @@ Generation.ore=function(x,y,z,id,data,left)
 		Generation.ore(x,y,z-1,id,data,g);
 	}
 };
+Generation.checkRoad=function(x,z)
+{
+	var chunk=Generation.getChunkPoints(x,z);
+	var xr=srandom(chunk.x1);
+	var zr=srandom(chunk.z1);
+	
+	var value=false;
+	if(xr<gen_roads_rarity)
+	{
+		Roads.generateSimpleRoad(chunk.x1+5,gen_medium_height,chunk.z1,true);
+		value=true;
+	}
+	if(zr<gen_roads_rarity)
+	{
+		Roads.generateSimpleRoad(chunk.x1,gen_medium_height,chunk.z1+5,false);
+		value=true;
+	}
+	if(xr<gen_roads_rarity&&zr<gen_roads_rarity)
+	{
+		Roads.generateSimpleCrossroad(chunk.x1+5,gen_medium_height,chunk.z1+5,true,true,true,true);
+	}
+	if(value){
+		Generation.setChunkReady(x,z);
+	}
+	return value;
+};
 Generation.logic=function()
 {
 	try{
@@ -740,15 +795,15 @@ Generation.logic=function()
 			{
 				
 				var chunk=Generation.getChunkPoints(cx,cz);
-				if(srandom(sr(chunk.x1)+""+sr(chunk.x2)+""+sr(chunk.z1)+""+sr(chunk.z2))<0.30)
-				{
-					Generation.startRoad(chunk.x1,chunk.z1,50);
-				}else{
-					Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
-					var building_number=Math.floor(srandom(Math.abs(chunk.x1)+""+sr(chunk.x2*chunk.x1/2)+""+Math.abs(chunk.z1))*(gen_building_json_count-1))+1;//*gen_building_json_count;
-					setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
-				}
+				Generation.generateSimpleLandscapeAtChunk(cx,cz,gen_bioms_parameters[0]);
 				Generation.generateStoneLayerAtChunk(cx,cz);
+				if(!Generation.checkRoad(cx,cz))
+				{
+						var building_number=Math.floor(srandom(Math.abs(chunk.x1)+""+sr(chunk.x2*chunk.x1/2)+""+Math.abs(chunk.z1))*(gen_building_json_count-1))+1;//*gen_building_json_count;
+					setTileFromJson(building_number+".json",chunk.x1,gen_medium_height,chunk.z1);
+				}else
+				
+				break;
 			}
 		}
 	}
