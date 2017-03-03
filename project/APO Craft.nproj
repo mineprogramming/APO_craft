@@ -4,8 +4,3 @@ project-version:1.0.0
 project-type:MODPE
 settings-compress:false
 settings-mode:modpkg
-include-library:nide/Util
-include-library:nide/Randomizer
-include-library:nide/Timers
-include-library:nide/ItemsEngine
-include-library:project/BufferedBuilding
