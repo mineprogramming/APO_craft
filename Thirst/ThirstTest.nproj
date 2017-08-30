@@ -7,4 +7,3 @@ settings-mode:modpkg
 
 include-library:nide/Timers
 
-include-library:nide/ModCore

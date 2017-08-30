@@ -1,4 +1,4 @@
-﻿var GUI;
+var GUI;
 var layout;
 var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 
@@ -7,26 +7,11 @@ var thirst = 20;
 
 function newLevel(){
     loaded = true;
-    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
-        try{
-            layout = new android.widget.LinearLayout(ctx);
-            layout.setOrientation(0);
-            for(var i = 0; i < 10; i++){
-                var image = new android.widget.ImageView(ctx);
-                image.setImageBitmap(BitmapFromTexturePack("water0.png"));
-                layout.addView(image);
-            }
-            GUI = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-            GUI.setTouchable(false);
-            GUI.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-            GUI.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.TOP, 0, 40);
-        }catch(err){
-            print("An error occured: " + err);
-        }
-    }}));
+    show();
+    thirst = 20;
 }
 
-Timers.addRepetiteve(0, 100, function(){
+Timers.addRepetiteve(0, 500, function(id, data){
     if(loaded){
         if(thirst < 0){
             Player.setHealth(Entity.getHealth(getPlayerEnt()) - 1);
@@ -63,12 +48,7 @@ function setThirst(value){
 
 function leaveGame(){
     loaded = false;
-    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
-        if(GUI != null){
-            GUI.dismiss();
-            GUI = null;
-        }
-    }}));
+    hide();
 }
 
 function modTick() {
@@ -93,3 +73,46 @@ function deathHook(attacker,victim) {
         setThirst(thirst);
     }
 }
+
+function show(){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        try{
+            layout = new android.widget.LinearLayout(ctx);
+            layout.setOrientation(0);
+            for(var i = 0; i < 10; i++){
+                var image = new android.widget.ImageView(ctx);
+                image.setImageBitmap(BitmapFromTexturePack("water0.png"));
+                layout.addView(image);
+            }
+            GUI = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+            GUI.setTouchable(false);
+            GUI.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            GUI.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.TOP, 0, 65);
+        }catch(err){
+            print("An error occured: " + err);
+        }
+    }}));
+    setThirst(thirst);
+}
+
+function hide(){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        if(GUI != null){
+            GUI.dismiss();
+            GUI = null;
+        }
+    }}));
+}
+
+function screenChangeHook(screenName) {
+  if(screenName == "hud_screen" || 
+      screenName == "in_game_play_screen"){
+      show();
+  }
+  else{
+      hide();
+  }
+}
+
+
+
