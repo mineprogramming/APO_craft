@@ -1,68 +1,48 @@
-/*
-NIDE BUILD INFO:
-  dir: dev
-  target: main.js
-  files: 4
-*/
-
-
-
-// file: header.js
-
-/*
- APO craft
- by IchZerowan
- 
- You are not welcome here!
-*/
-
-IMPORT("dimensions");
-
-
-
-// file: blocks/terrain.js
-
-IDRegistry.genBlockID("aetherDirt");
-IDRegistry.genBlockID("aetherGrass");
-IDRegistry.genBlockID("aetherStone");
-
-
-
-
-
-// file: blocks/portal.js
-
-
-
-
-
-// file: dimension/APOCity.js
-
 var APOCity = new Dimension({
     name: "APOCity",
     
     generation: {
         layers: [
-            // major islands
             { 
-                range: [0, 80],
+                range: [2, 80],
                 noise: {
                     octaves: {
                         count: 4,
-                        weight: 0.7,
-                        scale: [1, 1, 1]
+                        weight: 0.5,
+                        scale: [1, 0.4, 1]
                     }
                 },
                 
-                gradient: [[-1, 0], [-0.8, 0], [-0.6, 0], [-0.4, 0], [-0.2, -0.1]],
+                gradient: [[-1, 1], [0.2, 0.5], [0.4, 0.3], [0.6, 0.7], [1, 0.2]],
                
                 terrain: {
-                    base: 1,
                     cover: {
                         height: 4,
-                        top: 2,
+                        top: {
+                            id: 1,
+                            data: 5
+                        },
                         block: 3
                     }
+                }
+            },
+            {
+                range: [1,2],
+                noise:{
+                    octaves:{
+                        count:8,
+                        weight: 0.4,
+                        scale: [.01,.02,.04,.08]
+                    }
+                },
+                gradient:[
+                    [0,1],
+                    [1,-1],
+                    [0.05,.4],
+                    [.2,-.8]
+                ],
+                terrain:{
+                    base:7
                 }
             },
         ],
@@ -73,17 +53,18 @@ var APOCity = new Dimension({
     },
     
     environment: {
-        
+        sky: [0.45, 0.2, 0.2],
+        fog: [0.55, 0.4, 0.4]
     },
     
     callbacks: {
         tick: function() {
-            APOCity.getWrappedObject().setSkyColor(Math.random(), Math.random(), Math.random());
+            
         }
     }
 });
 
-APOCity.debugTerrainSlice(128, 1, true);
+//APOCity.debugTerrainSlice(128, 1, true);
 
 
 var APOCityTransferSequence = new TransferSequence(APOCity);
@@ -128,9 +109,6 @@ Callback.addCallback("DestroyBlock", function(pos, block){
         DimensionHelper.eliminateIncorrectPlacedPortals(pos, BlockID.aetherPortal, [4]);
     }
 });
-
-
-
 
 
 

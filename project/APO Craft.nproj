@@ -1,7 +1,0 @@
-﻿nide-api:1
-project-name:APO Craft
-project-version:1.0.0
-project-type:MODPE
-settings-compress:false
-settings-mode:modpkg
-include-library:project/BufferedBuilding
