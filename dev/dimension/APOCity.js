@@ -18,11 +18,12 @@ var APOCity = new Dimension({
                 terrain: {
                     cover: {
                         height: 4,
-                        top: {
-                            id: 1,
-                            data: 5
-                        },
+                        top: {id: 1, data: 5},
                         block: 3
+                    },
+                    filling: {
+                        height: 73,
+                        block: {id: 159, meta: 9}
                     }
                 }
             },
@@ -62,8 +63,9 @@ var APOCity = new Dimension({
             
         },
         
-        generateChunk: function(chunkX, chunkZ) { 
-            
+        generateChunk: function(chunkX, chunkZ) {
+            var i = Math.floor(Math.random() * 46);
+            buildings[i].build(chunkX * 16, 74, chunkZ * 16);
         }
     }
 });
