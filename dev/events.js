@@ -4,8 +4,7 @@ Callback.addCallback("ItemUse", function (coords, item, block) {
     var z = coords.relative.z
     
     if(item.id == 280){
-        var building = new Building("1.json");
-        building.build(x, y, z);
+        buildings[2].build(x, y, z);
     }
 });
 

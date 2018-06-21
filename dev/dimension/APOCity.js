@@ -60,6 +60,10 @@ var APOCity = new Dimension({
     callbacks: {
         tick: function() {
             
+        },
+        
+        generateChunk: function(chunkX, chunkZ) { 
+            
         }
     }
 });
