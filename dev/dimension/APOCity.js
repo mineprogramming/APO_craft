@@ -21,7 +21,7 @@ function generate(x, z){
         Roads.generateSimpleRoad(x, GENERATION_HEIGHT, z, true);
     } else if(srandZ < ROADS_FREQUENCY){
         Roads.generateSimpleRoad(x, GENERATION_HEIGHT, z, false);
-    } 
+    }
     
     //GENERATE BUILDINGS
     else if(Math.random() < BUILDING_FREQUENCY){

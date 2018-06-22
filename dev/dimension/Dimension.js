@@ -51,8 +51,8 @@ var APOCity = new Dimension({
     },
     
     environment: {
-        sky: [0.3, 0.1, 0.1],
-        fog: [0.44, 0.3, 0.3]
+        sky: [0.2, 0.05, 0.05],
+        fog: [0.6, 0.5, 0.5]
     },
     
     callbacks: {
