@@ -57,7 +57,7 @@ var APOCity = new Dimension({
     
     callbacks: {
         tick: function() {
-            
+            cityTick();
         },
         
         generateChunk: function(chunkX, chunkZ) {

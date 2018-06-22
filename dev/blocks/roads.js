@@ -77,8 +77,6 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ) {
 };
 
 Roads.generateSimpleCrossroad = function(x, y, z){
-    Roads.generateSimpleRoad(x, y, z, true);
-    Roads.generateSimpleRoad(x, y, z, false);
     for(var i = 5; i < 10; i++){
         for(var j = 5; j < 10; j++)
         { 
