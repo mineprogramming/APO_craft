@@ -1,3 +1,6 @@
+const SKY_COLOR = [0.2, 0.05, 0.05];
+const FOG_COLOR = [0.6, 0.5, 0.5];
+
 var APOCity = new Dimension({
     name: "APOCity",
     
@@ -51,13 +54,13 @@ var APOCity = new Dimension({
     },
     
     environment: {
-        sky: [0.2, 0.05, 0.05],
-        fog: [0.6, 0.5, 0.5]
+        sky: SKY_COLOR,
+        fog: FOG_COLOR
     },
     
     callbacks: {
         tick: function() {
-            cityTick();
+            RandomEvents.tick();
         },
         
         generateChunk: function(chunkX, chunkZ) {

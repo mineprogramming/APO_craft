@@ -15,6 +15,8 @@ function Building(filename){
         blocks = json.blocks;
     }
     
+    this.debug = false;
+    
     this.build = function(x1, y1, z1){
         //Choose random block for generation
         var randoms = [];
@@ -26,6 +28,13 @@ function Building(filename){
                 "variation": arr[Math.round(Math.random()*(arr.length-1))]
             });
         }
+        
+        //Signs with numbers
+        if(this.debug){
+            //World.setBlock(x - 1, y + 1, z - 1, 68, 0);
+            //Game.message(JSON.stringify(World.getContainer(x - 1, y + 1, z - 1)))
+        }
+                    
         //generation itself
         for(var y = 0; y < blocks.length; y++){
             for(var x = 0; x < blocks[0].length; x++){

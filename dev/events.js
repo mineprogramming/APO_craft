@@ -4,10 +4,8 @@ Callback.addCallback("ItemUse", function (coords, item, block) {
     var z = coords.relative.z
     
     if(item.id == 280){
-        
-        Game.message(x + "; " + y + "; " + z);
         var i = Math.floor(Math.random() * 46);
-        Game.message(i + ": " + buildings[i]);
+        buildings[i].debug = true;
         buildings[i].build(x, y, z);
     }
 });

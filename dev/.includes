@@ -7,7 +7,13 @@ blocks/portal.js
 blocks/roads.js
 blocks/signs.js
 
-dimension/APOCity.js
-dimension/Building.js
-dimension/Dimension.js
+dimension/generation/Dimension.js
+dimension/generation/Building.js
+dimension/generation/APOGen.js
+
+dimension/events/RandomEvents.js
+dimension/events/events.js
+
+
+
 
