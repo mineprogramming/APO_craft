@@ -10,11 +10,11 @@ Callback.addCallback("ItemUse", function (coords, item, block) {
     
     if(item.id == 280){
         //var i = Math.floor(Math.random() * 46);
-        //buildings[i].debug = true;
-        //buildings[i].build(x, y, z);
-        World.setBlock(x, y, z, 54, 0);
-        var container = World.getContainer(x, y, z);
-        Game.message(container.getSlot(0));
+        buildings[14].debug = true;
+        buildings[14].build(x, y, z);
+        //World.setBlock(x, y, z, 54, 0);
+        //var container = World.getContainer(x, y, z);
+        //Game.message(container.getSlot(0));
     }
 });
 

@@ -7,12 +7,14 @@ function Building(filename){
     var path = __dir__ + "buildings/" + filename;
     
     var blocks;
+    var loot;
     
     var json = JSON.parse(readFile(path));
     if(Array.isArray(json)){
         blocks = json;
     } else {
         blocks = json.blocks;
+        loot = json.loot;
     }
     
     this.debug = false;
@@ -50,8 +52,15 @@ function Building(filename){
                         }
                     }
                     World.setBlock(x + x1, y + y1, z + z1, block.id, block.meta);
-                    if(block.id == 54){
+                    if(block.id == 54 && loot){
                         var container = World.getContainer(x + x1, y + y1, z + z1);
+                        for(var key in loot){
+                            let item = loot[key];
+                            if(Math.random() < item.rarity){
+                                var count = Math.floor(Math.random() * (item.count.max - item.count.min + 1) + item.count.min);
+                                container.setSlot(Math.floor(Math.random() * 27), item.id, count, item.meta);
+                            }
+                        }
                     }
                 }
             }
