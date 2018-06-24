@@ -9,7 +9,7 @@ for(var i = 0; i < 11; i++){
     });
 }
 IDRegistry.genBlockID("asphalt");
-Block.createBlock("asphalt", data);
+Block.createBlock("asphalt", data, "opaque");
 
 
 var Roads = {};

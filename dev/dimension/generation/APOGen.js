@@ -38,7 +38,7 @@ function generate(x, z){
     }
     
     //GRAVEL DUMPS
-    if(Math.random() < GRAVEl_FREQENCY){
+    if(Math.random() < GRAVEL_FREQUENCY){
         var coords = GenerationUtils.findSurface(x + Math.random() * 16, GENERATION_HEIGHT, z + Math.random() * 16);
         coords.y++;
         

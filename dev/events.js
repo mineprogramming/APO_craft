@@ -1,15 +1,22 @@
 Callback.addCallback("ItemUse", function (coords, item, block) {
-    var x = coords.relative.x
-    var y = coords.relative.y
-    var z = coords.relative.z
+    var x = coords.relative.x;
+    var y = coords.relative.y;
+    var z = coords.relative.z;
+    
+    //var methods = container.class.getDeclaredMethods();
+    //for(var i = 0; i < methods.length; i++){
+    //    Game.message(methods[i]);
+    //}
     
     if(item.id == 280){
-        var i = Math.floor(Math.random() * 46);
-        buildings[i].debug = true;
-        buildings[i].build(x, y, z);
+        //var i = Math.floor(Math.random() * 46);
+        //buildings[i].debug = true;
+        //buildings[i].build(x, y, z);
+        World.setBlock(x, y, z, 54, 0);
+        var container = World.getContainer(x, y, z);
+        Game.message(container.getSlot(0));
     }
 });
-
 
 
 

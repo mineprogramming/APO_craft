@@ -50,6 +50,9 @@ function Building(filename){
                         }
                     }
                     World.setBlock(x + x1, y + y1, z + z1, block.id, block.meta);
+                    if(block.id == 54){
+                        var container = World.getContainer(x + x1, y + y1, z + z1);
+                    }
                 }
             }
         }

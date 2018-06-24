@@ -28,7 +28,7 @@ RandomEvents.registerEvent("zombies", 0.0005, function(){
         var coords = RandomEvents.randomCoordsNearPlayer();
         coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
         var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
-        Entity.spawn(coords.x, coords.y, coords.z, type);
+        Entity.spawn(coords.x, coords.y + 1, coords.z, type);
     }
 });
 
