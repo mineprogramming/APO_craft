@@ -24,7 +24,7 @@ var buildings = [];
 
 
 Callback.addCallback("PostLoaded", function(){
-    for(var i = 1; i <= 46; i++){
+    for(var i = 0; i < 46; i++){
         buildings.push(new Building(i + ".json"));
     }
 });
