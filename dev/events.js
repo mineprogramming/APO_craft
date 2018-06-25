@@ -1,14 +1,15 @@
+IDRegistry.genItemID("Place");
+Item.createItem("Place", "Structure Placer", {name: "place", meta: 0},{isTech:false,stack: 1});
+
 Callback.addCallback("ItemUse", function (coords, item, block) {
     var x = coords.relative.x;
     var y = coords.relative.y;
     var z = coords.relative.z;
-    
     //var methods = container.class.getDeclaredMethods();
     //for(var i = 0; i < methods.length; i++){
     //    Game.message(methods[i]);
     //}
-    
-    if(item.id == 280){
+    if(item.id == ItemID.Place){
         //var i = Math.floor(Math.random() * 46);
         buildings[14].debug = true;
         buildings[14].build(x, y, z);
@@ -18,13 +19,9 @@ Callback.addCallback("ItemUse", function (coords, item, block) {
     }
 });
 
-
-
 var buildings = [];
-
-
 Callback.addCallback("PostLoaded", function(){
     for(var i = 0; i < 46; i++){
-        buildings.push(new Building(i + ".json"));
+       buildings.push(new Building(i + ".json"));
     }
 });
