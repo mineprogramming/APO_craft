@@ -1,4 +1,6 @@
 const ROAD_CLEANING = 0;
+const MAX_SIGNS_COUNT = 3;
+const SIGNS_FREQUENCY = 0.2;
 
 var data = [];
 for(var i = 0; i < 11; i++){
@@ -15,6 +17,7 @@ Block.createBlock("asphalt", data, "opaque");
 var Roads = {};
 
 Roads.generateSimpleRoad = function(x, y, z, directionZ) {
+    Roads.generateSigns(x, y, z);
     if (directionZ) {
         x += 5;
         for (var i = 0; i < 16; i++) {
@@ -46,7 +49,6 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ) {
     } else {
         z += 5;
         for (var i = 0; i < 16; i++) {
-
             World.setBlock(x + i, y, z + 0, BlockID.asphalt, 5);
             World.setBlock(x + i, y, z + 1, BlockID.asphalt, 0);
             World.setBlock(x + i, y, z + 2, BlockID.asphalt, 2);
@@ -77,6 +79,7 @@ Roads.generateSimpleRoad = function(x, y, z, directionZ) {
 };
 
 Roads.generateSimpleCrossroad = function(x, y, z){
+    Roads.generateSigns(x, y, z);
     for(var i = 5; i < 10; i++){
         for(var j = 5; j < 10; j++)
         { 
@@ -84,5 +87,40 @@ Roads.generateSimpleCrossroad = function(x, y, z){
         }
     }
 };
+
+Roads.generateSigns = function(x, y, z, direction){
+    //Directions 0: x
+    //           1: z
+    //           2: crossroad
+    for(var i = 0; i < MAX_SIGNS_COUNT; i++){
+        if(Math.random() < SIGNS_FREQUENCY){
+            var sx, sz;
+            if(Math.random() < 0.25){
+                sx = randomInt(x + 3, x + 5);
+                sz = randomInt(z + 3, z + 5);
+            } else if (Math.random() < 0.5){
+                sx = randomInt(x + 11, x + 13);
+                sz = randomInt(z + 11, z + 13);
+            } else if(Math.random() < 0.75){
+                sx = randomInt(x + 3, x + 5);
+                sz = randomInt(z + 11, z + 13);
+            } else { 
+                sx = randomInt(x + 11, x + 13);
+                sz = randomInt(z + 3, z + 5);
+            }
+            switch(direction){
+            case 1: 
+                World.setBlock(sx, y + 3, sz, BlockID.sign, randomInt(0, SIGNS_COUNT));
+                break;
+            case 0:
+                World.setBlock(sx, y + 3, sz, BlockID.sign, randomInt(SIGNS_COUNT, SIGNS_COUNT * 2));
+                break;
+            case 2:
+                World.setBlock(sx, y + 3, sz, BlockID.sign, randomInt(0, SIGNS_COUNT * 2));
+            }
+            
+        }
+    }
+}
 
 
