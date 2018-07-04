@@ -6,6 +6,7 @@
 */
 
 IMPORT("dimensions");
+IMPORT("ScalesRPG");
 
 
 function randomInt(min, max){

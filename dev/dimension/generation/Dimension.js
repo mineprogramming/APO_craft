@@ -1,5 +1,5 @@
-const SKY_COLOR = [0.2, 0.05, 0.05];
-const FOG_COLOR = [0.6, 0.5, 0.5];
+const SKY_COLOR = [0.2, 0.13, 0.2];
+const FOG_COLOR = [0.2, 0.16, 0.2];
 
 var APOCity = new Dimension({
     name: "APOCity",

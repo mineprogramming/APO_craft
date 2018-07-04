@@ -16,3 +16,8 @@ dimension/events/events.js
 
 
 
+scales/thirst.js
+scales/chemical.js
+scales/radiation.js
+scales/biological.js
+items/detectors.js
