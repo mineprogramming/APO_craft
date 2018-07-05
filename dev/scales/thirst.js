@@ -24,23 +24,6 @@ Callback.addCallback("tick", function(){
     }
 });
 
-Callback.addCallback("LevelLeft", function () {
-    loaded = false;
-    ScalesRPG.hideAll();
-});
-
-Callback.addCallback("ItemUse", function(coords, item, block){
-    if(item.id == 280){
-        for(var i in new UI.StandartWindow()){
-            Game.message(i);
-        }
-    }
-});
-
-Callback.addCallback("FoodEaten", function (heal, satRatio) {
-    Game.message("Eaten");
-});
-
 Callback.addCallback("EntityDeath", function(entity){
     if(Player.isPlayer(entity)){
         ScalesRPG.resetAll();
@@ -50,10 +33,7 @@ Callback.addCallback("EntityDeath", function(entity){
 Callback.addCallback("NativeGuiChanged", function (screenName) {
     if(screenName == "hud_screen" || 
       screenName == "in_game_play_screen"){
-        ScalesRPG.showAll();
-    }
-    else{
-        ScalesRPG.hideAll();
+        thirstScale.show();
     }
 });
 

@@ -1,4 +1,4 @@
-var radiationScale = new ScalesRPG.Scale({
+var biologicalScale = new ScalesRPG.Scale({
     textures: {
         full: "scale_biological_0", 
         half: "scale_biological_1", 
