@@ -10,13 +10,6 @@ Callback.addCallback("ItemUse", function (coords, item, block) {
         buildings[14].debug = true;
         buildings[14].build(x, y, z);
     }
-    
-    if(item.id == 280){
-        for(var i = 0; i < 9; i++){
-            var slot = Player.getInventorySlot(i);
-            Game.message(i + ": " + slot.id + "-" + slot.data);
-        }
-    }
 });
 
 var buildings = [];

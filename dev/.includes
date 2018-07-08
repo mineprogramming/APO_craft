@@ -14,10 +14,12 @@ dimension/generation/APOGen.js
 dimension/events/RandomEvents.js
 dimension/events/events.js
 
-
-
 scales/thirst.js
 scales/chemical.js
 scales/radiation.js
 scales/biological.js
+
+items/RecipiesManager.js
+
+items/components.js
 items/detectors.js
