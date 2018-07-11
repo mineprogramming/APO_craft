@@ -18,3 +18,7 @@ Callback.addCallback("PostLoaded", function(){
        buildings.push(new Building(i + ".json"));
     }
 });
+
+Callback.addCallback("LevelLoaded", function(){
+    Game.message("Raspberry Pi is a trademark of the Raspberry Pi Foundation");
+});

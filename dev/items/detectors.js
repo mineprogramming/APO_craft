@@ -17,14 +17,17 @@ IDRegistry.genItemID("radiationLD");
 Item.createItem("radiationLD", "Radiation Level Detector", {name: "radiation_ld", meta: 0}, {});
 
 RecipiesManager.addShaped({id: ItemID.radiationLD, count: 1, data: 0}, [
-     "bd ",
-     "ea ",
-     " c "
+     "bdf",
+     "eag",
+     " ch"
 ], ['a', ItemID.casingPolypropylene, 0,
     'b', ItemID.sensorRadiation, 0,
     'c', ItemID.attiny45, 0,
     'd', ItemID.displayLed, 0,
-    'e', ItemID.buttonSet, 0]);
+    'e', ItemID.buttonSet, 0,
+    'f', ItemID.ledRed, 0,
+    'g', ItemID.ledYellow, 0, 
+    'h', ItemID.ledGreen, 0]);
 
 
 IDRegistry.genItemID("biologicalLD");
@@ -32,28 +35,32 @@ Item.createItem("biologicalLD", "Biological Contamination Level Detector", {name
 
 RecipiesManager.addShaped({id: ItemID.biologicalLD, count: 1, data: 0}, [
      " db",
-     "ea ",
+     "eah",
      " c "
 ], ['a', ItemID.casingPolypropylene, 0,
     'b', ItemID.sensorViruses, 0,
     'c', ItemID.attiny45, 0,
     'd', ItemID.displayLed, 0,
-    'e', ItemID.buttonSet, 0]);
+    'e', ItemID.buttonSet, 0,
+    'h', ItemID.ledGreen, 0]);
 
 
 IDRegistry.genItemID("multiPurposeLD");
 Item.createItem("multiPurposeLD", "Multi-Purpose Level Detector", {name: "multi_purpose_ld", meta: 0}, {});
 
 RecipiesManager.addShaped({id: ItemID.multiPurposeLD, count: 1, data: 0}, [
-     " e ",
-     "fa ",
+     "geh",
+     "fai",
      "bcd"
 ], ['a', ItemID.casingPolypropylene, 0,
     'b', ItemID.chemicalLD, 0,
     'c', ItemID.radiationLD, 0,
     'd', ItemID.biologicalLD, 0,
     'e', ItemID.displayLed, 0,
-    'f', ItemID.arduinoUno, 0]);
+    'f', ItemID.arduinoUno, 0,
+    'g', ItemID.ledRed, 0,
+    'h', ItemID.ledYellow, 0, 
+    'i', ItemID.ledGreen, 0]);
 
 
 var LD_tick = 5;
@@ -68,10 +75,10 @@ Callback.addCallback("tick", function(){
         for(var i = 0; i < 9; i++){
             var slot = Player.getInventorySlot(i);
             switch(slot.id){
-                case ItemID.ChemicalLD: chemical = true; break;
-                case ItemID.RadiationLD: radiation = true; break;
-                case ItemID.BiologicalLD: biological = true; break;
-                case ItemID.MultiPurposeLD:
+                case ItemID.chemicalLD: chemical = true; break;
+                case ItemID.radiationLD: radiation = true; break;
+                case ItemID.biologicalLD: biological = true; break;
+                case ItemID.multiPurposeLD:
                     chemical = true;
                     radiation = true;
                     biological = true;
