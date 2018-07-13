@@ -10,6 +10,8 @@ blocks/signs.js
 dimension/generation/Dimension.js
 dimension/generation/Building.js
 dimension/generation/APOGen.js
+dimension/generation/Roads.js
+dimension/generation/Underground.js
 
 dimension/events/RandomEvents.js
 dimension/events/events.js

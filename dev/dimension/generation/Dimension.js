@@ -64,7 +64,7 @@ var APOCity = new Dimension({
         },
         
         generateChunk: function(chunkX, chunkZ) {
-            generate(chunkX * 16, chunkZ * 16);
+            APOGen.generate(chunkX * 16, chunkZ * 16);
         }
     }
 });
