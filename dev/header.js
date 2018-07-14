@@ -8,6 +8,7 @@
 IMPORT("dimensions");
 IMPORT("ScalesRPG");
 IMPORT("NativeAPI");
+IMPORT("SettingsManager");
 
 
 const DIRECTION_X = 0;
@@ -23,5 +24,4 @@ function srand(seed){
     seed = Math.sin(seed) * 10000;
     return seed - Math.floor(seed);
 }
-
 
