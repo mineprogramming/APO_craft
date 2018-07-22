@@ -81,10 +81,15 @@ Underground.generateStation = function(x, y, z, direction){
                 setRandomWall(x + dx, y + 7, z + dz);
             }
             for(var dz = 3; dz < 12; dz++){
-                for(var dy = 3; dy < 7; dy++){
+                for(var dy = 3; dy < 6; dy++){
                     World.setBlock(x + dx, y + dy, z + dz, 0, 0);
                 }
             }
+            
+            World.setBlock(x + dx, y + 6, z + 6, 0, 0);
+            World.setBlock(x + dx, y + 6, z + 7, 0, 0);
+            World.setBlock(x + dx, y + 6, z + 8, 0, 0);
+            
             World.setBlock(x + dx, y + 6, z + 5, 109, 7);
             World.setBlock(x + dx, y + 6, z + 9, 109, 6);
             
@@ -103,10 +108,15 @@ Underground.generateStation = function(x, y, z, direction){
                 setRandomWall(x + dx, y + 7, z + dz);
             }
             for(var dx = 3; dx < 12; dx++){
-                for(var dy = 3; dy < 7; dy++){
+                for(var dy = 3; dy < 6; dy++){
                     World.setBlock(x + dx, y + dy, z + dz, 0, 0);
                 }
             }
+            
+            World.setBlock(x + 6, y + 6, z + dz, 0, 0);
+            World.setBlock(x + 7, y + 6, z + dz, 0, 0);
+            World.setBlock(x + 8, y + 6, z + dz, 0, 0);
+            
             World.setBlock(x + 5, y + 6, z + dz, 109, 5);
             World.setBlock(x + 9, y + 6, z + dz, 109, 4);
             

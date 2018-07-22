@@ -3,8 +3,8 @@ var rnd = new Random();
 
 //GENERATION
 const GENERATION_HEIGHT = 78;
-const ROADS_FREQUENCY = 0.2;
-const UNDERGROUNG_FREQUENCY = 0.2;
+const ROADS_FREQUENCY = 0.15;
+const UNDERGROUNG_FREQUENCY = 0.05;
 const UNDERGROUND_MAX_HEIGHT = 65;
 const UNDERGROUND_X_HEIGHT = 55; //Default: 50
 const BUILDING_FREQUENCY = 0.7;
@@ -20,34 +20,38 @@ var APOGen = {
 
 APOGen.generate = function(x, z){
     //Generate underground
+    var generated = false;
     
-    if(srand(x) < UNDERGROUNG_FREQUENCY && srand(z) < UNDERGROUNG_FREQUENCY){
+    if(srand(x) > 1 - UNDERGROUNG_FREQUENCY && srand(z) > 1 - UNDERGROUNG_FREQUENCY){
         Underground.generateStation(x, UNDERGROUND_X_HEIGHT, z, DIRECTION_X);
         Underground.generateStation(x, UNDERGROUND_X_HEIGHT - 10, z, DIRECTION_Z);
     }
     
-    else if(srand(z) < UNDERGROUNG_FREQUENCY){
+    else if(srand(z) > 1 - UNDERGROUNG_FREQUENCY){
         Underground.generateTunnel(x, UNDERGROUND_X_HEIGHT, z, DIRECTION_X);
-        if(srand(x - 16) < UNDERGROUNG_FREQUENCY){
+        if(srand(x - 16) > 1 - UNDERGROUNG_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 2, z, DIRECTION_X);
-        } else if(srand(x - 32) < UNDERGROUNG_FREQUENCY){
+        } else if(srand(x - 32) > 1 - UNDERGROUNG_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 18, z, DIRECTION_X);
+            generated = true;
         }
     }
     
-    else if(srand(x) < UNDERGROUNG_FREQUENCY){
+    else if(srand(x) > 1 - UNDERGROUNG_FREQUENCY){
         Underground.generateTunnel(x, UNDERGROUND_X_HEIGHT - 10, z, DIRECTION_Z);
-        if(srand(z - 16) < UNDERGROUNG_FREQUENCY){
+        if(srand(z - 16) > 1 - UNDERGROUNG_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT - 8, z, DIRECTION_Z);
-        } else if(srand(z - 32) < UNDERGROUNG_FREQUENCY){
+        } else if(srand(z - 32) > 1 - UNDERGROUNG_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 8, z, DIRECTION_Z);
+             generated = true;
         }
     }
-    
-    if(APOGen.lateGenEnabled){
-        APOGen.markChunk(x, z);
-    } else {
-        APOGen.lateGen(x, z);
+    if(!generated){
+        if(APOGen.lateGenEnabled){
+            APOGen.markChunk(x, z);
+        } else {
+            APOGen.lateGen(x, z);
+        }
     }
 }
 
