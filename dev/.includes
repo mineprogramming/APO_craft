@@ -2,10 +2,9 @@ header.js
 
 events.js
 
-blocks/terrain.js
-blocks/portal.js
 blocks/roads.js
 blocks/signs.js
+blocks/bench.js
 
 dimension/generation/Dimension.js
 dimension/generation/Building.js

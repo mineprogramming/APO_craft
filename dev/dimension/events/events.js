@@ -2,10 +2,21 @@ const EVENT_FREQUENCY_EXPLOSION_FIRE = 0.1;
 const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
 
-RandomEvents.registerEvent("explosion", 0.005, function(){
-    let coords = RandomEvents.randomCoordsNearPlayer();
-    World.explode(coords.x, coords.y, coords.z, Math.random() * 5, Math.random() < EVENT_FREQUENCY_EXPLOSION_FIRE);
-});
+//RandomEvents.registerEvent("explosion", 0.005, function(){
+//    let coords = RandomEvents.randomCoordsNearPlayer();
+//    World.explode(coords.x, coords.y, coords.z, Math.random() * 5, Math.random() < EVENT_FREQUENCY_EXPLOSION_FIRE);
+//});
+//
+//
+//RandomEvents.registerEvent("zombies", 0.0005, function(){
+//    let count = Math.random() * 5;
+//    for(var i = 0; i < count; i++){
+//        var coords = RandomEvents.randomCoordsNearPlayer();
+//        coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
+//        var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
+//        Entity.spawn(coords.x, coords.y + 1, coords.z, type);
+//    }
+//});
 
 
 RandomEvents.registerEvent("weather", 0.005, function(){
@@ -21,16 +32,6 @@ RandomEvents.registerEvent("weather", 0.005, function(){
     }
 });
 
-
-RandomEvents.registerEvent("zombies", 0.0005, function(){
-    let count = Math.random() * 5;
-    for(var i = 0; i < count; i++){
-        var coords = RandomEvents.randomCoordsNearPlayer();
-        coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
-        var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
-        Entity.spawn(coords.x, coords.y + 1, coords.z, type);
-    }
-});
 
 RandomEvents.registerTimedEvent({
     name: "sky_color",
