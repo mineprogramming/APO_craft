@@ -5,8 +5,8 @@ var rnd = new Random();
 const GENERATION_HEIGHT = 78;
 const ROADS_FREQUENCY = 0.2;
 const UNDERGROUNG_FREQUENCY = 0.2;
-const UNDERGROUND_MAX_HEIGHT = 60;
-const UNDERGROUND_X_HEIGHT = 100; //Default: 50
+const UNDERGROUND_MAX_HEIGHT = 65;
+const UNDERGROUND_X_HEIGHT = 55; //Default: 50
 const BUILDING_FREQUENCY = 0.7;
 const BUILDINGS_COUNT = 46;
 const EXPLOSION_FREQENCY = 0.1;
@@ -37,6 +37,11 @@ APOGen.generate = function(x, z){
     
     else if(srand(x) < UNDERGROUNG_FREQUENCY){
         Underground.generateTunnel(x, UNDERGROUND_X_HEIGHT - 10, z, DIRECTION_Z);
+        if(srand(z - 16) < UNDERGROUNG_FREQUENCY){
+            Underground.exit(x, UNDERGROUND_X_HEIGHT - 8, z, DIRECTION_Z);
+        } else if(srand(z - 32) < UNDERGROUNG_FREQUENCY){
+            Underground.exit(x, UNDERGROUND_X_HEIGHT + 8, z, DIRECTION_Z);
+        }
     }
     
     if(APOGen.lateGenEnabled){

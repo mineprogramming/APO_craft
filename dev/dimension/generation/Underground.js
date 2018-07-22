@@ -81,7 +81,7 @@ Underground.generateStation = function(x, y, z, direction){
                 setRandomWall(x + dx, y + 7, z + dz);
             }
             for(var dz = 3; dz < 12; dz++){
-                for(var dy = 3; dy < 6; dy++){
+                for(var dy = 3; dy < 7; dy++){
                     World.setBlock(x + dx, y + dy, z + dz, 0, 0);
                 }
             }
@@ -103,7 +103,7 @@ Underground.generateStation = function(x, y, z, direction){
                 setRandomWall(x + dx, y + 7, z + dz);
             }
             for(var dx = 3; dx < 12; dx++){
-                for(var dy = 3; dy < 6; dy++){
+                for(var dy = 3; dy < 7; dy++){
                     World.setBlock(x + dx, y + dy, z + dz, 0, 0);
                 }
             }
@@ -125,12 +125,17 @@ Underground.generateStation = function(x, y, z, direction){
 Underground.exit = function(x, y, z, direction){
     if(direction == DIRECTION_X){
         for(var dx = 0; dx < 16; dx++){
+            if(GENERATION_HEIGHT < y + dx) return;
+            
             for(var dz = 5; dz < 10; dz++){
                 setRandomWall(x + dx, y + dx, z + dz);
                 setRandomWall(x + dx, y + dx + 6, z + dz);
             }
             for(var dy = 1; dy < 6; dy++){
                 setRandomWall(x + dx, y + dx + dy, z + 4);
+                for(var dz = 5; dz < 10; dz++){
+                    World.setBlock(x + dx, y + dx + dy, z + dz, 0, 0);
+                }
                 setRandomWall(x + dx, y + dx + dy, z + 10);
             }
             World.setBlock(x + dx, y + dx + 5, z + 5, 109, 7);
@@ -138,6 +143,26 @@ Underground.exit = function(x, y, z, direction){
             
             setRandomWall(x + dx, y + dx + 1, z + 7);
             World.setBlock(x + dx, y + dx + 2, z + 7, 109, 0);
+        }
+    }
+    else { //DIRECTION_Z
+        for(var dz = 0; dz < 16; dz++){
+            for(var dx = 5; dx < 10; dx++){
+                setRandomWall(x + dx, y + dz, z + dz);
+                setRandomWall(x + dx, y + dz + 6, z + dz);
+            }
+            for(var dy = 1; dy < 6; dy++){
+                setRandomWall(x + 4, y + dz + dy, z + dz);
+                for(var dx = 5; dx < 10; dx++){
+                    World.setBlock(x + dx, y + dz + dy, z + dz, 0, 0);
+                }
+                setRandomWall(x + 10, y + dz + dy, z + dz);
+            }
+            World.setBlock(x + 5, y + dz + 5, z + dz, 109, 5);
+            World.setBlock(x + 9, y + dz + 5, z + dz, 109, 4);
+            
+            setRandomWall(x + 7, y + dz + 1, z + dz);
+            World.setBlock(x + 7, y + dz + 2, z + dz, 109, 2);
         }
     }
 }
