@@ -11,9 +11,19 @@ var thirstScale = new ScalesRPG.Scale({
     }
 });
 
+
 var ticks = THIRST_TICKS;
 Callback.addCallback("tick", function(){
-    ticks--;
+    let state = EntityState.getPlayerState();
+    if(state.checkFlags(EntityState.RUNNING) 
+        || state.checkFlags(EntityState.JUMPING)
+        || state.checkFlags(EntityState.SWIMMING)
+        || state.checkFlags(EntityState.FLOATING))
+        ticks -= 2
+    else if(state.checkFlags(EntityState.WALKING))
+        ticks -= 1.5;
+    else 
+        ticks--;
     if(ticks <= 0){
         ticks = THIRST_TICKS;
         if(loaded){
@@ -21,7 +31,6 @@ Callback.addCallback("tick", function(){
                 Entity.setHealth(Player.get(), Entity.getHealth(Player.get()) - 1);
             }
             else{
-                
                 thirstScale.decrease();
             }
         }

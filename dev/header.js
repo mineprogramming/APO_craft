@@ -9,6 +9,7 @@ IMPORT("dimensions");
 IMPORT("ScalesRPG");
 IMPORT("NativeAPI");
 IMPORT("SettingsManager");
+IMPORT("EntityState");
 
 
 const DIRECTION_X = 0;
