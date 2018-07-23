@@ -18,6 +18,7 @@ Callback.addCallback("tick", function(){
                 Entity.setHealth(Player.get(), Entity.getHealth(Player.get()) - 1);
             }
             else{
+                
                 thirstScale.decrease();
             }
         }
@@ -34,6 +35,7 @@ Callback.addCallback("NativeGuiChanged", function (screenName) {
     if(screenName == "hud_screen" || 
       screenName == "in_game_play_screen"){
         thirstScale.show();
+        loaded = true;
     }
 });
 
