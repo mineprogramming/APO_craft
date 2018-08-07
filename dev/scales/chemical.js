@@ -4,5 +4,6 @@ var chemicalScale = new ScalesRPG.Scale({
         half: BitmapFactory.decodeFile(__dir__ + "gui/scale_chemical_1.png"), 
         empty: BitmapFactory.decodeFile(__dir__ + "gui/scale_chemical_2.png")
     },
-    value: 7 
+    value: 7,
+    defaultValue: 0
 });

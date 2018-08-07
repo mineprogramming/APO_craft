@@ -4,5 +4,6 @@ var biologicalScale = new ScalesRPG.Scale({
         half: BitmapFactory.decodeFile(__dir__ + "gui/scale_biological_1.png"), 
         empty: BitmapFactory.decodeFile(__dir__ + "gui/scale_biological_2.png")
     },
-    value: 3
+    value: 3,
+    defaultValue: 0
 });
