@@ -6,6 +6,8 @@ blocks/roads.js
 blocks/signs.js
 blocks/bench.js
 
+environment/fog.js
+
 dimension/generation/Dimension.js
 dimension/generation/Building.js
 dimension/generation/APOGen.js
@@ -23,3 +25,4 @@ items/RecipiesManager.js
 
 items/components.js
 items/detectors.js
+

@@ -48,3 +48,18 @@ RandomEvents.registerTimedEvent({
         APOCity.getWrappedObject().setFogColor(FOG_COLOR[0], FOG_COLOR[1], FOG_COLOR[2]);
     }
 });
+
+
+RandomEvents.registerTimedEvent({
+    name: "toxic_fog",
+    frequency: 0.01,
+    time: 100,
+    
+    enable: function(){
+        fog = true;
+    },
+    
+    disable: function(){
+        fog = false;
+    }
+});
