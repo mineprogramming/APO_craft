@@ -11,6 +11,10 @@ IMPORT("NativeAPI");
 IMPORT("SettingsManager");
 IMPORT("EntityState");
 
+IMPORT("ThirstLib");
+
+var BitmapFactory = android.graphics.BitmapFactory;
+
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
