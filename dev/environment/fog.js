@@ -1,7 +1,8 @@
 var fogParticle = Particles.registerParticleType({
     texture: "fog",
-    size: [0.05, 0.05],
-    lifetime: [20, 20]
+    size: [10, 20],
+    lifetime: [20, 20],
+    render: 2
 });
 
 var fog = false;
@@ -19,6 +20,6 @@ function addFog(coords, radius, count){
 Callback.addCallback("tick", function(){
     if(fog){
         let coords = Entity.getPosition(Player.get());
-        addFog(coords, 1, 20);
+        addFog(coords, 3, 7);
     }
 });
