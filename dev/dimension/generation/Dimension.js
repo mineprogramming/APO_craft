@@ -86,31 +86,6 @@ APOCityTransferSequence.setLoadingScreenParams({
     texture: "default_dimension_loading_screen"
 });
 
-PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "u-plane", frameId: 4}, true);
+PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
 APOCityTransferSequence.setPortalTiles(BlockID.aetherPortal);
 
-
-
-
-
-var shape = new PortalShape();
-shape.setPortalId(BlockID.aetherPortal);
-shape.setFrameIds(4);
-shape.setMinSize(2, 3);
-
-APOCityTransferSequence.setPortalBuilder(shape.getBuilder());
-
-//Callback.addCallback("ItemUse", function(coords, item) {
-//    if (item.id == 280) {
-//        var rect = shape.findPortal(coords.relative.x, coords.relative.y, coords.relative.z);
-//        if (rect) {
-//            shape.buildPortal(rect, false);
-//        }
-//    }
-//});
-
-//Callback.addCallback("DestroyBlock", function(pos, block){
-//    if (block.id == 4 || block.id == BlockID.aetherPortal) {
-//        DimensionHelper.eliminateIncorrectPlacedPortals(pos, BlockID.aetherPortal, [4]);
-//    }
-//});

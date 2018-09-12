@@ -52,8 +52,8 @@ RandomEvents.registerTimedEvent({
 
 RandomEvents.registerTimedEvent({
     name: "toxic_fog",
-    frequency: 0.01,
-    time: 100,
+    frequency: 0.0001,
+    time: 1000,
     
     enable: function(){
         fog = true;
