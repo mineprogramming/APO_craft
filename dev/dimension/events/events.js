@@ -71,14 +71,11 @@ RandomEvents.registerTimedEvent({
     time: 100,
     
     enable: function(){
-        Game.message("spawn");
         spawnPlanes();
     },
     
     disable: function(){
         destroyPlanes();
-        
-        Game.message("remove");
     }
 });
 
