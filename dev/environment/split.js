@@ -57,13 +57,3 @@ Callback.addCallback("tick", function(){
         }
     }
 });
-
-
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        Split.summon(x, y, z);
-    }
-});

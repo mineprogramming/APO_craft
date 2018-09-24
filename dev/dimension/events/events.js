@@ -63,3 +63,22 @@ RandomEvents.registerTimedEvent({
         fog = false;
     }
 });
+
+
+RandomEvents.registerTimedEvent({
+    name: "planes_bombing",
+    frequency: 0.01,
+    time: 100,
+    
+    enable: function(){
+        Game.message("spawn");
+        spawnPlanes();
+    },
+    
+    disable: function(){
+        destroyPlanes();
+        
+        Game.message("remove");
+    }
+});
+

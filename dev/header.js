@@ -10,8 +10,8 @@ IMPORT("ScalesRPG");
 IMPORT("NativeAPI");
 IMPORT("SettingsManager");
 IMPORT("EntityState");
-
 IMPORT("ThirstLib");
+IMPORT("DevAPI");
 
 var BitmapFactory = android.graphics.BitmapFactory;
 

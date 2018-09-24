@@ -1,4 +1,5 @@
 header.js
+imports.js
 
 events.js
 
@@ -8,6 +9,7 @@ blocks/bench.js
 
 environment/fog.js
 environment/split.js
+environment/plane.js
 
 dimension/generation/Dimension.js
 dimension/generation/Building.js

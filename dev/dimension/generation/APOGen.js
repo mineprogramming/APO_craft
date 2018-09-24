@@ -112,16 +112,6 @@ APOGen.isChankMarked = function(x, z){
 }
 
 
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        APOGen.lateGenEnabled = !APOGen.lateGenEnabled;
-    }
-});
-
-
 var lategenTick = 5;
 Callback.addCallback("tick", function(){
     if(!APOCity.isInDimension()) return;
