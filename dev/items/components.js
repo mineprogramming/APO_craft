@@ -14,15 +14,6 @@ RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
 ], ['a', 143, 0, 'b', 77, 0]);
 
 
-//LEDs
-IDRegistry.genItemID("ledRed");
-IDRegistry.genItemID("ledYellow");
-IDRegistry.genItemID("ledGreen");
-Item.createItem("ledRed", "Red Light-Emitting Diode", {name: "led", meta: 0}, {});
-Item.createItem("ledYellow", "Yellow Light-Emitting Diode", {name: "led", meta: 1}, {});
-Item.createItem("ledGreen", "Green Light-Emitting Diode", {name: "led", meta: 2}, {});
-
-
 //Glass Thread
 IDRegistry.genItemID("threadGlass");
 Item.createItem("threadGlass", "Glass Thread", {name: "thread_glass", meta: 0}, {});
@@ -77,6 +68,31 @@ RecipiesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
 ], ['a', ItemID.platePolypropylene, 0]);
 
 
+//Gallium Andesite
+IDRegistry.genItemID("galliumArsenite");
+Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
+
+
+IDRegistry.genItemID("cableCopper0");
+Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
+
+
+//LEDs
+IDRegistry.genItemID("ledRed");
+IDRegistry.genItemID("ledYellow");
+IDRegistry.genItemID("ledGreen");
+Item.createItem("ledRed", "Red Light-Emitting Diode", {name: "led", meta: 0}, {});
+Item.createItem("ledYellow", "Yellow Light-Emitting Diode", {name: "led", meta: 1}, {});
+Item.createItem("ledGreen", "Green Light-Emitting Diode", {name: "led", meta: 2}, {});
+
+
+RecipiesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
+     " a ",
+     "cbc",
+     "ede"
+], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+
+
 //Chips
 IDRegistry.genItemID("chipArduino");
 IDRegistry.genItemID("chipRaspberry");
@@ -114,7 +130,7 @@ Item.createItem("sensorViruses", "Viruses Sensor", {name: "sensor_viruses", meta
 
 //Nitrates Sensor
 IDRegistry.genItemID("sensorNitrates");
-Item.createItem("sensorNitrates", "Viruses Sensor", {name: "sensor_nitrates", meta: 0}, {});
+Item.createItem("sensorNitrates", "Nitrates Sensor", {name: "sensor_nitrates", meta: 0}, {});
 
 
 

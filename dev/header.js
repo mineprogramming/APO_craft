@@ -2,6 +2,10 @@
  APO craft
  by IchZerowan
  
+ █▀▀█ ░ █▀▀█ ░ █▀▀█ ░   █▀▀ █▀▀█ █▀▀█ █▀▀ ▀▀█▀▀
+ █▄▄█ ▄ █░░█ ▄ █░░█ ▄   █░░ █▄▄▀ █▄▄█ █▀▀ ░░█░░
+ ▀░░▀ █ █▀▀▀ █ ▀▀▀▀ █   ▀▀▀ ▀░▀▀ ▀░░▀ ▀░░ ░░▀░░
+ 
  You are not welcome here!
 */
 
@@ -13,12 +17,14 @@ IMPORT("EntityState");
 IMPORT("ThirstLib");
 IMPORT("DevAPI");
 
-var BitmapFactory = android.graphics.BitmapFactory;
-
-
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
 const DIRECTION_BOTH = 2;
+
+var GUI_BAR_STANDART_SCALE = 3.2;
+
+
+var BitmapFactory = android.graphics.BitmapFactory;
 
 
 function randomInt(min, max){

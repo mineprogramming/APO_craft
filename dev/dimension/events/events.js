@@ -2,12 +2,6 @@ const EVENT_FREQUENCY_EXPLOSION_FIRE = 0.1;
 const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
 
-//RandomEvents.registerEvent("explosion", 0.005, function(){
-//    let coords = RandomEvents.randomCoordsNearPlayer();
-//    World.explode(coords.x, coords.y, coords.z, Math.random() * 5, Math.random() < EVENT_FREQUENCY_EXPLOSION_FIRE);
-//});
-//
-//
 //RandomEvents.registerEvent("zombies", 0.0005, function(){
 //    let count = Math.random() * 5;
 //    for(var i = 0; i < count; i++){
@@ -65,17 +59,7 @@ RandomEvents.registerTimedEvent({
 });
 
 
-RandomEvents.registerTimedEvent({
-    name: "planes_bombing",
-    frequency: 0.01,
-    time: 100,
-    
-    enable: function(){
-        spawnPlanes();
-    },
-    
-    disable: function(){
-        destroyPlanes();
-    }
+RandomEvents.registerEvent("planes", 0.0001, function(){
+    spawnPlanes(7);
 });
 

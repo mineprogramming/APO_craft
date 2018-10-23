@@ -3,9 +3,15 @@ imports.js
 
 events.js
 
+items/RecipiesManager.js
+items/firstAidKit.js
+items/components.js
+items/detectors.js
+
 blocks/roads.js
 blocks/signs.js
 blocks/bench.js
+blocks/ores.js
 
 environment/fog.js
 environment/split.js
@@ -24,8 +30,4 @@ scales/chemical.js
 scales/radiation.js
 scales/biological.js
 
-items/RecipiesManager.js
-
-items/components.js
-items/detectors.js
-
+machine/Extruder.js
