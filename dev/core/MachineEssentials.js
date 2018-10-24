@@ -20,9 +20,17 @@ var MachineEssentials = {
         }
         
         prototype.checkResult = function(result, resultSlots){
+            if(!result) return false;
             for(var i in resultSlots){
-                var id = result[i * 2];
-                var count = result[i * 2 + 1];
+                var id, count;
+                if(Array.isArray(result)){
+                    id = result[i * 2];
+                    count = result[i * 2 + 1];
+                } else {
+                    id = result.id;
+                    count = result.count;
+                }
+                
                 var resultSlot = resultSlots[i];
                 if((resultSlot.id != id || resultSlot.count + count > 64) && resultSlot.id != 0){
                     return false;

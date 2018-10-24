@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 25
+  files: 27
 */
 
 
@@ -54,6 +54,65 @@ function srand(seed){
 // file: imports.js
 
 
+
+
+
+// file: core/IC2Integration.js
+
+var IC2 = false;
+Callback.addCallback("ICore", function(){ 
+    IC2 = true; 
+    //Logger.Log("ICore found, APO using ICore");
+});
+
+
+
+// file: core/MachineRecipeRegistry.js
+
+var MachineRecipeRegistry = null;
+
+Callback.addCallback("PreLoaded", function(){
+    if(IC2){
+        MachineRecipeRegistry = ICore.Recipe;
+    } else {
+        MachineRecipeRegistry = {
+            recipeData: {},
+            
+            registerRecipesFor: function(name, data, validateKeys){
+                if(validateKeys){
+                    var newData = {};
+                    for(var key in data){
+                        var newKey = key;
+                        if(key.split(":").length < 2){
+                            newKey = eval(key);
+                        }
+                        newData[newKey] = data[key];
+                    }
+                    data = newData;
+                }
+                this.recipeData[name] = data;
+            },
+            
+            addRecipeFor: function(name, source, result){
+                this.requireRecipesFor(name, true)[source] = result;
+            },
+            
+            requireRecipesFor: function(name, createIfNotFound){
+                if(!this.recipeData[name] && createIfNotFound){
+                    this.recipeData[name] = {};
+                }
+                return this.recipeData[name];
+            },
+            
+            getRecipeResult: function(name, key1, key2){
+                var data = this.requireRecipesFor(name);
+                if(data){
+                    return data[key1] || data[key1+":"+key2];
+                }
+            }
+        }
+    }
+});
 
 
 
@@ -1610,7 +1669,6 @@ Block.createBlockWithRotation("extruder", [
     {name: "Extruder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_side", 0], ["extruder_side", 1]], inCreative: true}
 ], "opaque");
 
-
 var guiExtruder = new UI.StandartWindow({
     standart: {
         header: {text: {text: "Extruder"}},
@@ -1620,20 +1678,121 @@ var guiExtruder = new UI.StandartWindow({
     
     drawing: [
         {type: "bitmap", x: 530, y: 146, bitmap: "extruder_bar_background", scale: GUI_BAR_STANDART_SCALE},
-        //{type: "bitmap", x: 450, y: 150, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
+        {type: "bitmap", x: 450, y: 150, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
     ],
     
     elements: {
         "progressScale": {type: "scale", x: 530, y: 146, direction: 0, value: 0.5, bitmap: "extruder_bar_scale", scale: GUI_BAR_STANDART_SCALE},
-        //"energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
+        "energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
         "slotSource": {type: "slot", x: 441, y: 75},
-        //"slotEnergy": {type: "slot", x: 441, y: 212, isValid: ChargeItemRegistry.isEnergyStorage},
+        "slotFuel": {type: "slot", x: 441, y: 212},
         "slotResult": {type: "slot", x: 625, y: 142},
-        //"slotUpgrade1": {type: "slot", x: 820, y: 48, isValid: UpgradeAPI.isUpgrade},
-        //"slotUpgrade2": {type: "slot", x: 820, y: 112, isValid: UpgradeAPI.isUpgrade},
-        //"slotUpgrade3": {type: "slot", x: 820, y: 176, isValid: UpgradeAPI.isUpgrade},
-        //"slotUpgrade4": {type: "slot", x: 820, y: 240, isValid: UpgradeAPI.isUpgrade},
+        "slotUpgrade1": {type: "slot", x: 820, y: 48},
+        "slotUpgrade2": {type: "slot", x: 820, y: 112},
+        "slotUpgrade3": {type: "slot", x: 820, y: 176},
+        "slotUpgrade4": {type: "slot", x: 820, y: 240},
     }
 });
 
-//UI.testUI(guiExtruder);
+Callback.addCallback("PreLoaded", function(){
+    Logger.log("lll", "PreLoaded ICore ");
+    //Logger.log("PreLoaded ICore " + ICore);
+    if(IC2){
+        // Industrial Craft 2 integration
+        ICRender.getGroup("ic-wire").add(BlockID.extruder, -1);
+    } else {
+        // No integration
+        TileEntity.registerPrototype(BlockID.extruder, {
+            defaultValues: {
+                progress: 0,
+                burn: 0,
+                burnMax: 0,
+                isActive: false
+            },
+
+            getTransportSlots: function(){
+                return {input: ["slotSource", "slotEnergy"], output: ["slotResult"]};
+            },
+            
+            //addTransportedItem: function(self, item, direction){
+            //    var fuelSlot = this.container.getSlot("slotEnergy");
+            //    var burn = Recipes.getFuelBurnDuration(item.id, item.data);
+            //    if(burn && (fuelSlot.id == 0 || fuelSlot.id == item.id && fuelSlot.data == item.data && fuelSlot.count < 64)){
+            //        var add = Math.min(item.count, 64 - slotFuel.count);
+            //        item.count -= add;
+            //        fuelSlot.id = item.id;
+            //        fuelSlot.data = item.data;
+            //        fuelSlot.count += add;
+            //        if(!item.count){return;}
+            //    }
+            //    
+            //    var sourceSlot = this.container.getSlot("slotSource");
+            //    if(sourceSlot.id == 0 || sourceSlot.id == item.id && sourceSlot.data == item.data && sourceSlot.count < 64){
+            //        var add = Math.min(item.count, 64 - sourceSlot.count);
+            //        item.count -= add;
+            //        sourceSlot.id = item.id;
+            //        sourceSlot.data = item.data;
+            //        sourceSlot.count += add;
+            //        if(!item.count){return;}
+            //    }
+            //},
+            
+            tick: function(){
+                var sourceSlot = this.container.getSlot("extruder");
+                var result = MachineRecipeRegistry.getRecipeResult("macerator", sourceSlot.id, sourceSlot.data);
+                if(this.data.burn > 0){
+                    this.data.burn--;
+                }
+                if(this.data.burn==0 && result){
+                    this.data.burn = this.data.burnMax = this.getFuel("slotFuel");
+                }
+                
+                if(result && this.data.burn > 0){
+                    var resultSlot = this.container.getSlot("slotResult");
+                    if((resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0) && this.data.progress++ >= 160){
+                        sourceSlot.count--;
+                        resultSlot.id = result.id;
+                        resultSlot.data = result.data;
+                        resultSlot.count++;
+                        this.container.validateAll();
+                        this.data.progress = 0;
+                    }
+                }
+                else{
+                    this.data.progress = 0;
+                }
+                
+                this.container.setScale("energyScale", this.data.burn / this.data.burnMax || 0);
+                this.container.setScale("progressScale", this.data.progress / 160);
+            },
+            
+            getFuel: function(slotName){
+                var fuelSlot = this.container.getSlot(slotName);
+                if(fuelSlot.id > 0){
+                    var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
+                    if(burn){
+                        if(LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)){
+                            var empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
+                            fuelSlot.id = empty.id;
+                            fuelSlot.data = empty.data;
+                            return burn;
+                        }
+                        fuelSlot.count--;
+                        this.container.validateSlot(slotName);
+                        return burn;
+                    }
+                }
+                return 0;
+            },
+
+            getGuiScreen: function(){
+              return guiExtruder;
+            }
+        });
+    }
+});
+
+
+
+  
+

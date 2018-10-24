@@ -1,17 +1,37 @@
-//LED Display
-IDRegistry.genItemID("displayLed");
-Item.createItem("displayLed", "LED Display", {name: "display_led", meta: 0}, {});
+/*Oil distillation products*/
 
+//Waste
+IDRegistry.genItemID("waste");
+Item.createItem("waste", "Waste", {name: "waste", meta: 0}, {});
 
-//Button Set
-IDRegistry.genItemID("buttonSet");
-Item.createItem("buttonSet", "Button Set", {name: "button_set", meta: 0}, {});
+//Quartz Dust
+IDRegistry.genItemID("dustQuartz");
+Item.createItem("dustQuartz", "Quartz Dust", {name: "dust_quartz", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
-     " a ",
-     "aba",
-     " a "
-], ['a', 143, 0, 'b', 77, 0]);
+//Bitumen
+IDRegistry.genItemID("bitumen");
+Item.createItem("bitumen", "Bitumen", {name: "bitumen", meta: 0}, {});
+
+//Propylene
+IDRegistry.genItemID("propylene");
+Item.createItem("propylene", "Propylene", {name: "propylene", meta: 0}, {});
+
+//Oil Resin
+IDRegistry.genItemID("oilResin");
+Item.createItem("oilResin", "Oil Resin", {name: "oil_resin", meta: 0}, {});
+
+//Fuel Oil
+IDRegistry.genItemID("oilFuel");
+Item.createItem("oilFuel", "Fuel Oil", {name: "oil_fuel", meta: 0}, {});
+
+//Petrol
+IDRegistry.genItemID("petrol");
+Item.createItem("petrol", "Petrol", {name: "petrol", meta: 0}, {});
+
+//Kerosene
+IDRegistry.genItemID("kerosene");
+Item.createItem("kerosene", "Kerosene", {name: "kerosene", meta: 0}, {});
+
 
 
 //Glass Thread
@@ -92,6 +112,8 @@ RecipiesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
      "ede"
 ], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
 
+//Connectors
+
 
 //Chips
 IDRegistry.genItemID("chipArduino");
@@ -100,8 +122,21 @@ Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, 
 Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
 
 
-//Connectors
 
+//LED Display
+IDRegistry.genItemID("displayLed");
+Item.createItem("displayLed", "LED Display", {name: "display_led", meta: 0}, {});
+
+
+//Button Set
+IDRegistry.genItemID("buttonSet");
+Item.createItem("buttonSet", "Button Set", {name: "button_set", meta: 0}, {});
+
+RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
+     " a ",
+     "aba",
+     " a "
+], ['a', 143, 0, 'b', 77, 0]);
 
 //ATtiny 45
 IDRegistry.genItemID("attiny45");
