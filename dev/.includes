@@ -1,6 +1,10 @@
 header.js
 imports.js
 
+core/IC2Integration.js
+core/MachineEssentials.js
+core/MachineRecipeRegistry.js
+
 events.js
 
 items/RecipiesManager.js
@@ -31,3 +35,5 @@ scales/radiation.js
 scales/biological.js
 
 machine/Extruder.js
+machine/Rectifier.js
+

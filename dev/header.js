@@ -16,6 +16,7 @@ IMPORT("SettingsManager");
 IMPORT("EntityState");
 IMPORT("ThirstLib");
 IMPORT("DevAPI");
+IMPORT("energylib");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
@@ -23,8 +24,7 @@ const DIRECTION_BOTH = 2;
 
 var GUI_BAR_STANDART_SCALE = 3.2;
 
-
-var BitmapFactory = android.graphics.BitmapFactory;
+var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 
 
 function randomInt(min, max){

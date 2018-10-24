@@ -1,0 +1,1 @@
+var BitmapFactory = android.graphics.BitmapFactory;
