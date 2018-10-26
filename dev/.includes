@@ -35,7 +35,9 @@ scales/chemical.js
 scales/radiation.js
 scales/biological.js
 
-machine/Extruder.js
-machine/Rectifier.js
 machine/CokeOven.js
+machine/Extruder.js
+machine/PlasticPress.js
+machine/Rectifier.js
+
 

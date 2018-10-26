@@ -46,6 +46,7 @@ var MachineEssentials = {
                 resultSlots[i] = this.container.getSlot(params.result_slots[i]);
             }
             var result = MachineRecipeRegistry.getRecipeResult(params.machine_name, sourceSlot.id, sourceSlot.data);
+            if(params.customResult) result = params.customResult(result, this.container);
             if(result && this.checkResult(result, resultSlots)){
                 if(this.data.energy >= this.data.energy_consumption){
                     this.data.energy -= this.data.energy_consumption;

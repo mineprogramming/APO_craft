@@ -13,3 +13,8 @@ for(var i = 0; i < 11; i++){
 IDRegistry.genBlockID("asphalt");
 Block.createBlock("asphalt", data, "opaque");
 
+RecipiesManager.addShaped({id: BlockID.asphalt, count: 3, data: 0}, [
+     "bbb",
+     "aaa",
+     "aaa"
+], ['a', 13, 0, 'b', ItemID.bitumen, 0]);
