@@ -39,5 +39,6 @@ machine/CokeOven.js
 machine/Extruder.js
 machine/PlasticPress.js
 machine/Rectifier.js
+machine/Polymerizer.js
 
 
