@@ -1,13 +1,14 @@
 header.js
 imports.js
 
+items/RecipiesManager.js
+
 core/IC2Integration.js
 core/MachineEssentials.js
 core/MachineRecipeRegistry.js
 
 events.js
 
-items/RecipiesManager.js
 items/firstAidKit.js
 items/components.js
 items/detectors.js
@@ -36,4 +37,5 @@ scales/biological.js
 
 machine/Extruder.js
 machine/Rectifier.js
+machine/CokeOven.js
 
