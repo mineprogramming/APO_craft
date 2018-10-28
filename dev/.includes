@@ -12,11 +12,14 @@ events.js
 items/firstAidKit.js
 items/components.js
 items/detectors.js
+items/eggs.js
 
 blocks/roads.js
 blocks/signs.js
 blocks/bench.js
 blocks/ores.js
+
+armor/Military.js
 
 environment/fog.js
 environment/split.js
@@ -41,4 +44,6 @@ machine/PlasticPress.js
 machine/Rectifier.js
 machine/Polymerizer.js
 
+
+mob/Military.js
 
