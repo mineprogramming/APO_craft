@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 27
+  files: 38
 */
 
 
@@ -27,6 +27,8 @@ IMPORT("SettingsManager");
 IMPORT("EntityState");
 IMPORT("ThirstLib");
 IMPORT("DevAPI");
+IMPORT("energylib");
+IMPORT("TradeLib");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
@@ -34,8 +36,7 @@ const DIRECTION_BOTH = 2;
 
 var GUI_BAR_STANDART_SCALE = 3.2;
 
-
-var BitmapFactory = android.graphics.BitmapFactory;
+var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 
 
 function randomInt(min, max){
@@ -53,17 +54,163 @@ function srand(seed){
 
 // file: imports.js
 
+var BitmapFactory = android.graphics.BitmapFactory;
+var Color = android.graphics.Color;
 
+
+
+
+// file: RenderTools.js
+
+RenderTools = {};
+
+RenderTools.setupConnectorRender = function(id) {
+    const width = 0.5;
+    var render = new ICRender.Model();
+    BlockRenderer.setStaticICRender(id, 0, render);
+   
+    var boxes = [
+        {side: [1, 0, 0], box: [0.5 + width / 2, 0.5 - width / 2, 0.5 - width / 2, 1, 0.5 + width / 2, 0.5 + width / 2]},
+        {side: [-1, 0, 0], box: [0, 0.5 - width / 2, 0.5 - width / 2, 0.5 - width / 2, 0.5 + width / 2, 0.5 + width / 2]},
+        {side: [0, 1, 0], box: [0.5 - width / 2, 0.5 + width / 2, 0.5 - width / 2, 0.5 + width / 2, 1, 0.5 + width / 2]},
+        {side: [0, -1, 0], box: [0.5 - width / 2, 0, 0.5 - width / 2, 0.5 + width / 2, 0.5 - width / 2, 0.5 + width / 2]},
+        {side: [0, 0, 1], box: [0.5 - width / 2, 0.5 - width / 2, 0.5 + width / 2, 0.5 + width / 2, 0.5 + width / 2, 1]},
+        {side: [0, 0, -1], box: [0.5 - width / 2, 0.5 - width / 2, 0, 0.5 + width / 2, 0.5 + width / 2, 0.5 - width / 2]},
+    ]
+   
+    var group = ICRender.getGroup("ic-transformator");
+   
+    for (var i in boxes) {
+        var box = boxes[i];
+       
+        var model = BlockRenderer.createModel();
+        model.addBox(box.box[0], box.box[1], box.box[2], box.box[3], box.box[4], box.box[5], id, 0);
+       
+        render.addEntry(model).asCondition(box.side[0], box.side[1], box.side[2], group, 0);
+    }
+   
+    var model = BlockRenderer.createModel();
+    model.addBox(0.5 - width / 2, 0.5 - width / 2, 0.5 - width / 2, 0.5 + width / 2, 0.5 + width / 2, 0.5 + width / 2, id, 0);
+    render.addEntry(model);
+    
+    width = Math.max(width, 0.5);
+    Block.setBlockShape(id, {x: 0.5 - width/2, y: 0.5 - width/2, z: 0.5 - width/2}, {x: 0.5 + width/2, y: 0.5 + width/2, z: 0.5 + width/2});
+}
+
+
+
+// file: items/RecipiesManager.js
+
+var RecipiesManager = {
+    recipiesLoaded: false,
+    recipies: []
+}
+
+RecipiesManager.addShaped = function(result, recipie, data){
+    RecipiesManager.recipies.push({"result": result, "recipie": recipie, "data": data});
+};
+
+RecipiesManager.onRegisterRecipiesNeeded = function(){
+    if(!RecipiesManager.recipiesLoaded){
+        for(var i in RecipiesManager.recipies){
+            let recipie = RecipiesManager.recipies[i];
+            Recipes.addShaped(recipie.result, recipie.recipie, recipie.data);
+        }
+    }
+}
 
 
 
 // file: core/IC2Integration.js
 
-var IC2 = false;
-Callback.addCallback("ICore", function(){ 
-    IC2 = true; 
-    //Logger.Log("ICore found, APO using ICore");
+var ICore = false;
+ModAPI.addAPICallback("ICore", function(api){ 
+    ICore = api;
+
 });
+
+
+
+// file: core/MachineEssentials.js
+
+var MachineEssentials = {
+    registerStandart: function(id, prototype, params){
+        
+        //Prototype's standart params and functions
+        let defaultValues = {};
+        defaultValues.energy_storage = params.energy_storage? params.energy_storage: 2000;
+        defaultValues.energy_consumption = params.energy_consumption? params.energy_consumption: 2;
+        defaultValues.work_time = params.work_time? params.work_time: 300;
+        defaultValues.energy = 0;
+        defaultValues.progress = 0;
+        prototype.defaultValues = defaultValues;
+        
+        prototype.getEnergyStorage = function(){
+            return this.data.energy_storage;
+        }
+        
+        prototype.energyTick = function(type, src){
+            var energyNeed = this.getEnergyStorage() - this.data.energy;
+            this.data.energy += src.get(energyNeed);
+        }
+        
+        prototype.checkResult = function(result, resultSlots){
+            if(!result) return false;
+            for(var i in resultSlots){
+                var id, count;
+                if(Array.isArray(result)){
+                    id = result[i * 2];
+                    count = result[i * 2 + 1];
+                } else {
+                    id = result.id;
+                    count = result.count;
+                }
+                
+                var resultSlot = resultSlots[i];
+                if((resultSlot.id != id || resultSlot.count + count > 64) && resultSlot.id != 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        prototype.tick = function(){
+            var sourceSlot = this.container.getSlot(params.source_slot);
+            var resultSlots = [];
+            for(var i in params.result_slots){
+                resultSlots[i] = this.container.getSlot(params.result_slots[i]);
+            }
+            var result = MachineRecipeRegistry.getRecipeResult(params.machine_name, sourceSlot.id, sourceSlot.data);
+            if(params.customResult) result = params.customResult(result, this.container);
+            if(result && this.checkResult(result, resultSlots)){
+                if(this.data.energy >= this.data.energy_consumption){
+                    this.data.energy -= this.data.energy_consumption;
+                    this.data.progress += 1/this.data.work_time;
+                }
+                if(this.data.progress >= 1){
+                    sourceSlot.count--;
+                    this.result(resultSlots, result);
+                    this.container.validateAll();
+                    this.data.progress = 0;
+                }
+            }
+            else {
+                this.data.progress = 0;
+            }
+        
+            var energyStorage = this.getEnergyStorage();
+            this.data.energy = Math.min(this.data.energy, energyStorage);
+            //this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), Math.min(32, energyStorage - this.data.energy), 0);
+            
+            this.container.setScale(params.progress_scale, this.data.progress);
+            this.container.setScale(params.energy_scale, this.data.energy / energyStorage);
+        }
+        
+        TileEntity.registerPrototype(id, prototype);
+        ICRender.getGroup("ic-wire").add(id, -1);
+        EnergyTileRegistry.addEnergyTypeForId(id, EU);
+    }
+};
 
 
 
@@ -72,9 +219,10 @@ Callback.addCallback("ICore", function(){
 var MachineRecipeRegistry = null;
 
 Callback.addCallback("PreLoaded", function(){
-    if(IC2){
+    if(ICore){
         MachineRecipeRegistry = ICore.Recipe;
     } else {
+        // Code from Industrial Craft 2. Just a good piece of code, why not to copy it out?
         MachineRecipeRegistry = {
             recipeData: {},
             
@@ -145,28 +293,6 @@ Callback.addCallback("LevelLoaded", function(){
 
 
 
-// file: items/RecipiesManager.js
-
-var RecipiesManager = {
-    recipiesLoaded: false,
-    recipies: []
-}
-
-RecipiesManager.addShaped = function(result, recipie, data){
-    RecipiesManager.recipies.push({"result": result, "recipie": recipie, "data": data});
-};
-
-RecipiesManager.onRegisterRecipiesNeeded = function(){
-    if(!RecipiesManager.recipiesLoaded){
-        for(var i in RecipiesManager.recipies){
-            let recipie = RecipiesManager.recipies[i];
-            Recipes.addShaped(recipie.result, recipie.recipie, recipie.data);
-        }
-    }
-}
-
-
-
 // file: items/firstAidKit.js
 
 IDRegistry.genItemID("firstAidKit");
@@ -176,6 +302,182 @@ Item.createItem("firstAidKit", "First Aid Kit", {name: "first_aid_kit", meta: 0}
 
 
 // file: items/components.js
+
+/* Trading */
+
+//Silver
+IDRegistry.genItemID("silver");
+Item.createItem("silver", "Silver", {name: "silver", meta: 0}, {});
+
+
+
+/*Oil distillation products */
+
+//Waste
+IDRegistry.genItemID("waste");
+Item.createItem("waste", "Waste", {name: "waste", meta: 0}, {});
+
+//Quartz Dust
+IDRegistry.genItemID("dustQuartz");
+Item.createItem("dustQuartz", "Quartz Dust", {name: "dust_quartz", meta: 0}, {});
+
+//Bitumen
+IDRegistry.genItemID("bitumen");
+Item.createItem("bitumen", "Bitumen", {name: "bitumen", meta: 0}, {});
+
+//Propylene
+IDRegistry.genItemID("propylene");
+Item.createItem("propylene", "Propylene", {name: "propylene", meta: 0}, {});
+
+//Oil Resin
+IDRegistry.genItemID("oilResin");
+Item.createItem("oilResin", "Oil Resin", {name: "oil_resin", meta: 0}, {});
+
+//Fuel Oil
+IDRegistry.genItemID("oilFuel");
+Item.createItem("oilFuel", "Fuel Oil", {name: "oil_fuel", meta: 0}, {});
+Recipes.addFurnaceFuel(ItemID.oilFuel, 0, 1000);
+
+//Petrol
+IDRegistry.genItemID("petrol");
+Item.createItem("petrol", "Petrol", {name: "petrol", meta: 0}, {});
+Recipes.addFurnaceFuel(ItemID.petrol, 0, 3000);
+
+//Kerosene
+IDRegistry.genItemID("kerosene");
+Item.createItem("kerosene", "Kerosene", {name: "kerosene", meta: 0}, {});
+Recipes.addFurnaceFuel(ItemID.kerosene, 0, 3000);
+
+
+
+/* Coal coking products*/
+
+//Coal Tar
+IDRegistry.genItemID("tarCoal");
+Item.createItem("tarCoal", "Coal Tar", {name: "tar_coal", meta: 0}, {});
+
+//Coke
+IDRegistry.genItemID("coke");
+Item.createItem("coke", "Coke", {name: "coke", meta: 0}, {});
+Recipes.addFurnaceFuel(ItemID.coke, 0, 2000);
+
+
+
+/* Textolite production */
+
+//Glass Thread
+IDRegistry.genItemID("threadGlass");
+Item.createItem("threadGlass", "Glass Thread", {name: "thread_glass", meta: 0}, {});
+
+//Fiberglass
+IDRegistry.genItemID("fiberglass");
+Item.createItem("fiberglass", "Fiberglass", {name: "fiberglass", meta: 0}, {});
+
+RecipiesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
+     "aaa",
+     "aaa",
+     "aaa"
+], ['a', ItemID.threadGlass, 0]);
+
+//Textolite
+IDRegistry.genItemID("textolite");
+Item.createItem("textolite", "Textolite", {name: "textolite", meta: 0}, {});
+
+RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
+     "aaa",
+     "bbb",
+     "aaa"
+], ['a', ItemID.fiberglass, 0, 'b', ItemID.tarCoal, 0]);
+
+RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
+     "aaa",
+     "bbb",
+     "aaa"
+], ['a', ItemID.fiberglass, 0, 'b', ItemID.oilResin, 0]);
+
+
+
+/* Plastics */
+
+//Granules of Polypropylene
+IDRegistry.genItemID("granulesPolypropylene");
+Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
+
+/* Press Forms */
+
+//Plate Press Form
+IDRegistry.genItemID("pressFormPlate");
+Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
+
+//Polypropylene Plate
+IDRegistry.genItemID("platePolypropylene");
+Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polypropylene", meta: 0}, {});
+
+//Polypropylene Casing
+IDRegistry.genItemID("casingPolypropylene");
+Item.createItem("casingPolypropylene", "Polypropylene Casing", {name: "casing_polypropylene", meta: 0}, {});
+
+RecipiesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
+     "aa",
+     "aa",
+     "aa"
+], ['a', ItemID.platePolypropylene, 0]);
+
+
+
+/* Metals */
+
+//Copper Cable
+IDRegistry.genItemID("cableCopper0");
+Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
+
+
+
+/* Light-Emitting Diodes*/
+
+//Gallium Andesite
+IDRegistry.genItemID("galliumArsenite");
+Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
+
+//LEDs
+IDRegistry.genItemID("ledRed");
+IDRegistry.genItemID("ledYellow");
+IDRegistry.genItemID("ledGreen");
+Item.createItem("ledRed", "Red Light-Emitting Diode", {name: "led", meta: 0}, {});
+Item.createItem("ledYellow", "Yellow Light-Emitting Diode", {name: "led", meta: 1}, {});
+Item.createItem("ledGreen", "Green Light-Emitting Diode", {name: "led", meta: 2}, {});
+
+RecipiesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
+     " a ",
+     "cbc",
+     "ede"
+], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+
+RecipiesManager.addShaped({id: ItemID.ledYellow, count: 16, data: 0}, [
+     " a ",
+     "cbc",
+     "ede"
+], ['a', 20, 0, 'b', 351, 11, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+
+RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
+     " a ",
+     "cbc",
+     "ede"
+], ['a', 20, 0, 'b', 351, 2, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+
+
+
+//Connectors
+
+
+
+//Chips
+IDRegistry.genItemID("chipArduino");
+IDRegistry.genItemID("chipRaspberry");
+Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
+Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
+
+
 
 //LED Display
 IDRegistry.genItemID("displayLed");
@@ -191,96 +493,6 @@ RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
      "aba",
      " a "
 ], ['a', 143, 0, 'b', 77, 0]);
-
-
-//Glass Thread
-IDRegistry.genItemID("threadGlass");
-Item.createItem("threadGlass", "Glass Thread", {name: "thread_glass", meta: 0}, {});
-
-
-//Fiberglass
-IDRegistry.genItemID("fiberglass");
-Item.createItem("fiberglass", "Fiberglass", {name: "fiberglass", meta: 0}, {});
-
-RecipiesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
-     "aaa",
-     "aaa",
-     "aaa"
-], ['a', ItemID.threadGlass, 0]);
-
-
-//Coal Tar
-IDRegistry.genItemID("tarCoal");
-Item.createItem("tarCoal", "Coal Tar", {name: "tar_coal", meta: 0}, {});
-Recipes.addFurnace(263, ItemID.tarCoal, 0);
-
-
-//Textolite
-IDRegistry.genItemID("textolite");
-Item.createItem("textolite", "Textolite", {name: "textolite", meta: 0}, {});
-
-RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
-     "aaa",
-     "bbb",
-     "aaa"
-], ['a', ItemID.fiberglass, 0, 'b', ItemID.tarCoal, 0]);
-
-
-//Granules of Polypropylene
-IDRegistry.genItemID("granulesPolypropylene");
-Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
-
-
-//Polypropylene Plate
-IDRegistry.genItemID("platePolypropylene");
-Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polypropylene", meta: 0}, {});
-
-
-//Polypropylene Casing
-IDRegistry.genItemID("casingPolypropylene");
-Item.createItem("casingPolypropylene", "Polypropylene Casing", {name: "casing_polypropylene", meta: 0}, {});
-
-RecipiesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
-     "aa",
-     "aa",
-     "aa"
-], ['a', ItemID.platePolypropylene, 0]);
-
-
-//Gallium Andesite
-IDRegistry.genItemID("galliumArsenite");
-Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
-
-
-IDRegistry.genItemID("cableCopper0");
-Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
-
-
-//LEDs
-IDRegistry.genItemID("ledRed");
-IDRegistry.genItemID("ledYellow");
-IDRegistry.genItemID("ledGreen");
-Item.createItem("ledRed", "Red Light-Emitting Diode", {name: "led", meta: 0}, {});
-Item.createItem("ledYellow", "Yellow Light-Emitting Diode", {name: "led", meta: 1}, {});
-Item.createItem("ledGreen", "Green Light-Emitting Diode", {name: "led", meta: 2}, {});
-
-
-RecipiesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
-     " a ",
-     "cbc",
-     "ede"
-], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
-
-
-//Chips
-IDRegistry.genItemID("chipArduino");
-IDRegistry.genItemID("chipRaspberry");
-Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
-Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
-
-
-//Connectors
-
 
 //ATtiny 45
 IDRegistry.genItemID("attiny45");
@@ -315,7 +527,14 @@ Item.createItem("sensorNitrates", "Nitrates Sensor", {name: "sensor_nitrates", m
 
 
 
-
+Callback.addCallback("ICore", function(api){
+    //Scrap from Waste
+    RecipiesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
+        "aaa",
+        "aaa",
+        "aaa"
+    ], ['a', ItemID.waste, 0]);
+});
 
 
 Callback.addCallback("PostLoaded", function(){
@@ -423,6 +642,19 @@ Callback.addCallback("tick", function(){
 
 
 
+// file: items/eggs.js
+
+// Military
+IDRegistry.genItemID("eggMilitary");
+Item.createItem("eggMilitary", "Military Egg", {name: "egg_military", meta: 0}, {isTech:false, stack: 64});
+
+Item.registerUseFunctionForID(ItemID.eggMilitary, function(coords, item, block) {
+    coords = coords.relative;
+    Entity.spawnCustom("military", coords.x + .5, coords.y + .5, coords.z + .5);
+});
+
+
+
 // file: blocks/roads.js
 
 const ROAD_CLEANING = 0;
@@ -440,6 +672,11 @@ for(var i = 0; i < 11; i++){
 IDRegistry.genBlockID("asphalt");
 Block.createBlock("asphalt", data, "opaque");
 
+RecipiesManager.addShaped({id: BlockID.asphalt, count: 3, data: 0}, [
+     "bbb",
+     "aaa",
+     "aaa"
+], ['a', 13, 0, 'b', ItemID.bitumen, 0]);
 
 
 
@@ -569,6 +806,13 @@ Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, digg
      return [[ItemID.galliumArsenite, 1, 0]];
 });
 
+
+
+
+// file: armor/Military.js
+
+IDRegistry.genItemID("helmetMilitary");
+Item.createArmorItem("helmetMilitary", "Military Helmet", {name: "helmet_military"}, {type: "helmet", armor: 5, durability: 149, texture: "armor/helmet_military.png"});
 
 
 
@@ -1662,6 +1906,78 @@ var biologicalScale = new ScalesRPG.Scale({
 
 
 
+// file: machine/CokeOven.js
+
+IDRegistry.genBlockID("cokeOven");
+Block.createBlockWithRotation("cokeOven", [
+    {name: "Coke Oven", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["coke_oven_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+], "opaque");
+
+var guiCokeOven = new UI.StandartWindow({
+    standart: {
+        header: {text: {text: "Coke Oven"}},
+        inventory: {standart: true},
+        background: {standart: true}
+    },
+    
+    drawing: [
+        {type: "bitmap", x: 530, y: 146, bitmap: "coke_oven_bar_background", scale: GUI_BAR_STANDART_SCALE},
+        {type: "bitmap", x: 450, y: 150, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
+    ],
+    
+    elements: {
+        "progressScale": {type: "scale", x: 530, y: 146, direction: 0, value: 0.5, bitmap: "coke_oven_bar_scale", scale: GUI_BAR_STANDART_SCALE},
+        "energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
+        "slotSource": {type: "slot", x: 441, y: 75},
+        "slotEnergy": {type: "slot", x: 441, y: 212},
+        "slotResult0": {type: "slot", x: 625, y: 60},
+        "slotResult1": {type: "slot", x: 625, y: 142},
+        "slotResult2": {type: "slot", x: 625, y: 224},
+        "slotUpgrade1": {type: "slot", x: 820, y: 48},
+        "slotUpgrade2": {type: "slot", x: 820, y: 112},
+        "slotUpgrade3": {type: "slot", x: 820, y: 176},
+        "slotUpgrade4": {type: "slot", x: 820, y: 240},
+    }
+});
+
+MachineEssentials.registerStandart(BlockID.cokeOven, {
+    getTransportSlots: function(){
+        return {input: ["slotSource"], output: ["slotResult0", "slotResult1", "slotResult2"]};
+    },
+    
+    result: function(resultSlots, result){
+        for(var i in resultSlots){
+            resultSlots[i].id = result[i * 2];
+            resultSlots[i].data = 0;
+            resultSlots[i].count += result[i * 2 + 1];
+        }
+    },
+
+    getGuiScreen: function(){
+      return guiCokeOven;
+    }
+    
+}, {
+    machine_name: "cokeOven",
+    source_slot: "slotSource",
+    result_slots: ["slotResult0", "slotResult1", "slotResult2"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale"
+});
+
+
+
+Callback.addCallback("PreLoaded", function(){
+    // Recipies
+    MachineRecipeRegistry.registerRecipesFor("cokeOven", {
+        263: [ItemID.propylene, 1, ItemID.coke, 1, ItemID.tarCoal, 1]
+    });
+});
+
+
+
+
+
 // file: machine/Extruder.js
 
 IDRegistry.genBlockID("extruder");
@@ -1685,7 +2001,7 @@ var guiExtruder = new UI.StandartWindow({
         "progressScale": {type: "scale", x: 530, y: 146, direction: 0, value: 0.5, bitmap: "extruder_bar_scale", scale: GUI_BAR_STANDART_SCALE},
         "energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
         "slotSource": {type: "slot", x: 441, y: 75},
-        "slotFuel": {type: "slot", x: 441, y: 212},
+        "slotEnergy": {type: "slot", x: 441, y: 212},
         "slotResult": {type: "slot", x: 625, y: 142},
         "slotUpgrade1": {type: "slot", x: 820, y: 48},
         "slotUpgrade2": {type: "slot", x: 820, y: 112},
@@ -1694,105 +2010,346 @@ var guiExtruder = new UI.StandartWindow({
     }
 });
 
+MachineEssentials.registerStandart(BlockID.extruder, {
+    getTransportSlots: function(){
+        return {input: ["slotSource"], output: ["slotResult"]};
+    },
+    
+    result: function(resultSlots, result){
+        resultSlots[0].id = result.id;
+        resultSlots[0].data = result.data;
+        resultSlots[0].count += result.count;
+    },
+
+    getGuiScreen: function(){
+      return guiExtruder;
+    }
+    
+}, {
+    machine_name: "extruder",
+    source_slot: "slotSource",
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale"
+});
+
+
+
 Callback.addCallback("PreLoaded", function(){
-    Logger.log("lll", "PreLoaded ICore ");
-    //Logger.log("PreLoaded ICore " + ICore);
-    if(IC2){
-        // Industrial Craft 2 integration
-        ICRender.getGroup("ic-wire").add(BlockID.extruder, -1);
-    } else {
-        // No integration
-        TileEntity.registerPrototype(BlockID.extruder, {
-            defaultValues: {
-                progress: 0,
-                burn: 0,
-                burnMax: 0,
-                isActive: false
-            },
+    // Recipies
+    MachineRecipeRegistry.registerRecipesFor("extruder", {
+        20: {id: ItemID.threadGlass, count: 4, data: 0}
+    });
+});
 
-            getTransportSlots: function(){
-                return {input: ["slotSource", "slotEnergy"], output: ["slotResult"]};
-            },
-            
-            //addTransportedItem: function(self, item, direction){
-            //    var fuelSlot = this.container.getSlot("slotEnergy");
-            //    var burn = Recipes.getFuelBurnDuration(item.id, item.data);
-            //    if(burn && (fuelSlot.id == 0 || fuelSlot.id == item.id && fuelSlot.data == item.data && fuelSlot.count < 64)){
-            //        var add = Math.min(item.count, 64 - slotFuel.count);
-            //        item.count -= add;
-            //        fuelSlot.id = item.id;
-            //        fuelSlot.data = item.data;
-            //        fuelSlot.count += add;
-            //        if(!item.count){return;}
-            //    }
-            //    
-            //    var sourceSlot = this.container.getSlot("slotSource");
-            //    if(sourceSlot.id == 0 || sourceSlot.id == item.id && sourceSlot.data == item.data && sourceSlot.count < 64){
-            //        var add = Math.min(item.count, 64 - sourceSlot.count);
-            //        item.count -= add;
-            //        sourceSlot.id = item.id;
-            //        sourceSlot.data = item.data;
-            //        sourceSlot.count += add;
-            //        if(!item.count){return;}
-            //    }
-            //},
-            
-            tick: function(){
-                var sourceSlot = this.container.getSlot("extruder");
-                var result = MachineRecipeRegistry.getRecipeResult("macerator", sourceSlot.id, sourceSlot.data);
-                if(this.data.burn > 0){
-                    this.data.burn--;
-                }
-                if(this.data.burn==0 && result){
-                    this.data.burn = this.data.burnMax = this.getFuel("slotFuel");
-                }
-                
-                if(result && this.data.burn > 0){
-                    var resultSlot = this.container.getSlot("slotResult");
-                    if((resultSlot.id == result.id && resultSlot.data == result.data && resultSlot.count < 64 || resultSlot.id == 0) && this.data.progress++ >= 160){
-                        sourceSlot.count--;
-                        resultSlot.id = result.id;
-                        resultSlot.data = result.data;
-                        resultSlot.count++;
-                        this.container.validateAll();
-                        this.data.progress = 0;
-                    }
-                }
-                else{
-                    this.data.progress = 0;
-                }
-                
-                this.container.setScale("energyScale", this.data.burn / this.data.burnMax || 0);
-                this.container.setScale("progressScale", this.data.progress / 160);
-            },
-            
-            getFuel: function(slotName){
-                var fuelSlot = this.container.getSlot(slotName);
-                if(fuelSlot.id > 0){
-                    var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
-                    if(burn){
-                        if(LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)){
-                            var empty = LiquidRegistry.getEmptyItem(fuelSlot.id, fuelSlot.data);
-                            fuelSlot.id = empty.id;
-                            fuelSlot.data = empty.data;
-                            return burn;
-                        }
-                        fuelSlot.count--;
-                        this.container.validateSlot(slotName);
-                        return burn;
-                    }
-                }
-                return 0;
-            },
 
-            getGuiScreen: function(){
-              return guiExtruder;
+
+
+
+// file: machine/PlasticPress.js
+
+IDRegistry.genBlockID("pressPlastic");
+Block.createBlockWithRotation("pressPlastic", [
+    {name: "Plastic Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+], "opaque");
+
+var guiPlasticPress = new UI.StandartWindow({
+    standart: {
+        header: {text: {text: "Plastic Press"}},
+        inventory: {standart: true},
+        background: {standart: true}
+    },
+    
+    drawing: [
+        {type: "bitmap", x: 530, y: 146, bitmap: "extruder_bar_background", scale: GUI_BAR_STANDART_SCALE},
+        {type: "bitmap", x: 450, y: 150, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
+    ],
+    
+    elements: {
+        "progressScale": {type: "scale", x: 530, y: 146, direction: 0, value: 0.5, bitmap: "extruder_bar_scale", scale: GUI_BAR_STANDART_SCALE},
+        "energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
+        "slotSource": {type: "slot", x: 441, y: 75},
+        "slotPressForm": {type: "slot", x: 530, y: 75},
+        "slotEnergy": {type: "slot", x: 441, y: 212},
+        "slotResult": {type: "slot", x: 625, y: 142},
+        "slotUpgrade1": {type: "slot", x: 820, y: 48},
+        "slotUpgrade2": {type: "slot", x: 820, y: 112},
+        "slotUpgrade3": {type: "slot", x: 820, y: 176},
+        "slotUpgrade4": {type: "slot", x: 820, y: 240},
+    }
+});
+
+MachineEssentials.registerStandart(BlockID.pressPlastic, {
+    getTransportSlots: function(){
+        return {input: ["slotSource"], output: ["slotResult"]};
+    },
+    
+    result: function(resultSlots, result){
+        resultSlots[0].id = result.id;
+        resultSlots[0].data = result.data;
+        resultSlots[0].count += result.count;
+    },
+
+    getGuiScreen: function(){
+      return guiPlasticPress;
+    }
+    
+}, {
+    machine_name: "pressPlastic",
+    source_slot: "slotSource",
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    
+    customResult:  function(result, container){
+        var slotPressForm = container.getSlot("slotPressForm");
+        for(var i in result){
+            if(eval(i) == slotPressForm.id){
+                return result[i];
             }
-        });
+        }
+        return false;
     }
 });
 
 
 
-  
+Callback.addCallback("PreLoaded", function(){
+    // Recipies
+    MachineRecipeRegistry.registerRecipesFor("pressPlastic", {
+        "ItemID.granulesPolypropylene": {
+            "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
+        }
+    }, true);
+});
+
+
+
+
+
+// file: machine/Rectifier.js
+
+IDRegistry.genBlockID("rectifier");
+Block.createBlockWithRotation("rectifier", [
+    {name: "Rectifier", texture: [["std_bottom", 0], ["rectifier_top", 0], ["std_side", 0], ["rectifier_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+], "opaque");
+
+var layoutRectifier = {
+    standart: {
+        header: {text: {text: "Rectifier"}},
+        inventory: {standart: true},
+        background: {standart: true}
+    },
+    
+    drawing: [
+        {type: "bitmap", x: 530, y: 216, bitmap: "rectifier_bar_background", scale: GUI_BAR_STANDART_SCALE},
+        {type: "bitmap", x: 490, y: 220, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
+    ],
+    
+    elements: {
+        "progressScale": {type: "scale", x: 530, y: 216, direction: 0, value: 0.5, bitmap: "rectifier_bar_scale", scale: GUI_BAR_STANDART_SCALE},
+        "energyScale": {type: "scale", x: 490, y: 220, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
+        "slotSource": {type: "slot", x: 510, y: 155},
+        "slotEnergy": {type: "slot", x: 510, y: 278},
+        "slotUpgrade1": {type: "slot", x: 820, y: 48},
+        "slotUpgrade2": {type: "slot", x: 820, y: 112},
+        "slotUpgrade3": {type: "slot", x: 820, y: 176},
+        "slotUpgrade4": {type: "slot", x: 820, y: 240},
+    }
+}
+var resultSlotsRectifier = [];
+for(var i = 0; i < 8; i++){
+    let angle = i * 45 * Math.PI / 180;
+    dx = 150 * Math.cos(angle);
+    dy = 150 * Math.sin(angle);
+    layoutRectifier.elements["slotResult" + i] = {type: "slot", x: 510 + dx, y: 215 + dy};
+    resultSlotsRectifier.push("slotResult" + i);
+}
+
+
+var guiRectifier = new UI.StandartWindow(layoutRectifier);
+
+
+
+MachineEssentials.registerStandart(BlockID.rectifier, {
+    getTransportSlots: function(){
+        return {input: ["slotSource"], output: resultSlotsRectifier};
+    },
+    
+    result: function(resultSlots, result){
+        for(var i in resultSlots){
+            resultSlots[i].id = result[i * 2];
+            resultSlots[i].data = 0;
+            resultSlots[i].count += result[i * 2 + 1];
+        }
+    },
+
+    getGuiScreen: function(){
+        return guiRectifier;
+    }
+    
+}, {
+    machine_name: "rectifier",
+    source_slot: "slotSource",
+    result_slots: resultSlotsRectifier,
+    progress_scale: "progressScale",
+    energy_scale: "energyScale"
+});
+
+
+
+Callback.addCallback("PostLoaded", function(){
+    // Recipies
+    MachineRecipeRegistry.registerRecipesFor("rectifier", {
+        "BlockID.oreShaleOil": [ItemID.waste, 1, ItemID.dustQuartz, 1, ItemID.bitumen, 1, ItemID.propylene, 1, ItemID.oilResin, 1, ItemID.oilFuel, 1, ItemID.petrol, 1, ItemID.kerosene, 1],
+        "BlockID.asphalt": [ItemID.bitumen, 1, 13, 2]
+    }, true);
+});
+
+
+
+
+
+// file: machine/Polymerizer.js
+
+IDRegistry.genBlockID("polymerizer");
+Block.createBlockWithRotation("polymerizer", [
+    {name: "Polymerizer", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["polymerizer_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+], "opaque");
+
+var guiPolymerizer = new UI.StandartWindow({
+    standart: {
+        header: {text: {text: "Polymerizer"}},
+        inventory: {standart: true},
+        background: {standart: true}
+    },
+    
+    drawing: [
+        {type: "bitmap", x: 530, y: 146, bitmap: "polymerizer_bar_background", scale: GUI_BAR_STANDART_SCALE},
+        {type: "bitmap", x: 450, y: 150, bitmap: "energy_small_background", scale: GUI_BAR_STANDART_SCALE}
+    ],
+    
+    elements: {
+        "progressScale": {type: "scale", x: 530, y: 146, direction: 0, value: 0.5, bitmap: "polymerizer_bar_scale", scale: GUI_BAR_STANDART_SCALE},
+        "energyScale": {type: "scale", x: 450, y: 150, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
+        "slotSource": {type: "slot", x: 441, y: 75},
+        "slotEnergy": {type: "slot", x: 441, y: 212},
+        "slotResult": {type: "slot", x: 625, y: 142},
+        "slotUpgrade1": {type: "slot", x: 820, y: 48},
+        "slotUpgrade2": {type: "slot", x: 820, y: 112},
+        "slotUpgrade3": {type: "slot", x: 820, y: 176},
+        "slotUpgrade4": {type: "slot", x: 820, y: 240},
+    }
+});
+
+MachineEssentials.registerStandart(BlockID.polymerizer, {
+    getTransportSlots: function(){
+        return {input: ["slotSource"], output: ["slotResult"]};
+    },
+    
+    result: function(resultSlots, result){
+        resultSlots[0].id = result.id;
+        resultSlots[0].data = result.data;
+        resultSlots[0].count += result.count;
+    },
+
+    getGuiScreen: function(){
+      return guiPolymerizer;
+    }
+    
+}, {
+    machine_name: "polymerizer",
+    source_slot: "slotSource",
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale"
+});
+
+
+
+Callback.addCallback("PreLoaded", function(){
+    // Recipies
+    MachineRecipeRegistry.registerRecipesFor("polymerizer", {
+        "ItemID.propylene": {id: ItemID.granulesPolypropylene, count: 1, data: 0}
+    }, true);
+});
+
+
+
+
+
+// file: machine/Wire.js
+
+IDRegistry.genBlockID("hvTransformator");
+Block.createBlock("hvTransformator", [
+    {name: "High-Voltage Transformator", texture: [["std_bottom", 0], ["std_top", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0]], inCreative: true}
+]);
+ICRender.getGroup("ic-transformator").add(BlockID.hvTransformator, -1);
+
+
+IDRegistry.genBlockID("hvConnector");
+Block.createBlock("hvConnector", [
+    {name: "High-Voltage Connector", texture: [["hv_connector", 0]], inCreative: true}
+]);
+RenderTools.setupConnectorRender(BlockID.hvConnector);
+
+
+IDRegistry.genItemID("wireCoil");
+Item.createItem("wireCoil", "Wire coil", {name: "wire_coil", meta: 0}, {});
+
+
+
+// file: mob/Military.js
+
+var mobMilitary = MobRegistry.registerEntity("military");
+
+mobMilitary.customizeEvents({
+    tick: function(){
+        Entity.setRender(this.entity, 3);
+        Entity.setSkin(this.entity, "mob/military.png");
+        Entity.setNameTag(this.entity,"Military");
+        Entity.setArmorSlot(this.entity, 0, ItemID.helmetMilitary, 1, 0);
+        //Entity.setCarriedItem(this.entity, 267, 1, 0);
+    },
+    death: function(){
+        //addExpAtEntity(this.entity, 4);
+    },
+    getDrop: function(){
+        var coords = Entity.getPosition(entity);
+        World.drop(coords.x, coords.y, coords.z, 267, 1);
+    },
+    attackedBy: function(attacker, amount){
+        //World.playSoundAtEntity(this.entity, "mob.creeper.say1", 1, 1);
+    }
+});
+
+mobMilitary.customizeDescription({
+    getHitbox: function(){
+        return {w: 0.9, h: 1.8}
+    }
+});
+
+mobMilitary.customizeAI({ 
+    getAITypes: function(){ 
+        return { 
+            wander: { 
+                type: EntityAI.Wander,
+                priority: 4,
+                speed: 0.09,
+                angular_speed: 0.1,
+                delay_weigth: 0.2
+            },
+        } 
+    } 
+});
+
+TradeLib.registerTrader("military", [
+    {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
+    {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
+])
+
+
+
+
+// file: mob/UI.js
 

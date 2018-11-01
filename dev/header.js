@@ -17,6 +17,7 @@ IMPORT("EntityState");
 IMPORT("ThirstLib");
 IMPORT("DevAPI");
 IMPORT("energylib");
+IMPORT("TradeLib");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;

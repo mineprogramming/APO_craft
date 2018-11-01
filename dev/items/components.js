@@ -1,4 +1,12 @@
-/*Oil distillation products*/
+/* Trading */
+
+//Silver
+IDRegistry.genItemID("silver");
+Item.createItem("silver", "Silver", {name: "silver", meta: 0}, {});
+
+
+
+/*Oil distillation products */
 
 //Waste
 IDRegistry.genItemID("waste");

@@ -39,3 +39,8 @@ mobMilitary.customizeAI({
         } 
     } 
 });
+
+TradeLib.registerTrader("military", [
+    {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
+    {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
+])

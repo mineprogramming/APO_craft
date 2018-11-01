@@ -1,6 +1,7 @@
 header.js
 imports.js
 
+RenderTools.js
 items/RecipiesManager.js
 
 core/IC2Integration.js
@@ -43,7 +44,9 @@ machine/Extruder.js
 machine/PlasticPress.js
 machine/Rectifier.js
 machine/Polymerizer.js
+machine/Wire.js
 
 
 mob/Military.js
+mob/UI.js
 
