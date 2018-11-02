@@ -37,3 +37,13 @@ function srand(seed){
     return seed - Math.floor(seed);
 }
 
+function getSideCoords(coords){
+    return [
+        {x: coords.x, y: coords.y + 1, z: coords.z},
+        {x: coords.x, y: coords.y - 1, z: coords.z},
+        {x: coords.x + 1, y: coords.y, z: coords.z},
+        {x: coords.x - 1, y: coords.y, z: coords.z},
+        {x: coords.x, y: coords.y, z: coords.z + 1},
+        {x: coords.x, y: coords.y, z: coords.z - 1},
+    ];
+}

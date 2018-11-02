@@ -10,7 +10,10 @@ ICRender.getGroup("ic-transformator").add(BlockID.hvTransformator, -1);
 
 TileEntity.registerPrototype(BlockID.hvTransformator, {
     defaultValues: {
-        transmitter: false
+        transmitter: false,
+        energy: 0,
+        consumers: [],
+        nodes: []
     }, 
     
     click: function(id, count, data){
@@ -18,17 +21,62 @@ TileEntity.registerPrototype(BlockID.hvTransformator, {
         this.data.transmitter = !this.data.transmitter;
         if(this.data.transmitter){
             Game.message("Transmitter");
+            this.updateConsumers();
         } else {
             Game.message("Reciever");
         }
         return true;
     },
     
-    energyTick: function(type, src){
-        
+    created: function(){
+        let coords = {x: this.x, y: this.y, z: this.z};
+        let sideCoords = getSideCoords(coords);
+        let transmitters = [];
+        for(var i in sideCoords){
+            if(World.getBlockID(sideCoords[i].x, sideCoords[i].y, sideCoords[i].z) == BlockID.hvConnector){
+                WireSystem.getTransmitters(sideCoords[i], transmitters);
+            }
+        }
+        for(var i in transmitters){
+            let coords = transmitters[i];
+            let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+            transmitter.updateConsumers();
+        }
     },
     
-    isGenerator: function() {return this.data.transmitter;}
+    energyTick: function(type, src){
+        if(this.data.transmitter){
+            let amount = src.amount();
+            for(var i in this.data.consumers) { 
+                let coords = this.data.consumers[i];
+                let consumer = World.getTileEntity(coords.x, coords.y, coords.z);
+                if(consumer) {
+                    let energy = Math.min(1000 - consumer.data.energy, Math.min(1000, amount));
+                    consumer.data.energy += src.get(energy);
+                    amount = src.amount();
+                }
+                else {
+                    this.updateConsumers();
+                    break;
+                }
+            }
+        } else {
+            this.data.energy = src.add(this.data.energy);
+        }
+    },
+    
+    updateConsumers: function(){
+        let coords = {x: this.x, y: this.y, z: this.z};
+        let sideCoords = getSideCoords(coords);
+        this.data.consumers = [];
+        for(var i in sideCoords){
+            if(World.getBlockID(sideCoords[i].x, sideCoords[i].y, sideCoords[i].z) == BlockID.hvConnector){
+                WireSystem.getConsumers(sideCoords[i], this.data.consumers);
+            }
+        }
+    },
+    
+    isGenerator: function() {return !this.data.transmitter;}
 });
 
 EnergyTileRegistry.addEnergyTypeForId(BlockID.hvTransformator, EU);
@@ -54,15 +102,28 @@ RenderTools.setupConnectorRender(BlockID.hvConnector);
 
 Callback.addCallback("DestroyBlock", function(coords, block, player){
     if(block.id == BlockID.hvConnector){
-        for(var i in WireSystem.wires){
-            let wc1 = WireSystem.wires[i].coords[0];
-            let wc2 = WireSystem.wires[i].coords[1];
-            if((wc1.x == coords.x + 0.5 && wc1.y == coords.y - 1 && wc1.z == coords.z + 0.5)
-                    || (wc2.x == coords.x + 0.5 && wc2.y == coords.y - 1 && wc2.z == coords.z + 0.5)){
+        // Get transmitters 
+        let transmitters = [];
+        WireSystem.getTransmitters(coords, transmitters);
+        
+        // Remove animations
+        WireSystem.wires = WireSystem.wires.filter(function(wire){
+            let wc1 = wire.coords[0];
+            let wc2 = wire.coords[1];
+            if((wc1.x == coords.x && wc1.y == coords.y && wc1.z == coords.z)
+                    || (wc2.x == coords.x && wc2.y == coords.y && wc2.z == coords.z)){
                 // Remove wire from array and remove animation of the returned item;
-                WireSystem.wires.splice(i, 1)[0].animation.destroy();
+                wire.animation.destroy();
                 World.drop(coords.x, coords.y, coords.z, ItemID.wireCoil, 1, 0);
+                return false;
             }
+            return true;
+        });
+        
+        for(var i in transmitters){
+            let coords = transmitters[i];
+            let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+            transmitter.updateConsumers();
         }
     }
 });
@@ -73,7 +134,7 @@ IDRegistry.genItemID("wireCoil");
 Item.createItem("wireCoil", "Wire coil", {name: "wire_coil", meta: 0}, {});
 
 var WireSystem = {
-    connector1: null,
+    connector1: undefined,
     
     wires: [],
     
@@ -83,13 +144,8 @@ var WireSystem = {
             return false;
         }
         for(var i in WireSystem.wires){
-            let wc1 = WireSystem.wires[i].coords[0];
-            let wc2 = WireSystem.wires[i].coords[1];
-            if((wc1.x == pos1.x && wc1.y == pos1.y && wc1.z == pos1.z
-                    && wc2.x == pos2.x && wc2.y == pos2.y && wc2.z == pos2.z)
-                || (wc2.x == pos1.x && wc2.y == pos1.y && wc2.z == pos1.z
-                    && wc1.x == pos2.x && wc1.y == pos2.y && wc1.z == pos2.z)){
-                  return false;
+            if(WireSystem.equal(WireSystem.wires[i].coords, [pos1, pos2])){
+                return false;
             }
         }
         let animation = WireSystem.addWire(pos1, pos2, distance);
@@ -97,7 +153,21 @@ var WireSystem = {
         return true;
     },
     
+    equal: function(coords1, coords2){
+        let a1 = coords1[0];
+        let a2 = coords1[1];
+        let b1 = coords2[0];
+        let b2 = coords2[1];
+        return (a1.x == b1.x && a1.y == b1.y && a1.z == b1.z
+                    && a2.x == b2.x && a2.y == b2.y && a2.z == b2.z)
+                || (a1.x == b2.x && a1.y == b2.y && a1.z == b2.z
+                    && a2.x == b1.x && a2.y == b1.y && a2.z == b1.z);
+            
+    },
+    
     addWire: function(pos1, pos2, distance){
+        pos1 = {x: pos1.x + 0.5, y: pos1.y - 1, z: pos1.z + 0.5};
+        pos2 = {x: pos2.x + 0.5, y: pos2.y - 1, z: pos2.z + 0.5};
         var animationWire = new Animation.Base((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2, (pos1.z + pos2.z) / 2);
         var render = new Render({skin: "mob/wire.png"});
         var partWire = render.getPart("body").addPart("wire");
@@ -122,6 +192,58 @@ var WireSystem = {
         animationWire.load();
         
         return animationWire;
+    },
+    
+    getTransmitters: function(coords, transmitters){
+        let checked = [];
+        //y = -1 grants that this point won't be used in the game
+        let pointEmpty = {x: 0, y: -1, z: 0};
+        WireSystem.getNodesRecursive(coords, pointEmpty, transmitters, checked, true);
+    },
+    
+    getConsumers: function(coords, consumers){
+        let checked = [];
+        //y = -1 grants that this point won't be used in the game
+        let pointEmpty = {x: 0, y: -1, z: 0};
+        WireSystem.getNodesRecursive(coords, pointEmpty, consumers, checked, false);
+    },
+    
+    getNodesRecursive: function(coords, prev, consumers, checked, transmitter){
+        for(var i in checked){
+            if(checked[i].x == coords.x && checked[i].y == coords.y && checked[i].z == coords.z){
+                return;
+            }
+        }
+        checked.push(coords);
+        
+        let sideCoords = getSideCoords(coords);
+        for(var i in sideCoords){
+            let x = sideCoords[i].x;
+            let y = sideCoords[i].y;
+            let z = sideCoords[i].z;
+            let tileEntity = World.getTileEntity(x, y, z);
+            let block = World.getBlockID(x, y, z);
+            if(tileEntity != null && block == BlockID.hvTransformator && transmitter == tileEntity.data.transmitter){ 
+                consumers.push({x: x, y: y, z: z});
+            }
+        }
+            
+        for(var i in WireSystem.wires){
+            if(WireSystem.equal(WireSystem.wires[i].coords, [coords, prev])){
+                continue;
+            }
+            let wc1 = WireSystem.wires[i].coords[0];
+            let wc2 = WireSystem.wires[i].coords[1];
+            Logger.Log(JSON.stringify(wc1));
+            Logger.Log(JSON.stringify(wc2));
+            Logger.Log(JSON.stringify(coords));
+            if(wc1.x == coords.x && wc1.y == coords.y && wc1.z == coords.z){
+                WireSystem.getNodesRecursive(wc2, wc1, consumers, checked, transmitter);
+            } else if(wc2.x == coords.x && wc2.y == coords.y && wc2.z == coords.z){
+                WireSystem.getNodesRecursive(wc1, wc2, consumers, checked, transmitter);
+            }
+        }
+        return consumers;
     }
 }
 
@@ -149,15 +271,18 @@ Item.registerUseFunction("wireCoil", function (coords, item, block) {
     if(block.id != BlockID.hvConnector)
         return;
     if(!WireSystem.connector1){
-        WireSystem.connector1 = {x: coords.x + 0.5, y: coords.y - 1, z: coords.z + 0.5};
+        WireSystem.connector1 = {x: coords.x, y: coords.y, z: coords.z};
     } else {
-        let connector2 = {x: coords.x + 0.5, y: coords.y - 1, z: coords.z + 0.5};
-        if(connector2.x == WireSystem.connector1.x 
-                && connector2.y == WireSystem.connector1.y 
-                && connector2.z == WireSystem.connector1.z)
-            return;
+        let connector2 = {x: coords.x, y: coords.y, z: coords.z};
         if(WireSystem.setupWire(WireSystem.connector1, connector2)){
-            Game.message("Add wire");
+            Game.message("Addding wire");
+            let transmitters = [];
+            WireSystem.getTransmitters(connector2, transmitters);
+            for(var i in transmitters){
+                let coords = transmitters[i];
+                let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+                transmitter.updateConsumers();
+            }
             Player.decreaseCarriedItem();
             WireSystem.connector1 = null;
         }
