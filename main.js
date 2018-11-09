@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 39
+  files: 40
 */
 
 
@@ -706,6 +706,19 @@ IDRegistry.genItemID("bootsArmy");
 Item.createArmorItem("bootsArmy", "Army Boots", {name: "boots_army"}, {type: "boots", armor: 15, durability: 149, texture: "armor/boots_army.png"});
 
 
+// Exoskeleton
+IDRegistry.genItemID("helmetExo");
+IDRegistry.genItemID("chestplateExo");
+IDRegistry.genItemID("leggingsExo");
+IDRegistry.genItemID("bootsExo");
+
+Item.createArmorItem("helmetExo", "Exo Helmet", {name: "helmet_exo"}, {type: "helmet", armor: 100, durability: 1000, texture: "armor/exo_1.png"});
+Item.createArmorItem("chestplateExo", "Exo Chestplate", {name: "chestplate_exo"}, {type: "chestplate", armor: 100, durability: 1000, texture: "armor/exo_1.png"});
+Item.createArmorItem("leggingsExo", "Exo Leggings", {name: "leggings_exo"}, {type: "leggings", armor: 100, durability: 1000, texture: "armor/exo_2.png"});
+Item.createArmorItem("bootsExo", "Exo Boots", {name: "boots_exo"}, {type: "boots", armor: 100, durability: 1000, texture: "armor/exo_1.png"});
+
+
+
 
 
 
@@ -984,7 +997,7 @@ var Plane = {}
 Plane.spawn = function(x, z){
     var animationPlane = new Animation.Base(x, PLANES_HEIGHT, z);
     animationPlane.ticks = 0;
-    animationPlane.describe({render: Plane.render.getId()})
+    animationPlane.describe({render: Plane.render.getId()});
     animationPlane.loadCustom(function(){
         this.ticks++;
         for(var i = 0; i < 2; i++){
@@ -1125,6 +1138,116 @@ Plane.bomb.customizeVisual({
         return {
             "main": Plane.bombModel
         };
+    }
+});
+
+
+
+
+
+
+// file: environment/exoskeleton.js
+
+var Exoskeleton = {
+    coords: []
+};
+
+Exoskeleton.render = new Render({skin: "mob/exoskeleton.tga"});
+(function() {
+    var mesh = new RenderMesh(__dir__ + "models/exoskeleton.obj", "obj", null);
+    Exoskeleton.part = Exoskeleton.render.getPart("body").addPart("exoskeleton");
+    Exoskeleton.part.setOffset(0, 20, 0);
+    Exoskeleton.part.setMesh(mesh);
+})();
+
+Exoskeleton.add = function(x, y, z){
+    var animation = new Animation.Base(x, y, z);
+    animation.ticks = 0;
+    animation.describe({render: Exoskeleton.render.getId()});
+    animation.loadCustom(function(){
+        this.ticks++;
+        Exoskeleton.part.setRotation(0, this.ticks / 4, 0);
+        this.refresh();
+    });
+    return animation;
+}
+
+Exoskeleton.setup = function(x, y, z){
+    let animation = Exoskeleton.add(x, y, z);
+    Exoskeleton.coords.push({animation: animation, coords: {"x": x, "y": y, "z": z}});
+}
+
+Saver.addSavesScope("exoskeleton", 
+    function read(scope){
+        if(!scope.coords) return;
+        Exoskeleton.coords = [];
+        for(var i in scope.coords){
+            let coords = scope.coords[i];
+            let animation = Exoskeleton.add(coords.x, coords.y, coords.z);
+            Exoskeleton.coords.push({animation: animation, coords: coords});
+        }
+    },
+
+    function save(){
+        let coords = [];
+        for(var i in Exoskeleton.coords){
+            coords.push(Exoskeleton.coords[i].coords);
+        }
+        return {coords: coords};
+    }
+);
+
+Callback.addCallback("ItemUse", function(coords, item, block){
+    let x = coords.relative.x;
+    let y = coords.relative.y;
+    let z = coords.relative.z;
+    if(item.id == 280){
+        Exoskeleton.setup(x, y + 1, z);
+    }
+});
+
+
+var exoMessageDisplayed = false;
+Callback.addCallback("tick", function(){
+    if (World.getThreadTime() % 5 === 0) {
+        let player = Entity.getPosition(Player.get());
+        var near = false;
+        Exoskeleton.coords.filter(function(obj){
+            let exoskeleton = obj.coords;
+            if(player.x < exoskeleton.x + 1 && player.x > exoskeleton.x - 1
+                    && player.y < exoskeleton.y + 1 && player.y > exoskeleton.y - 1
+                    && player.z < exoskeleton.z + 1 && player.z > exoskeleton.z - 1){
+                near = true;
+                // Check armor slots
+                var empty = true;
+                for(var i = 0; i < 4; i++){
+                    var slot = Player.getArmorSlot(i);
+                    if(slot.id != 0){
+                        empty = false;
+                    }
+                }
+                if(empty){
+                    // Put armor on
+                    obj.animation.destroy();
+                    for(var i in Player){
+                        Game.message(i);
+                    }
+                    return false;
+                } else {
+                    // Display warning
+                    if(!exoMessageDisplayed){
+                        exoMessageDisplayed = true;
+                        Game.message("Take off all the armor to proceed");
+                    }
+                }
+                
+            }
+            return true;
+        });
+        
+        if(!near){
+            exoMessageDisplayed = false;
+        }
     }
 });
 
@@ -2706,9 +2829,12 @@ armorMilitary.setSlot(1, [
     ItemID.chestplateSplinterVest
 ]);
 
-armorMilitary.setSlot(3, [
-    ItemID.bootsArmy,
+armorMilitary.setSlot(2, [
     ItemID.leggingsPantsArmy
+]);
+
+armorMilitary.setSlot(3, [
+    ItemID.bootsArmy
 ]);
 
 
