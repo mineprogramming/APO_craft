@@ -5,7 +5,6 @@ mobMilitary.customizeEvents({
         Entity.setRender(this.entity, 3);
         Entity.setSkin(this.entity, "mob/military.png");
         Entity.setNameTag(this.entity,"Military");
-        Entity.setArmorSlot(this.entity, 0, ItemID.helmetMilitary, 1, 0);
         //Entity.setCarriedItem(this.entity, 267, 1, 0);
     },
     death: function(){
@@ -26,21 +25,44 @@ mobMilitary.customizeDescription({
     }
 });
 
-mobMilitary.customizeAI({ 
-    getAITypes: function(){ 
-        return { 
-            wander: { 
-                type: EntityAI.Wander,
-                priority: 4,
-                speed: 0.09,
-                angular_speed: 0.1,
-                delay_weigth: 0.2
-            },
-        } 
-    } 
-});
-
+//mobMilitary.customizeAI({ 
+//    getAITypes: function(){ 
+//        return { 
+//            wander: { 
+//                type: EntityAI.Wander,
+//                priority: 4,
+//                speed: 0.09,
+//                angular_speed: 0.1,
+//                delay_weigth: 0.2
+//            },
+//        } 
+//    } 
+//});
+//
 TradeLib.registerTrader("military", [
     {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
     {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
-])
+]);
+
+var armorMilitary = new ArmorSet();
+armorMilitary.setSlot(0, [
+    ItemID.helmetMilitary, 
+    ItemID.helmetAltyn, 
+    ItemID.helmetOpsCore, 
+    ItemID.helmetShch1
+]);
+
+armorMilitary.setSlot(1, [
+    ItemID.chestplateBKZ6,
+    ItemID.chestplateIOTVgen3,
+    ItemID.chestplate6B43,
+    ItemID.chestplateSplinterVest
+]);
+
+armorMilitary.setSlot(2, [
+    ItemID.leggingsPantsArmy
+]);
+
+armorMilitary.setSlot(3, [
+    ItemID.bootsArmy
+]);

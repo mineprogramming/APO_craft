@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 38
+  files: 39
 */
 
 
@@ -48,6 +48,16 @@ function srand(seed){
     return seed - Math.floor(seed);
 }
 
+function getSideCoords(coords){
+    return [
+        {x: coords.x, y: coords.y + 1, z: coords.z},
+        {x: coords.x, y: coords.y - 1, z: coords.z},
+        {x: coords.x + 1, y: coords.y, z: coords.z},
+        {x: coords.x - 1, y: coords.y, z: coords.z},
+        {x: coords.x, y: coords.y, z: coords.z + 1},
+        {x: coords.x, y: coords.y, z: coords.z - 1},
+    ];
+}
 
 
 
@@ -650,8 +660,52 @@ Item.createItem("eggMilitary", "Military Egg", {name: "egg_military", meta: 0}, 
 
 Item.registerUseFunctionForID(ItemID.eggMilitary, function(coords, item, block) {
     coords = coords.relative;
-    Entity.spawnCustom("military", coords.x + .5, coords.y + .5, coords.z + .5);
+    let entity = Entity.spawnCustom("military", coords.x + .5, coords.y + .5, coords.z + .5);
+    armorMilitary.equip(entity.entity);
 });
+
+
+
+// file: items/armor.js
+
+// Helmets
+IDRegistry.genItemID("helmetMilitary");
+Item.createArmorItem("helmetMilitary", "Military Helmet", {name: "helmet_military"}, {type: "helmet", armor: 5, durability: 149, texture: "armor/helmet_military.png"});
+
+IDRegistry.genItemID("helmetAltyn");
+Item.createArmorItem("helmetAltyn", "Altyn Helmet", {name: "helmet_altyn"}, {type: "helmet", armor: 7, durability: 149, texture: "armor/helmet_altyn.png"});
+
+IDRegistry.genItemID("helmetOpsCore");
+Item.createArmorItem("helmetOpsCore", "OPS CORE Helmet", {name: "helmet_ops_core"}, {type: "helmet", armor: 7, durability: 149, texture: "armor/helmet_ops_core.png"});
+
+IDRegistry.genItemID("helmetShch1");
+Item.createArmorItem("helmetShch1", "Shch 1", {name: "helmet_shch_1"}, {type: "helmet", armor: 7, durability: 149, texture: "armor/helmet_shch_1.png"});
+
+
+// Body Armor
+IDRegistry.genItemID("chestplateBKZ6");
+Item.createArmorItem("chestplateBKZ6", "BKZ-6 Body Armor", {name: "chestplate_bkz_6"}, {type: "chestplate", armor: 15, durability: 149, texture: "armor/chestplate_bkz_6.png"});
+
+IDRegistry.genItemID("chestplateIOTVgen3");
+Item.createArmorItem("chestplateIOTVgen3", "IOTV gen3 Body Armor", {name: "chestplate_iotv_gen3"}, {type: "chestplate", armor: 15, durability: 149, texture: "armor/chestplate_iotv_gen3.png"});
+
+IDRegistry.genItemID("chestplate6B43");
+Item.createArmorItem("chestplate6B43", "6B43 Body Armor", {name: "chestplate_6b34"}, {type: "chestplate", armor: 15, durability: 149, texture: "armor/chestplate_6b34.png"});
+
+IDRegistry.genItemID("chestplateSplinterVest");
+Item.createArmorItem("chestplateSplinterVest", "Splinter vest", {name: "chestplate_splinter_vest"}, {type: "chestplate", armor: 15, durability: 149, texture: "armor/chestplate_splinter_vest.png"});
+
+
+// Leggings
+IDRegistry.genItemID("leggingsPantsArmy");
+Item.createArmorItem("leggingsPantsArmy", "Army Pants", {name: "pants_army"}, {type: "leggings", armor: 15, durability: 149, texture: "armor/pants_army.png"});
+
+
+// Boots
+IDRegistry.genItemID("bootsArmy");
+Item.createArmorItem("bootsArmy", "Army Boots", {name: "boots_army"}, {type: "boots", armor: 15, durability: 149, texture: "armor/boots_army.png"});
+
+
 
 
 
@@ -806,13 +860,6 @@ Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, digg
      return [[ItemID.galliumArsenite, 1, 0]];
 });
 
-
-
-
-// file: armor/Military.js
-
-IDRegistry.genItemID("helmetMilitary");
-Item.createArmorItem("helmetMilitary", "Military Helmet", {name: "helmet_military"}, {type: "helmet", armor: 5, durability: 149, texture: "armor/helmet_military.png"});
 
 
 
@@ -2280,22 +2327,319 @@ Callback.addCallback("PreLoaded", function(){
 
 // file: machine/Wire.js
 
+/* Этот код получается слишком кривым. Возможно, в светлом будущем он станет лучше. */
+
+
+// High-Voltage Transformator
 IDRegistry.genBlockID("hvTransformator");
 Block.createBlock("hvTransformator", [
     {name: "High-Voltage Transformator", texture: [["std_bottom", 0], ["std_top", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0]], inCreative: true}
 ]);
 ICRender.getGroup("ic-transformator").add(BlockID.hvTransformator, -1);
 
+TileEntity.registerPrototype(BlockID.hvTransformator, {
+    defaultValues: {
+        transmitter: false,
+        energy: 0,
+        consumers: [],
+        nodes: []
+    }, 
+    
+    click: function(id, count, data){
+        if(id == BlockID.hvConnector) return true;
+        this.data.transmitter = !this.data.transmitter;
+        if(this.data.transmitter){
+            Game.message("Transmitter");
+            this.updateConsumers();
+        } else {
+            Game.message("Reciever");
+        }
+        return true;
+    },
+    
+    created: function(){
+        let coords = {x: this.x, y: this.y, z: this.z};
+        let sideCoords = getSideCoords(coords);
+        let transmitters = [];
+        for(var i in sideCoords){
+            if(World.getBlockID(sideCoords[i].x, sideCoords[i].y, sideCoords[i].z) == BlockID.hvConnector){
+                WireSystem.getTransmitters(sideCoords[i], transmitters);
+            }
+        }
+        for(var i in transmitters){
+            let coords = transmitters[i];
+            let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+            transmitter.updateConsumers();
+        }
+    },
+    
+    energyTick: function(type, src){
+        if(this.data.transmitter){
+            let amount = src.amount();
+            for(var i in this.data.consumers) { 
+                let coords = this.data.consumers[i];
+                let consumer = World.getTileEntity(coords.x, coords.y, coords.z);
+                if(consumer) {
+                    let energy = Math.min(1000 - consumer.data.energy, Math.min(1000, amount));
+                    consumer.data.energy += src.get(energy);
+                    amount = src.amount();
+                }
+                else {
+                    this.updateConsumers();
+                    break;
+                }
+            }
+        } else {
+            this.data.energy = src.add(this.data.energy);
+        }
+    },
+    
+    updateConsumers: function(){
+        let coords = {x: this.x, y: this.y, z: this.z};
+        let sideCoords = getSideCoords(coords);
+        this.data.consumers = [];
+        for(var i in sideCoords){
+            if(World.getBlockID(sideCoords[i].x, sideCoords[i].y, sideCoords[i].z) == BlockID.hvConnector){
+                WireSystem.getConsumers(sideCoords[i], this.data.consumers);
+            }
+        }
+    },
+    
+    isGenerator: function() {return !this.data.transmitter;}
+});
 
+EnergyTileRegistry.addEnergyTypeForId(BlockID.hvTransformator, EU);
+
+Callback.addCallback("ItemUse", function(coords, item, block){
+    let x = coords.relative.x;
+    let y = coords.relative.y;
+    let z = coords.relative.z;
+    if(block.id == BlockID.hvTransformator && item.id == BlockID.hvConnector){
+        World.setBlock(x, y, z, BlockID.hvConnector, 0);
+    }
+});
+
+
+
+
+// High-Voltage Connector
 IDRegistry.genBlockID("hvConnector");
 Block.createBlock("hvConnector", [
     {name: "High-Voltage Connector", texture: [["hv_connector", 0]], inCreative: true}
 ]);
 RenderTools.setupConnectorRender(BlockID.hvConnector);
 
+Callback.addCallback("DestroyBlock", function(coords, block, player){
+    if(block.id == BlockID.hvConnector){
+        // Get transmitters 
+        let transmitters = [];
+        WireSystem.getTransmitters(coords, transmitters);
+        
+        // Remove animations
+        WireSystem.wires = WireSystem.wires.filter(function(wire){
+            let wc1 = wire.coords[0];
+            let wc2 = wire.coords[1];
+            if((wc1.x == coords.x && wc1.y == coords.y && wc1.z == coords.z)
+                    || (wc2.x == coords.x && wc2.y == coords.y && wc2.z == coords.z)){
+                // Remove wire from array and remove animation of the returned item;
+                wire.animation.destroy();
+                World.drop(coords.x, coords.y, coords.z, ItemID.wireCoil, 1, 0);
+                return false;
+            }
+            return true;
+        });
+        
+        for(var i in transmitters){
+            let coords = transmitters[i];
+            let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+            transmitter.updateConsumers();
+        }
+    }
+});
+
+
 
 IDRegistry.genItemID("wireCoil");
 Item.createItem("wireCoil", "Wire coil", {name: "wire_coil", meta: 0}, {});
+
+var WireSystem = {
+    connector1: undefined,
+    
+    wires: [],
+    
+    setupWire: function(pos1, pos2){
+        let distance = Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2) + Math.pow(pos1.z - pos2.z, 2));
+        if(distance == 0 || distance > 32) {
+            return false;
+        }
+        for(var i in WireSystem.wires){
+            if(WireSystem.equal(WireSystem.wires[i].coords, [pos1, pos2])){
+                return false;
+            }
+        }
+        let animation = WireSystem.addWire(pos1, pos2, distance);
+        WireSystem.wires.push({animation: animation, coords: [pos1, pos2]});
+        return true;
+    },
+    
+    equal: function(coords1, coords2){
+        let a1 = coords1[0];
+        let a2 = coords1[1];
+        let b1 = coords2[0];
+        let b2 = coords2[1];
+        return (a1.x == b1.x && a1.y == b1.y && a1.z == b1.z
+                    && a2.x == b2.x && a2.y == b2.y && a2.z == b2.z)
+                || (a1.x == b2.x && a1.y == b2.y && a1.z == b2.z
+                    && a2.x == b1.x && a2.y == b1.y && a2.z == b1.z);
+            
+    },
+    
+    addWire: function(pos1, pos2, distance){
+        pos1 = {x: pos1.x + 0.5, y: pos1.y - 1, z: pos1.z + 0.5};
+        pos2 = {x: pos2.x + 0.5, y: pos2.y - 1, z: pos2.z + 0.5};
+        var animationWire = new Animation.Base((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2, (pos1.z + pos2.z) / 2);
+        var render = new Render({skin: "mob/wire.png"});
+        var partWire = render.getPart("body").addPart("wire");
+        
+        var angleX = (pos2.y == pos1.y)? 0: Math.atan((pos1.z - pos2.z) / (pos2.y - pos1.y));
+        var angleY = (pos2.x == pos1.x)? Math.PI / 2: Math.atan((pos1.z - pos2.z) / (pos1.x - pos2.x));
+        var angleZ = (pos1.x == pos2.x)? 0: Math.atan((pos2.y - pos1.y) / (pos1.x - pos2.x));
+        
+        if(!distance) {
+            distance = Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2) + Math.pow(pos1.z - pos2.z, 2));
+        }
+        partWire.setRotation(angleX, angleY, angleZ);
+        render.setPart("wire", [
+            {
+                type: "box",
+                coords: { x: 0, y: 0, z: 0 },
+                size: { x: distance * 16, y: 1, z: 1 }
+            },
+        ], {});
+        
+        animationWire.describe({render: render.getId()});
+        animationWire.load();
+        
+        return animationWire;
+    },
+    
+    getTransmitters: function(coords, transmitters){
+        let checked = [];
+        //y = -1 grants that this point won't be used in the game
+        let pointEmpty = {x: 0, y: -1, z: 0};
+        WireSystem.getNodesRecursive(coords, pointEmpty, transmitters, checked, true);
+    },
+    
+    getConsumers: function(coords, consumers){
+        let checked = [];
+        //y = -1 grants that this point won't be used in the game
+        let pointEmpty = {x: 0, y: -1, z: 0};
+        WireSystem.getNodesRecursive(coords, pointEmpty, consumers, checked, false);
+    },
+    
+    getNodesRecursive: function(coords, prev, consumers, checked, transmitter){
+        for(var i in checked){
+            if(checked[i].x == coords.x && checked[i].y == coords.y && checked[i].z == coords.z){
+                return;
+            }
+        }
+        checked.push(coords);
+        
+        let sideCoords = getSideCoords(coords);
+        for(var i in sideCoords){
+            let x = sideCoords[i].x;
+            let y = sideCoords[i].y;
+            let z = sideCoords[i].z;
+            let tileEntity = World.getTileEntity(x, y, z);
+            let block = World.getBlockID(x, y, z);
+            if(tileEntity != null && block == BlockID.hvTransformator && transmitter == tileEntity.data.transmitter){ 
+                consumers.push({x: x, y: y, z: z});
+            }
+        }
+            
+        for(var i in WireSystem.wires){
+            if(WireSystem.equal(WireSystem.wires[i].coords, [coords, prev])){
+                continue;
+            }
+            let wc1 = WireSystem.wires[i].coords[0];
+            let wc2 = WireSystem.wires[i].coords[1];
+            Logger.Log(JSON.stringify(wc1));
+            Logger.Log(JSON.stringify(wc2));
+            Logger.Log(JSON.stringify(coords));
+            if(wc1.x == coords.x && wc1.y == coords.y && wc1.z == coords.z){
+                WireSystem.getNodesRecursive(wc2, wc1, consumers, checked, transmitter);
+            } else if(wc2.x == coords.x && wc2.y == coords.y && wc2.z == coords.z){
+                WireSystem.getNodesRecursive(wc1, wc2, consumers, checked, transmitter);
+            }
+        }
+        return consumers;
+    }
+}
+
+Saver.addSavesScope("wires", 
+    function read(scope){
+        WireSystem.wires = [];
+        for(var i in scope.wires){
+            let pos1 = scope.wires[i][0];
+            let pos2 = scope.wires[i][1];
+            let animation = WireSystem.addWire(pos1, pos2);
+            WireSystem.wires.push({animation: animation, coords : [pos1, pos2]});
+        }
+    },
+
+    function save(){
+        var scope = [];
+        for(var i in WireSystem.wires){
+            scope.push(WireSystem.wires[i].coords);
+        }
+        return {wires: scope};
+    }
+);
+
+Item.registerUseFunction("wireCoil", function (coords, item, block) {
+    if(block.id != BlockID.hvConnector)
+        return;
+    if(!WireSystem.connector1){
+        WireSystem.connector1 = {x: coords.x, y: coords.y, z: coords.z};
+    } else {
+        let connector2 = {x: coords.x, y: coords.y, z: coords.z};
+        if(WireSystem.setupWire(WireSystem.connector1, connector2)){
+            Game.message("Addding wire");
+            let transmitters = [];
+            WireSystem.getTransmitters(connector2, transmitters);
+            for(var i in transmitters){
+                let coords = transmitters[i];
+                let transmitter = World.getTileEntity(coords.x, coords.y, coords.z);
+                transmitter.updateConsumers();
+            }
+            Player.decreaseCarriedItem();
+            WireSystem.connector1 = null;
+        }
+    }
+});
+
+
+
+// file: mob/ArmorSet.js
+
+/*
+ * Special class used for managing Armor
+ */
+
+var ArmorSet = function(){
+    this.slots = [];
+    
+    this.setSlot = function(slot, items){
+        this.slots[slot] = items;
+    }
+    
+    this.equip = function(entity){
+        for(var slot in this.slots){
+            var id = this.slots[slot][randomInt(0, this.slots[slot].length - 1)];
+            Entity.setArmorSlot(entity, slot, id, 1, 0);
+        }
+    }
+}
 
 
 
@@ -2308,7 +2652,6 @@ mobMilitary.customizeEvents({
         Entity.setRender(this.entity, 3);
         Entity.setSkin(this.entity, "mob/military.png");
         Entity.setNameTag(this.entity,"Military");
-        Entity.setArmorSlot(this.entity, 0, ItemID.helmetMilitary, 1, 0);
         //Entity.setCarriedItem(this.entity, 267, 1, 0);
     },
     death: function(){
@@ -2329,24 +2672,44 @@ mobMilitary.customizeDescription({
     }
 });
 
-mobMilitary.customizeAI({ 
-    getAITypes: function(){ 
-        return { 
-            wander: { 
-                type: EntityAI.Wander,
-                priority: 4,
-                speed: 0.09,
-                angular_speed: 0.1,
-                delay_weigth: 0.2
-            },
-        } 
-    } 
-});
-
+//mobMilitary.customizeAI({ 
+//    getAITypes: function(){ 
+//        return { 
+//            wander: { 
+//                type: EntityAI.Wander,
+//                priority: 4,
+//                speed: 0.09,
+//                angular_speed: 0.1,
+//                delay_weigth: 0.2
+//            },
+//        } 
+//    } 
+//});
+//
 TradeLib.registerTrader("military", [
     {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
     {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
-])
+]);
+
+var armorMilitary = new ArmorSet();
+armorMilitary.setSlot(0, [
+    ItemID.helmetMilitary, 
+    ItemID.helmetAltyn, 
+    ItemID.helmetOpsCore, 
+    ItemID.helmetShch1
+]);
+
+armorMilitary.setSlot(1, [
+    ItemID.chestplateBKZ6,
+    ItemID.chestplateIOTVgen3,
+    ItemID.chestplate6B43,
+    ItemID.chestplateSplinterVest
+]);
+
+armorMilitary.setSlot(3, [
+    ItemID.bootsArmy,
+    ItemID.leggingsPantsArmy
+]);
 
 
 

@@ -22,7 +22,7 @@ var Plane = {}
 Plane.spawn = function(x, z){
     var animationPlane = new Animation.Base(x, PLANES_HEIGHT, z);
     animationPlane.ticks = 0;
-    animationPlane.describe({render: Plane.render.getId()})
+    animationPlane.describe({render: Plane.render.getId()});
     animationPlane.loadCustom(function(){
         this.ticks++;
         for(var i = 0; i < 2; i++){

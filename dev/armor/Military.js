@@ -1,2 +1,0 @@
-IDRegistry.genItemID("helmetMilitary");
-Item.createArmorItem("helmetMilitary", "Military Helmet", {name: "helmet_military"}, {type: "helmet", armor: 5, durability: 149, texture: "armor/helmet_military.png"});
