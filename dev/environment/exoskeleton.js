@@ -47,16 +47,6 @@ Saver.addSavesScope("exoskeleton",
     }
 );
 
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        Exoskeleton.setup(x, y + 1, z);
-    }
-});
-
-
 var exoMessageDisplayed = false;
 Callback.addCallback("tick", function(){
     if (World.getThreadTime() % 5 === 0) {

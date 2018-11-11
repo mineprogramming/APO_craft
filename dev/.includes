@@ -15,6 +15,7 @@ items/components.js
 items/detectors.js
 items/eggs.js
 items/armor.js
+items/guns.js
 
 blocks/roads.js
 blocks/signs.js

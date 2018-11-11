@@ -25,20 +25,20 @@ mobMilitary.customizeDescription({
     }
 });
 
-//mobMilitary.customizeAI({ 
-//    getAITypes: function(){ 
-//        return { 
-//            wander: { 
-//                type: EntityAI.Wander,
-//                priority: 4,
-//                speed: 0.09,
-//                angular_speed: 0.1,
-//                delay_weigth: 0.2
-//            },
-//        } 
-//    } 
-//});
-//
+mobMilitary.customizeAI({ 
+    getAITypes: function(){ 
+        return { 
+            wander: { 
+                type: EntityAI.Wander,
+                priority: 4,
+                speed: 0.09,
+                angular_speed: 0.1,
+                delay_weigth: 0.2
+            },
+        } 
+    } 
+});
+
 TradeLib.registerTrader("military", [
     {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
     {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
