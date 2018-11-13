@@ -3,6 +3,9 @@ imports.js
 
 RenderTools.js
 items/RecipiesManager.js
+items/steelArms.js
+
+api/GunRegistry.js
 
 core/IC2Integration.js
 core/MachineEssentials.js
@@ -51,4 +54,5 @@ machine/Wire.js
 mob/ArmorSet.js
 mob/Military.js
 mob/UI.js
+
 

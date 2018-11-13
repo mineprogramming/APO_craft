@@ -18,6 +18,7 @@ IMPORT("ThirstLib");
 IMPORT("DevAPI");
 IMPORT("energylib");
 IMPORT("TradeLib");
+IMPORT("Inventory");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
@@ -46,4 +47,17 @@ function getSideCoords(coords){
         {x: coords.x, y: coords.y, z: coords.z + 1},
         {x: coords.x, y: coords.y, z: coords.z - 1},
     ];
+}
+
+var ctx = UI.getContext();
+
+function runAsUI(func){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        try{
+            func();
+        }catch(err){
+            Game.message(err);
+            alert(err);
+        }}
+    }));
 }

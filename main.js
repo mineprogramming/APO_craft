@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 40
+  files: 41
 */
 
 
@@ -29,6 +29,7 @@ IMPORT("ThirstLib");
 IMPORT("DevAPI");
 IMPORT("energylib");
 IMPORT("TradeLib");
+IMPORT("Inventory");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
@@ -66,6 +67,11 @@ function getSideCoords(coords){
 
 var BitmapFactory = android.graphics.BitmapFactory;
 var Color = android.graphics.Color;
+var LinearLayout = android.widget.LinearLayout;
+var LayoutParams = android.widget.RelativeLayout.LayoutParams;
+var Gravity = android.view.Gravity;
+var BitmapFactory = android.graphics.BitmapFactory;
+var View = android.view.View;
 
 
 
@@ -717,6 +723,186 @@ Item.createArmorItem("chestplateExo", "Exo Chestplate", {name: "chestplate_exo"}
 Item.createArmorItem("leggingsExo", "Exo Leggings", {name: "leggings_exo"}, {type: "leggings", armor: 100, durability: 1000, texture: "armor/exo_2.png"});
 Item.createArmorItem("bootsExo", "Exo Boots", {name: "boots_exo"}, {type: "boots", armor: 100, durability: 1000, texture: "armor/exo_1.png"});
 
+var armorExo = [ItemID.helmetExo, ItemID.chestplateExo, ItemID.leggingsExo, ItemID.bootsExo];
+
+
+
+
+
+// file: items/guns.js
+
+//Glock 18
+IDRegistry.genItemID("glock18");
+Item.createItem("glock18", "Glock 18", {name: "glock_18", meta: 0}, {
+    stack: 1
+});
+
+//Bullet 9*19
+IDRegistry.genItemID("bullet_9_19");
+Item.createItem("bullet_9_19", "Bullet 9*19", {name: "bullet_9_19", meta: 0}, {});
+
+
+var bullets = [];
+var hurt = [];
+
+var GunRegistry = {
+    guns: [],
+    bullets: [],
+    hurt: [],
+    
+    registerGun: function(gun){
+        GunRegistry.guns.push(gun);
+        Item.registerNoTargetUseFunction(gun.gun, shoot);
+        Item.registerUseFunction(gun.gun, shoot);
+    },
+    
+    getGun: function(gunId){
+        for(var i in GunRegistry.guns){
+            let gun = GunRegistry.guns[i];
+            if(gun.gun == gunId)
+                return gun;
+        }
+    },
+    
+    shoot: function (){
+    let gun = GunRegistry.getGun(Player.getCarriedItem().id);
+    Game.message("123 " + gun.bullet);
+    if(PlayerInventory.retrieveItem(gun.bullet)){
+        let coords = Entity.getPosition(Player.get());
+        let lookAngle = Entity.getLookAngle(Player.get()); 
+        let velocity = {
+            x: -Math.sin(lookAngle.yaw) * gun.speed,
+            y: Math.sin(lookAngle.pitch) * gun.speed,
+            z: Math.cos(lookAngle.yaw) * gun.speed
+        }
+        let entity = Entity.spawn(coords.x, coords.y, coords.z, 80);
+        GunRegistry.bullets.push({"entity": entity, damage: 50});
+        Entity.setSkin(entity, "mob/bullet.png");
+        Entity.setVelocity(entity, velocity.x, velocity.y, velocity.z);
+    }
+}
+};
+
+GunRegistry.registerGun({
+    gun: ItemID.glock18,
+    bullet: ItemID.bullet_9_19,
+    skin: "mob/bullet.png",
+    speed: 8,
+    damage: 50,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png")
+});
+
+
+
+
+
+Callback.addCallback("ProjectileHit", function (projectile, item, target) {
+    GunRegistry.bullets = GunRegistry.bullets.filter(function(bullet){
+        if(bullet.entity == projectile){
+            Entity.remove(projectile);
+            if(target.entity != -1){
+                hurt.push({entity: target.entity, damage: bullet.damage});
+            }
+            return false;
+        }
+        return true;
+    });
+});
+
+Callback.addCallback("EntityHurt", function(attacker, victim, damage){
+    var entity = -1;
+    hurt = hurt.filter(function(entity){
+        if(entity.entity == victim){
+            entity = entity.entity;
+            return false;
+        }
+    });
+    if(entity != -1){
+        Entity.damageEntity(entity.entity, entity.damage);
+        Game.prevent();
+    }
+    return true;
+});
+
+
+
+var ctx = UI.getContext();
+
+function runAsUI(func){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        try{
+            func();
+        }catch(err){
+            Game.message(err);
+            alert(err);
+        }}
+    }));
+}
+
+
+var windowAim;
+var aimShown = false;
+var inGame = false;
+
+runAsUI(function(){
+    //Main layout of the whole window
+    var layoutMain = new LinearLayout(ctx);
+    layoutMain.setOrientation(0);
+    layoutMain.setGravity(Gravity.CENTER);
+    
+    var params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    layoutMain.setLayoutParams(params);
+    
+    var image = new android.widget.ImageView(ctx);
+    image.setImageBitmap(BitmapFactory.decodeFile(__dir__ + "gui/aim.png"));
+    layoutMain.addView(image);
+    
+    //Popup Window for displaying the staff
+    windowAim = new android.widget.PopupWindow(layoutMain, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    windowAim.setTouchable(false);
+    windowAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+});
+
+
+
+function showAim(){
+    if(aimShown) return;
+    runAsUI(function(){
+        aimShown = true;
+        windowAim.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.TOP, 0, 0);
+    });
+}
+
+function hideAim(){
+    if(!aimShown) return;
+    runAsUI(function(){
+        windowAim.dismiss();
+        aimShown = false;
+    });
+}
+
+
+Callback.addCallback("tick", function(){
+    if (World.getThreadTime() % 5 === 0) {
+        let carried = Player.getCarriedItem();
+        if(carried.id == ItemID.glock18){
+            showAim();
+        } else {
+            hideAim();
+        }
+    }
+});
+
+Callback.addCallback("NativeGuiChanged", function (screenName) {
+    if(screenName == "hud_screen" || 
+      screenName == "in_game_play_screen"){
+        inGame = true;
+    }
+    else{
+        inGame = false;
+        hideAim();
+    }
+});
 
 
 
@@ -1197,40 +1383,62 @@ Saver.addSavesScope("exoskeleton",
     }
 );
 
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        Exoskeleton.setup(x, y + 1, z);
-    }
-});
-
-
 var exoMessageDisplayed = false;
 Callback.addCallback("tick", function(){
     if (World.getThreadTime() % 5 === 0) {
         let player = Entity.getPosition(Player.get());
         var near = false;
-        Exoskeleton.coords.filter(function(obj){
+        
+        // Check armor slots
+        var empty = true;
+        var exo = false;
+        var slots = [];
+        for(var i = 0; i < 4; i++){
+            var slot = Player.getArmorSlot(i);
+            if(slot.id != 0){
+                empty = false;
+            }
+            if(slot.id == armorExo[i]){
+                exo = true;
+            }
+            slots.push(slot.id);
+        }
+        
+        // Check if all the slots are used
+        if(exo){
+            if(!(slots[0] == armorExo[0] 
+                    && slots[1] == armorExo[1] 
+                    && slots[2] == armorExo[2] 
+                    && slots[3] == armorExo[3])){
+                // Take armor off
+                for(var i = 0; i < 4; i++){
+                    Player.setArmorSlot(i, 0);
+                }
+                
+                for(var i = 0; i < 36; i++){
+                    let slot = Player.getInventorySlot(i);
+                    for(var j = 0; j < 4; j++){
+                        if(armorExo[j] == slot.id){
+                            Player.setInventorySlot(i, 0);
+                        }
+                    }
+                }
+                let coords = Entity.getPosition(Player.get());
+                Exoskeleton.setup(coords.x + 2, coords.y - 0.5, coords.z);
+            }
+        }
+        
+        Exoskeleton.coords = Exoskeleton.coords.filter(function(obj){
             let exoskeleton = obj.coords;
             if(player.x < exoskeleton.x + 1 && player.x > exoskeleton.x - 1
                     && player.y < exoskeleton.y + 1 && player.y > exoskeleton.y - 1
                     && player.z < exoskeleton.z + 1 && player.z > exoskeleton.z - 1){
                 near = true;
-                // Check armor slots
-                var empty = true;
-                for(var i = 0; i < 4; i++){
-                    var slot = Player.getArmorSlot(i);
-                    if(slot.id != 0){
-                        empty = false;
-                    }
-                }
                 if(empty){
                     // Put armor on
                     obj.animation.destroy();
-                    for(var i in Player){
-                        Game.message(i);
+                    for(var i = 0; i < 4; i++){
+                        Player.setArmorSlot(i, armorExo[i]);
                     }
                     return false;
                 } else {
@@ -2795,20 +3003,20 @@ mobMilitary.customizeDescription({
     }
 });
 
-//mobMilitary.customizeAI({ 
-//    getAITypes: function(){ 
-//        return { 
-//            wander: { 
-//                type: EntityAI.Wander,
-//                priority: 4,
-//                speed: 0.09,
-//                angular_speed: 0.1,
-//                delay_weigth: 0.2
-//            },
-//        } 
-//    } 
-//});
-//
+mobMilitary.customizeAI({ 
+    getAITypes: function(){ 
+        return { 
+            wander: { 
+                type: EntityAI.Wander,
+                priority: 4,
+                speed: 0.09,
+                angular_speed: 0.1,
+                delay_weigth: 0.2
+            },
+        } 
+    } 
+});
+
 TradeLib.registerTrader("military", [
     {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
     {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
