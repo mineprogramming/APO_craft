@@ -162,6 +162,15 @@ RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
 
 
 
+/* Other materials */
+
+// Can
+IDRegistry.genItemID("can");
+Item.createItem("can", "Can", {name: "can", meta: 0}, {});
+
+
+
+
 //Connectors
 
 

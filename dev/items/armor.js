@@ -49,3 +49,43 @@ Item.createArmorItem("bootsExo", "Exo Boots", {name: "boots_exo"}, {type: "boots
 
 var armorExo = [ItemID.helmetExo, ItemID.chestplateExo, ItemID.leggingsExo, ItemID.bootsExo];
 
+
+// Can armor
+IDRegistry.genItemID("helmetCan");
+IDRegistry.genItemID("chestplateCan");
+IDRegistry.genItemID("leggingsCan");
+IDRegistry.genItemID("bootsCan");
+
+Item.createArmorItem("helmetCan", "Can Helmet", {name: "helmet_can"}, {type: "helmet", armor: 2, durability: 160, texture: "armor/can_1.png"});
+Item.createArmorItem("chestplateCan", "Can Chestplate", {name: "chestplate_can"}, {type: "chestplate", armor: 5, durability: 235, texture: "armor/can_1.png"});
+Item.createArmorItem("leggingsCan", "Can Leggings", {name: "leggings_can"}, {type: "leggings", armor: 4, durability: 220, texture: "armor/can_2.png"});
+Item.createArmorItem("bootsCan", "Can Boots", {name: "boots_can"}, {type: "boots", armor: 2, durability: 190, texture: "armor/can_1.png"});
+
+RecipiesManager.addShaped({id: ItemID.helmetCan, count: 1, data: 0}, [
+     "aaa",
+     "a a",
+     "   "
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.chestplateCan, count: 1, data: 0}, [
+     "a a",
+     "aaa",
+     "aaa"
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.leggingsCan, count: 1, data: 0}, [
+     "a a",
+     "a a",
+     "a a"
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.bootsCan, count: 1, data: 0}, [
+     "   ",
+     "a a",
+     "a a"
+], ['a', ItemID.can, 0]);
+
+
+// Cardboard Box
+IDRegistry.genItemID("chestplateCardboard");
+Item.createArmorItem("chestplateCardboard", "Cardboard Box", {name: "chestplate_cardboard"}, {type: "chestplate", armor: 1, durability: 15, texture: "armor/chestplate_cardboard.png"});
