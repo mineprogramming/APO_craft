@@ -86,6 +86,10 @@ APOCityTransferSequence.setLoadingScreenParams({
     texture: "default_dimension_loading_screen"
 });
 
+//APOCityTransferSequence.setPortalCallback("onTransferComplete", function(){
+//    inCity = true;
+//});
+
 PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
 APOCityTransferSequence.setPortalTiles(BlockID.aetherPortal);
 

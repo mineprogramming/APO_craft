@@ -27,7 +27,26 @@ const DIRECTION_BOTH = 2;
 var GUI_BAR_STANDART_SCALE = 3.2;
 
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
+var ctx = UI.getContext();
 
+
+
+var inCity = false;
+
+Saver.addSavesScope("inCity", 
+    function read(scope){
+        if(!scope.inCity) return;
+        inCity = scope.inCity;
+    },
+
+    function save(){
+        return {inCity: inCity};
+    }
+);
+
+
+
+/* Just some useful functions */
 
 function randomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -49,7 +68,7 @@ function getSideCoords(coords){
     ];
 }
 
-var ctx = UI.getContext();
+
 
 function runAsUI(func){
     ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
