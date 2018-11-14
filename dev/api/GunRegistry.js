@@ -40,6 +40,7 @@ var GunRegistry = {
             if(gun.gun == gunId)
                 return gun;
         }
+        return false;
     },
     
     switchShooting: function(){
@@ -172,3 +173,8 @@ Callback.addCallback("NativeGuiChanged", function (screenName) {
     }
 });
 
+Callback.addCallback("DestroyBlockStart", function(){
+	if(GunRegistry.getGun(Player.getCarriedItem().id) != false){
+		Game.prevent();
+	}
+});
