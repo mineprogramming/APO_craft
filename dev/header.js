@@ -35,8 +35,12 @@ var inCity = false;
 
 Saver.addSavesScope("inCity", 
     function read(scope){
-        if(!scope.inCity) return;
+        if(!scope.inCity) {
+            RecipiesManager.deleteAll();
+            return;
+        }
         inCity = scope.inCity;
+        RecipiesManager.onRegisterRecipiesNeeded();
     },
 
     function save(){

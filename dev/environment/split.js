@@ -35,14 +35,24 @@ var Split = {
         Split.x = x; 
         Split.y = y;
         Split.z = z;
+        World.setBlock(x, y, z, 0);
+        World.setBlock(x, y + 1, z, 0);
+        World.setBlock(x, y, 2, 0);
         Entity.addEffect(Player.get(), 11, 30, 5);
-        
+    },
+    
+    tryStart: function(chance, x, y, z){
+        if(!inCity && Math.random() < chance){
+            Split.summon(x, y, z);
+        }
     }
 }
 
 
+
 Callback.addCallback("tick", function(){
     if(Split.summoning){
+        Entity.setPosition(Player.get(), Split.x, Split.y + 2, Split.z);
         let x = Split.x + Math.random() * 4 - 2;
         let y = Split.y + Math.random() * 4 - 2;
         let z = Split.z + Math.random() * 4 - 2;
@@ -52,18 +62,8 @@ Callback.addCallback("tick", function(){
         Split.summon_ticks++;
         if(Split.summon_ticks > 20){
             Split.summoning = false;
-        } else if(Split.summon_ticks > 15){
             Split.build();
         }
-    }
-});
-
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        Split.summon(x, y, z);
     }
 });
 

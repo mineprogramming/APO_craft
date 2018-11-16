@@ -65,11 +65,17 @@ var APOCity = new Dimension({
         
         generateChunk: function(chunkX, chunkZ) {
             APOGen.generate(chunkX * 16, chunkZ * 16);
+        },
+        
+        loaded: function(){
+            inCity = true;
+            RecipiesManager.onRegisterRecipiesNeeded();
         }
     }
 });
 
 //APOCity.debugTerrainSlice(128, 1, true);
+
 
 
 var APOCityTransferSequence = new TransferSequence(APOCity);
@@ -85,10 +91,6 @@ APOCityTransferSequence.setPortalOverlay(new PortalOverlayWindow({
 APOCityTransferSequence.setLoadingScreenParams({
     texture: "default_dimension_loading_screen"
 });
-
-//APOCityTransferSequence.setPortalCallback("onTransferComplete", function(){
-//    inCity = true;
-//});
 
 PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
 APOCityTransferSequence.setPortalTiles(BlockID.aetherPortal);

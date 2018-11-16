@@ -174,7 +174,7 @@ Callback.addCallback("NativeGuiChanged", function (screenName) {
 });
 
 Callback.addCallback("DestroyBlockStart", function(){
-	if(GunRegistry.getGun(Player.getCarriedItem().id) != false){
-		Game.prevent();
-	}
+    if(GunRegistry.getGun(Player.getCarriedItem().id) != false){
+        Game.prevent();
+    }
 });
