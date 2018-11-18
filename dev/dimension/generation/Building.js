@@ -9,12 +9,30 @@ function Building(filename){
     var blocks;
     var loot;
     
+    var parseBlocks = function(array){
+        for(var i = 0; i < array.length; i++){
+            for(var j = 0; j < array[0].length; j++){
+                for(var k = 0; k < array[0][0].length; k++){
+                    array[i][j][k] = eval(array[i][j][k]);
+                }
+            }
+        }
+        return array;
+    }
+    
+    var parseLoot = function(array){
+        for(var i in array){
+            array[i].id = eval(array[i].id);
+        }
+        return array;
+    }
+    
     var json = JSON.parse(readFile(path));
     if(Array.isArray(json)){
-        blocks = json;
+        blocks = parseBlocks(json);
     } else {
-        blocks = json.blocks;
-        loot = json.loot;
+        blocks = parseBlocks(json.blocks);
+        loot = parseLoot(json.loot);
     }
     
     this.debug = false;

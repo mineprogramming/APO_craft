@@ -168,18 +168,33 @@ var WireSystem = {
     addWire: function(pos1, pos2, distance){
         pos1 = {x: pos1.x + 0.5, y: pos1.y - 1, z: pos1.z + 0.5};
         pos2 = {x: pos2.x + 0.5, y: pos2.y - 1, z: pos2.z + 0.5};
-        var animationWire = new Animation.Base((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2, (pos1.z + pos2.z) / 2);
+        let center = {x: (pos1.x + pos2.x) / 2, y: (pos1.y + pos2.y) / 2, z: (pos1.z + pos2.z) / 2}
+        
+        var animationWire = new Animation.Base(center.x, center.y, center.z);
+        
         var render = new Render({skin: "mob/wire.png"});
         var partWire = render.getPart("body").addPart("wire");
         
-        var angleX = (pos2.y == pos1.y)? 0: Math.atan((pos1.z - pos2.z) / (pos2.y - pos1.y));
+        var angleX = (pos2.y == pos1.y)? Math.PI / 2: Math.atan((pos2.y - pos1.y) / (pos1.z - pos2.z));
         var angleY = (pos2.x == pos1.x)? Math.PI / 2: Math.atan((pos1.z - pos2.z) / (pos1.x - pos2.x));
         var angleZ = (pos1.x == pos2.x)? 0: Math.atan((pos2.y - pos1.y) / (pos1.x - pos2.x));
+        
+        //let vec = {x: center.x - pos1.x, y: center.y - pos1.y, z: center.z - pos1.z};
+        //let veclen = Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2) + Math.pow(vec.z, 2));
+        //let nX = vec.x / veclen;
+        //let nY = vec.y / veclen;
+        //let nZ = vec.z / veclen;
+        
         
         if(!distance) {
             distance = Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2) + Math.pow(pos1.z - pos2.z, 2));
         }
+        
+        //let pitch = Math.asin(nY);
+        //let yaw = pitch == 0? 0: nZ / Math.cos(pitch);
+        
         partWire.setRotation(angleX, angleY, angleZ);
+        //partWire.setRotation(0, yaw, pitch);
         render.setPart("wire", [
             {
                 type: "box",
@@ -275,7 +290,6 @@ Item.registerUseFunction("wireCoil", function (coords, item, block) {
     } else {
         let connector2 = {x: coords.x, y: coords.y, z: coords.z};
         if(WireSystem.setupWire(WireSystem.connector1, connector2)){
-            Game.message("Addding wire");
             let transmitters = [];
             WireSystem.getTransmitters(connector2, transmitters);
             for(var i in transmitters){
