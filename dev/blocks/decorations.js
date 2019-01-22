@@ -146,7 +146,7 @@ Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
         Player.setCarriedItem(item.id, item.count - 1, item.data);
     }
 });
-Renderer.setSaplingRender(BlockID.mushroomRadioactive, 0);
+Renderer.setSaplingRender(BlockID.mushroomRadioactiveSmall, 0);
 
 IDRegistry.genBlockID("stemMushroomRadioactive");
 Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Moshroom Stem", texture: [
