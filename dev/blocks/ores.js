@@ -1,80 +1,103 @@
-//Shale Ore
+// Shale Ore
 IDRegistry.genBlockID("oreShaleOil");
 Block.createBlock("oreShaleOil", [{name: "Shale Ore", texture: [["ore_shale_oil", 1], ["ore_shale_oil", 1], ["ore_shale_oil", 0], ["ore_shale_oil", 2], ["ore_shale_oil", 0], ["ore_shale_oil", 2]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreShaleOil, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreShaleOil, "stone", 3, true);
 
 
-//Gallium Arsenide Ore
+// Gallium Arsenide Ore
 IDRegistry.genBlockID("oreGalliumArsenide");
-Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
-
+Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreGalliumArsenide, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreGalliumArsenide, "stone", 3, true);
 Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, diggingLevel, toolLevel){
-     return [[ItemID.galliumArsenite, 1, 0]];
+     if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.galliumArsenite, 1, 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
 });
 
-//DansTS decorations and ambience code 
-var Renderer={
-        setSaplingRender:function(id,x){
-        var shape = new ICRender.CollisionShape();     
-        BlockRenderer.setCustomCollisionShape(Block.getNumericId(id), -1, shape);    
-        BlockRenderer.addRenderCallback(id, function(api, coords,block) {
-            if(x!=0){
-                for(var i = 0;i < 1/x;i+=x){
-                api.renderBoxId(coords.x, coords.y, coords.z,0+i, 0.01, 0+i, x+i, 0.99, x+i,id, block.data);
-                api.renderBoxId(coords.x, coords.y, coords.z,(1-x)-i, 0.01, 0+i,1-i, 0.99, x+i,id, block.data);
-                }
-            }
-            else{
-                api.renderBoxId(coords.x, coords.y, coords.z, 0.4999, 0.01, 0, 0.5, 0.99, 1,id, block.data);
-                api.renderBoxId(coords.x, coords.y, coords.z, 0, 0.01, 0.4999, 1, 0.99, 0.5, id, block.data);
-            }
-        })
-        BlockRenderer.enableCustomRender(id);
+
+// Titanium Ore
+IDRegistry.genBlockID("oreTitanium"); 
+Block.createBlock("oreTitanium", [{name: "Titanium Ore", texture: [["ore_titanium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTitanium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreTitanium, "stone", 3, true);
+
+
+// Lead Ore
+IDRegistry.genBlockID("oreLead"); 
+Block.createBlock("oreLead", [{name: "Lead Ore", texture: [["ore_lead", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreLead, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreLead, "stone", 2, true);
+
+
+// Alluminium Ore
+IDRegistry.genBlockID("oreAlluminium"); 
+Block.createBlock("oreAlluminium", [{name: "Alluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreAlluminium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreAlluminium, "stone", 2, true);
+
+
+// Sulfur Ore
+IDRegistry.genBlockID("oreSulfur"); 
+Block.createBlock("oreSulfur", [{name: "Sulfur Ore", texture: [["ore_sulfur", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreSulfur,2);
+ToolAPI.registerBlockMaterial(BlockID.oreSulfur, "stone", 2, true);
+Block.registerDropFunction("oreSulfur", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustSulfur, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
     }
-};
-
-var BLOCK_LOW_LIGHT = Block.createSpecialType({
-    lightlevel: 9,
-    opaque: true});
-
-var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
-    lightlevel: 4,
-    opaque: true});
-
-IDRegistry.genBlockID("concreteBr");
-Block.createBlock("concreteBr", [{name: "Concerete bricks", texture:[["brick_concrete", 0]],inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.concreteBr,4);
-ToolAPI.registerBlockMaterial(BlockID.concreteBr, "stone", 3, true);
-
-IDRegistry.genBlockID("lightBr");
-Block.createBlock("lightBr", [{name: "Light brick", texture:[["brick_light", 0]],inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.lightBr,6);
-ToolAPI.registerBlockMaterial(BlockID.lightBr, "stone", 5, true);
+    return [];
+}, 2);
 
 
-IDRegistry.genBlockID("radMush");
-Block.createBlock("radMush", [
-    {name: "Radioactive Musroom", texture: [["empty", 0], ["empty", 0], ["GLmush", 0]], inCreative: false}
-], BLOCK_LIGHT);
-ToolAPI.registerBlockMaterial(BlockID.radMush, "plant");
-
-IDRegistry.genItemID("radMush");
-Item.createItem("radMush", "Radioactive Mushroom", {name: "GLmush"});
-
-Item.registerUseFunction("radMush", function(coords, item, block){
-    var place = coords.relative;
-    if(GenerationUtils.isTransparentBlock(World.getBlockID(place.x, place.y, place.z))){
-        World.setBlock(place.x, place.y, place.z, BlockID.radMush);
-        Player.setCarriedItem(item.id, item.count - 1, item.data);
+// Fluorite Ore
+IDRegistry.genBlockID("oreFluorite"); 
+Block.createBlock("oreFluorite", [
+    {name: "Fluorite Ore", texture: [["ore_fluorite", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreFluorite,2);
+ToolAPI.registerBlockMaterial(BlockID.oreFluorite, "stone", 2, true);
+Block.registerDropFunction("oreFluorite", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustFluorite, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune/3 - 1/3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
     }
-});
-Renderer.setSaplingRender(BlockID.radMush,0);
+    return [];
+}, 2);
 
-IDRegistry.genBlockID("mushRadS");
-Block.createBlockWithRotation("mushRadS", [
-{name: "Radioactive Moshroom Stem", texture: [["GLmush_block_inside", 0],["GLmush_block_inside", 0],["GLmush_block_stem", 0],["GLmush_block_stem", 0], ["GLmush_block_stem", 0],["GLmush_block_stem", 0]], inCreative: true}
-], BLOCK_LOW_LIGHT);
 
-ToolAPI.registerBlockMaterial(BlockID.mushRadS, "plant");
+// Copper Ore
+IDRegistry.genBlockID("oreCopper"); 
+Block.createBlock("oreCopper", [
+    {name: "Copper Ore", texture: [["ore_copper", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreCopper,2);
+ToolAPI.registerBlockMaterial(BlockID.oreCopper, "stone", 2, true);
 
-IDRegistry.genBlockID("mushRadC");
-Block.createBlock("mushRadC", [{name: "Radioactive Mushroom Cap", texture:[["GLmush_block_skin", 0]],inCreative: true}], BLOCK_LOW_LIGHT); 
+
+// Tin Ore
+IDRegistry.genBlockID("oreTin"); 
+Block.createBlock("oreTin", [
+    {name: "Tin ore", texture: [["ore_tin", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTin,2);
+ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
+
+
+

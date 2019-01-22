@@ -2,9 +2,9 @@ header.js
 imports.js
 
 RenderTools.js
-blocks/PreApoOres.js
 items/RecipiesManager.js
 items/steelArms.js
+items/craftingTools.js
 
 api/GunRegistry.js
 
@@ -14,6 +14,8 @@ core/MachineRecipeRegistry.js
 
 events.js
 
+blocks/ores.js
+
 items/firstAidKit.js
 items/components.js
 items/detectors.js
@@ -21,6 +23,7 @@ items/eggs.js
 items/armor.js
 items/guns.js
 
+blocks/decorations.js
 blocks/roads.js
 blocks/signs.js
 blocks/bench.js

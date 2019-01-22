@@ -4,6 +4,8 @@
 IDRegistry.genItemID("silver");
 Item.createItem("silver", "Silver", {name: "silver", meta: 0}, {});
 
+
+
 /*Oil distillation products */
 
 //Waste
@@ -96,11 +98,13 @@ RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
 IDRegistry.genItemID("granulesPolypropylene");
 Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
 
+
 /* Press Forms */
 
 //Plate Press Form
 IDRegistry.genItemID("pressFormPlate");
 Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
+
 
 //Polypropylene Plate
 IDRegistry.genItemID("platePolypropylene");
@@ -167,27 +171,27 @@ IDRegistry.genItemID("can");
 Item.createItem("can", "Can", {name: "can", meta: 0}, {});
 
 //Battery parts
-IDRegistry.genItemID("batteryC");
-Item.createItem("batteryC", "Battery casing", {name: "battery_corp"});
+IDRegistry.genItemID("batteryCasing");
+Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
 
 IDRegistry.genItemID("batteryCap");
-Item.createItem("batteryCap", "Battery cap", {name: "cap_aluminium"});
+Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
 
 //Battery
 IDRegistry.genItemID("storageBattery");
 Item.createItem("storageBattery", "Battery", {name: "battery_generic"});
 ChargeItemRegistry.registerItem(ItemID.storageBattery, "Eu", 10000, 0, true);
-Recipes.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
     "a",
     "c",
     "b"
-], ['a', ItemID.batteryCap, 0, 'c', ItemID.nuggetLead, 0, 'b', ItemID.batteryC, 0]);
+], ['a', ItemID.batteryCap, 0, 'c', ItemID.nuggetLead, 0, 'b', ItemID.batteryCasing, 0]);
 
 IDRegistry.genItemID("storageBatteryAdv");
 Item.createItem("storageBatteryAdv", "Battary Advanced", {name: "battery_advanced"});
 ChargeItemRegistry.registerItem(ItemID.storageBatteryAdv, "Eu", 100000, 0, true);
 
-Recipes.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
     "acb" 
 ], ['a', ItemID.plateAlloy, 0, 'c', ItemID.storageBattery, 0, 'b', ItemID.dustSulfur, 0]);
 
@@ -260,178 +264,127 @@ Callback.addCallback("ICore", function(api){
     ], ['a', ItemID.waste, 0]);
 });
 
-
+// Uncoment this to test recipes without moving to dimension
 Callback.addCallback("PostLoaded", function(){
     RecipiesManager.onRegisterRecipiesNeeded();
 });
 
 
-//ingots from new metals(DansTS)
-IDRegistry.genItemID("ingotTung");
-Item.createItem("ingotTung", "Tungsten Ingot", {name: "ingot_tungsten"});
 
-Recipes.addFurnace(BlockID.tungstenOree, ItemID.ingotTung, 0);
-Recipes.addFurnace(BlockID.tungstenOren, ItemID.ingotTung, 0);
+/* Metals (DansTS) */
 
-IDRegistry.genItemID("ingotTitan");
-Item.createItem("ingotTitan", "Titanium Ingot", {name: "ingot_titanium"});
 
-Recipes.addFurnace(BlockID.titaniumOree, ItemID.ingotTitan, 0);
+/* Ingots of new metals (DansTS) */
 
-IDRegistry.genItemID("ingotEup");
-Item.createItem("ingotEup", "Euphemium Ingot", {name: "ingot_euphemium"});
+// Titanium Ingot
+IDRegistry.genItemID("ingotTitanium");
+Item.createItem("ingotTitanium", "Titanium Ingot", {name: "ingot_titanium"});
+Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
 
-IDRegistry.genItemID("ingotNeptun");
-Item.createItem("ingotNeptun", "Neptunium Ingot", {name: "ingot_neptunium"});
-
-//machine
-
-IDRegistry.genItemID("ingotPluton");
-Item.createItem("ingotPluton", "Plutonium Ingot", {name: "ingot_plutonium"});
-
-//machine
-
-IDRegistry.genItemID("ingotUran");
-Item.createItem("ingotUran", "Uranium Ingot", {name: "ingot_uranium"});
-
-//machine
-
-IDRegistry.genItemID("ingotMox");
-Item.createItem("ingotMox", "Mox Fuel Ingot", {name: "ingot_mox_fuel"});
-
-//machine
-
-IDRegistry.genItemID("ingotScrarf");
-Item.createItem("ingotScrarf", "Schrabidium Fuel Ingot", {name: "ingot_schrabidium_fuel"});
-
-//machine
-
-IDRegistry.genItemID("ingotScrar");
-Item.createItem("ingotScrar", "Schrabidium Ingot", {name: "ingot_schrabidium"});
-
-Recipes.addFurnace(BlockID.schrabidiumOree, ItemID.ingotScrar, 0);
-Recipes.addFurnace(BlockID.schrabidiumOren, ItemID.ingotScrar, 0);
- 
+// Alloy Ingot
 IDRegistry.genItemID("ingotAlloy");
 Item.createItem("ingotAlloy", "Alloy Ingot", {name: "ingot_advanced_alloy"});
 
-//machine
-
+// Steel Ingot
 IDRegistry.genItemID("ingotSteel");
 Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});
 
-//machine
-
-IDRegistry.genItemID("ingotBer");
-Item.createItem("ingotBer", "Beryllium Ingot", {name: "ingot_beryllium"});
-
-Recipes.addFurnace(BlockID.beriOree, ItemID.ingotBer, 0);
-
+// Lead Ingot
 IDRegistry.genItemID("ingotLead");
 Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
+Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
 
-Recipes.addFurnace(BlockID.leadOree, ItemID.ingotLead, 0);
-
+// Alluminium Ingot
 IDRegistry.genItemID("ingotAlluminium");
 Item.createItem("ingotAlluminium", "Alluminium Ingot", {name: "ingot_aluminium"});
+Recipes.addFurnace(BlockID.oreAlluminium, ItemID.ingotAlluminium, 0);
 
-Recipes.addFurnace(BlockID.allumOree, ItemID.ingotAlluminium, 0);
-
+// Copper Ingot
 IDRegistry.genItemID("ingotCopper");
 Item.createItem("ingotCopper", "Copper Ingot", {name: "ingot_copper"});
+Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
 
-Recipes.addFurnace(BlockID.copperOree, ItemID.ingotCopper, 0);
+// Red Copper Ingot
+IDRegistry.genItemID("ingotCopperRed");
+Item.createItem("ingotCopperRed", "Red Copper Ingot", {name: "ingot_red_copper"});
+Recipes.addFurnace(ItemID.ingotCopper, ItemID.ingotCopperRed, 0);
 
-IDRegistry.genItemID("ingotCopperr");
-Item.createItem("ingotCopperr", "Copper Red Ingot", {name: "ingot_red_copper"});
-
-Recipes.addFurnace(ItemID.ingotCopper, ItemID.ingotCopperr, 0);
-
+// Tin Ingot
 IDRegistry.genItemID("ingotTin");
 Item.createItem("ingotTin", "Tin Ingot", {name: "ingot_tin"});
+Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
 
-Recipes.addFurnace(BlockID.tinOree, ItemID.ingotTin, 0);
 
-//Plates from new metals(DansTS)
+/* Plates of new metals (DansTS) */
+
+// Titanium Plate
 IDRegistry.genItemID("plateTitanium");
 Item.createItem("plateTitanium", "Titanium Plate", {name: "plate_titanium"});
 
-IDRegistry.genItemID("plateSchrabidium");
-Item.createItem("plateSchrabidium", "Schrabidium Plate", {name: "plate_schrabidium"});
-
+// Iron Plate
 IDRegistry.genItemID("plateIron");
 Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
 
-IDRegistry.genItemID("plateAlum");
-Item.createItem("plateAlum", "Aluminium Plate", {name: "plate_aluminium"});
+// Aluminium Plate
+IDRegistry.genItemID("plateAluminium");
+Item.createItem("plateAluminium", "Aluminium Plate", {name: "plate_aluminium"});
 
+// Steel Plate
 IDRegistry.genItemID("plateSteel");
 Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
 
+// Lead Plate
 IDRegistry.genItemID("plateLead");
 Item.createItem("plateLead", "Lead Plate", {name: "plate_lead"});
 
+// Gold Plate
 IDRegistry.genItemID("plateGold");
 Item.createItem("plateGold", "Gold Plate", {name: "plate_gold"});
 
+// Alloy Plate
 IDRegistry.genItemID("plateAlloy");
-Item.createItem("plateAlloy", "Gold Plate", {name: "plate_advanced_alloy"});
+Item.createItem("plateAlloy", "Alloy Plate", {name: "plate_advanced_alloy"});
 
+// Copper Plate
 IDRegistry.genItemID("plateCopper");
 Item.createItem("plateCopper", "Copper Plate", {name: "plate_copper"});
 
+// Tin Plate
 IDRegistry.genItemID("plateTin");
 Item.createItem("plateTin", "Tin Plate", {name: "plate_tin"});
 
 
-Callback.addCallback("PreLoaded", function(){
-    addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateSchrabidium, count: 1, data: 0}, [{id: ItemID.ingotScrar, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitan, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
-    addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
-});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
 
 
-//nuggets from new metals(DansTS)
-IDRegistry.genItemID("nuggetEup");
-Item.createItem("nuggetEup", "Euphernium Nugget", {name: "nugget_euphemium"});
+/* Nuggets of new metals(DansTS) */
 
-IDRegistry.genItemID("nuggetNeptun");
-Item.createItem("nuggetNeptun", "Neptunium Nugget", {name: "nugget_neptunium"});
-
-IDRegistry.genItemID("nuggetPluton");
-Item.createItem("nuggetPluton", "Plutonium Nugget", {name: "nugget_plutonium"});
-
-IDRegistry.genItemID("nuggetUran");
-Item.createItem("nuggetUran", "Uranium Nugget", {name: "nugget_uranium"});
-
-IDRegistry.genItemID("nuggetMox");
-Item.createItem("nuggetMox", "Mox Nugget", {name: "nugget_mox_fuel"});
-
-IDRegistry.genItemID("nuggetScrar");
-Item.createItem("nuggetScrar", "Schrabidium Nugget", {name: "nugget_schrabidium"});
-
-IDRegistry.genItemID("nuggetScrarf");
-Item.createItem("nuggetScrarf", "Schrabidium Nugget Fuel", {name: "nugget_schrabidium_fuel"});
-
+// Lead Nugget
 IDRegistry.genItemID("nuggetLead");
 Item.createItem("nuggetLead", "Lead Nugget", {name: "nugget_lead"});
 
-//Dust(DansTS)
+
+/* New dusts (DansTS) */
+
+// Fluorite Dust
 IDRegistry.genItemID("dustFluorite");
 Item.createItem("dustFluorite", "Fluorite Dust", {name: "fluorite"});
 
+// Fluorite Dust
 IDRegistry.genItemID("dustSulfur");
 Item.createItem("dustSulfur", "Sulfur Dust", {name: "sulfur"});
 
-IDRegistry.genItemID("dustNeptunium");
-Item.createItem("dustNeptunium", "Neptunium Dust", {name: "powder_neptunium"});
-
+// Lead Dust
 IDRegistry.genItemID("dustLead");
 Item.createItem("dustLead", "Lead Dust", {name: "powder_lead"});
 
+// Blaze Dust
 IDRegistry.genItemID("dustFire");
 Item.createItem("dustFire", "Blaze Dust", {name: "powder_fire"});
+
+

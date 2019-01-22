@@ -90,6 +90,7 @@ RecipiesManager.addShaped({id: ItemID.bootsCan, count: 1, data: 0}, [
 IDRegistry.genItemID("chestplateCardboard");
 Item.createArmorItem("chestplateCardboard", "Cardboard Box", {name: "chestplate_cardboard"}, {type: "chestplate", armor: 1, durability: 15, texture: "armor/chestplate_cardboard.png"});
 
+
 //DansTS code...
 
 IDRegistry.genItemID("hazmatMask");
@@ -110,95 +111,26 @@ Item.createArmorItem("hazmatLeggings", "Hazmat Leggings", {name: "hazmat_legs"},
 IDRegistry.genItemID("hazmatBoots");
 Item.createArmorItem("hazmatBoots", "Hazmat Boots", {name: "hazmat_boots"}, {type: "boots", armor: 2, durability: 176, texture: "armor/hazmat_1.png"});
 
-Recipes.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
     "xxx",
     "xbx"
 ], ['x', ItemID.clothHazmat, 0, 'b', ItemID.hazmatMask, 0]);
 
-Recipes.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
     "x x",
     "xxx",
     "xxx"
 ], ['x', ItemID.clothHazmat, 0]);
 
-Recipes.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
     "xxx",
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
 
-Recipes.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
+RecipiesManager.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
 
-
-IDRegistry.genItemID("schrabidiumHelmet");
-Item.createArmorItem("schrabidiumHelmet", "Schrabidium Helmet", {name: "schrabidium_helmet"}, {type: "helmet", armor: 4, durability: 1124, texture: "armor/schrabidium_1.png"});
-
-IDRegistry.genItemID("schrabidiumChestplate");
-Item.createArmorItem("schrabidiumChestplate", "Schrabidium Chestplate", {name: "schrabidium_plate"}, {type: "chestplate", armor: 6, durability: 1286, texture: "armor/schrabidium_1.png"});
-
-IDRegistry.genItemID("schrabidiumLeggings");
-Item.createArmorItem("schrabidiumLeggings", "Schrabidium Leggings", {name: "schrabidium_legs"}, {type: "leggings", armor: 5, durability: 1134, texture: "armor/schrabidium_2.png"});
-
-IDRegistry.genItemID("schrabidiumBoots");
-Item.createArmorItem("schrabidiumBoots", "Schrabidium Boots", {name: "schrabidium_boots"}, {type: "boots", armor: 4, durability: 1116, texture: "armor/schrabidium_1.png"});
-
-Recipes.addShaped({id: ItemID.schrabidiumHelmet, count: 1, data: 0}, [
-    "xxx",
-    "x x"
-], ['x', ItemID.ingotScrar, 0]);
-
-Recipes.addShaped({id: ItemID.schrabidiumChestplate, count: 1, data: 0}, [
-    "x x",
-    "xxx",
-    "xxx"
-], ['x', ItemID.ingotScrar, 0]);
-
-Recipes.addShaped({id: ItemID.schrabidiumLeggings, count: 1, data: 0}, [
-    "xxx",
-    "x x",
-    "x x"
-], ['x', ItemID.ingotScrar, 0]);
-
-Recipes.addShaped({id: ItemID.schrabidiumBoots, count: 1, data: 0}, [
-    "x x",
-    "x x"
-], ['x', ItemID.ingotScrar, 0]);
-
-
-IDRegistry.genItemID("euphemiumHelmet");
-Item.createArmorItem("euphemiumHelmet", "Euphemium Helmet", {name: "euphemium_helmet"}, {type: "helmet", armor: 3, durability: 1354, texture: "armor/euphemium_1.png"});
-
-IDRegistry.genItemID("euphemiumChestplate");
-Item.createArmorItem("euphemiumChestplate", "Euphemium Chestplate", {name: "euphemium_plate"}, {type: "chestplate", armor: 6, durability: 1456, texture: "armor/euphemium_1.png"});
-
-IDRegistry.genItemID("euphemiumLeggings");
-Item.createArmorItem("euphemiumLeggings", "Euphemium Leggings", {name: "euphemium_legs"}, {type: "leggings", armor: 5, durability: 1389, texture: "armor/euphemium_2.png"});
-
-IDRegistry.genItemID("euphemiumBoots");
-Item.createArmorItem("euphemiumBoots", "Euphemium Boots", {name: "euphemium_boots"}, {type: "boots", armor: 4, durability: 1323, texture: "armor/euphemium_1.png"});
-
-Recipes.addShaped({id: ItemID.euphemiumHelmet, count: 1, data: 0}, [
-    "xxx",
-    "x x"
-], ['x', ItemID.ingotEup, 0]);
-
-Recipes.addShaped({id: ItemID.euphemiumChestplate, count: 1, data: 0}, [
-    "x x",
-    "xxx",
-    "xxx"
-], ['x', ItemID.ingotEup, 0]);
-
-Recipes.addShaped({id: ItemID.euphemiumLeggings, count: 1, data: 0}, [
-    "xxx",
-    "x x",
-    "x x"
-], ['x', ItemID.ingotEup, 0]);
-
-Recipes.addShaped({id: ItemID.euphemiumBoots, count: 1, data: 0}, [
-    "x x",
-    "x x"
-], ['x', ItemID.ingotEup, 0]);
 

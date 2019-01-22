@@ -26,10 +26,29 @@ const DIRECTION_Z = 1;
 const DIRECTION_BOTH = 2;
 
 var GUI_BAR_STANDART_SCALE = 3.2;
+var CRAFTING_TOOL_MAX_DAMAGE = 96;
 
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 var ctx = UI.getContext();
 
+
+var BLOCK_LIGHT = Block.createSpecialType({
+    lightlevel: 7,
+    opaque: false
+});
+
+var BLOCK_LIGHT_O = Block.createSpecialType({
+    lightlevel: 7,
+    opaque: true
+});
+
+var BLOCK_LOW_LIGHT = Block.createSpecialType({
+    lightlevel: 9,
+    opaque: true});
+
+var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
+    lightlevel: 4,
+    opaque: true});
 
 
 var inCity = false;
@@ -72,8 +91,6 @@ function getSideCoords(coords){
         {x: coords.x, y: coords.y, z: coords.z - 1},
     ];
 }
-
-
 
 function runAsUI(func){
     ctx.runOnUiThread(new java.lang.Runnable({ run: function(){

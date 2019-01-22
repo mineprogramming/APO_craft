@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 41
+  files: 48
 */
 
 
@@ -30,15 +30,58 @@ IMPORT("DevAPI");
 IMPORT("energylib");
 IMPORT("TradeLib");
 IMPORT("Inventory");
+IMPORT("ChargeItem");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
 const DIRECTION_BOTH = 2;
 
 var GUI_BAR_STANDART_SCALE = 3.2;
+var CRAFTING_TOOL_MAX_DAMAGE = 96;
 
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
+var ctx = UI.getContext();
 
+
+var BLOCK_LIGHT = Block.createSpecialType({
+    lightlevel: 7,
+    opaque: false
+});
+
+var BLOCK_LIGHT_O = Block.createSpecialType({
+    lightlevel: 7,
+    opaque: true
+});
+
+var BLOCK_LOW_LIGHT = Block.createSpecialType({
+    lightlevel: 9,
+    opaque: true});
+
+var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
+    lightlevel: 4,
+    opaque: true});
+
+
+var inCity = false;
+
+Saver.addSavesScope("inCity", 
+    function read(scope){
+        if(!scope.inCity) {
+            RecipiesManager.deleteAll();
+            return;
+        }
+        inCity = scope.inCity;
+        RecipiesManager.onRegisterRecipiesNeeded();
+    },
+
+    function save(){
+        return {inCity: inCity};
+    }
+);
+
+
+
+/* Just some useful functions */
 
 function randomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -58,6 +101,17 @@ function getSideCoords(coords){
         {x: coords.x, y: coords.y, z: coords.z + 1},
         {x: coords.x, y: coords.y, z: coords.z - 1},
     ];
+}
+
+function runAsUI(func){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        try{
+            func();
+        }catch(err){
+            Game.message(err);
+            alert(err);
+        }}
+    }));
 }
 
 
@@ -119,7 +173,8 @@ RenderTools.setupConnectorRender = function(id) {
 
 var RecipiesManager = {
     recipiesLoaded: false,
-    recipies: []
+    recipies: [],
+    shapeless: [],
 }
 
 RecipiesManager.addShaped = function(result, recipie, data){
@@ -128,12 +183,274 @@ RecipiesManager.addShaped = function(result, recipie, data){
 
 RecipiesManager.onRegisterRecipiesNeeded = function(){
     if(!RecipiesManager.recipiesLoaded){
+        RecipiesManager.recipiesLoaded = true;
+        // Shaped
         for(var i in RecipiesManager.recipies){
             let recipie = RecipiesManager.recipies[i];
             Recipes.addShaped(recipie.result, recipie.recipie, recipie.data);
         }
+        
+        // Shapeless
+        for(var i in RecipiesManager.shapeless){
+            let recipe = RecipiesManager.shapeless[i];
+            Recipes.addShapeless(recipe.result, recipe.recipe, recipe.callback);
+        }
     }
 }
+
+RecipiesManager.deleteAll = function(){
+    // Shaped
+    for(var i in RecipiesManager.recipies){
+        let recipie = RecipiesManager.recipies[i];
+        Recipes.deleteRecipe(recipie.result);
+    }
+    
+    // Shapeless
+    for(var i in RecipiesManager.shapeless){
+        let recipe = RecipiesManager.shapeless[i];
+        Recipes.deleteRecipe(recipe.result);
+    }
+}
+
+RecipiesManager.addRecipeWithCraftingTool = function(result, data, tool){
+    data.push({id: tool, data: -1});
+    RecipiesManager.shapeless.push({"result": result, "recipe": data, "callback": function(api, field, result){
+        for (var i in field){
+            if (field[i].id == tool){
+                field[i].data++;
+                if (field[i].data >= CRAFTING_TOOL_MAX_DAMAGE){
+                    field[i].id = field[i].count = field[i].data = 0;
+                }
+            }
+            else {
+                api.decreaseFieldSlot(i);
+            }
+        }
+    }});
+}
+
+
+
+
+
+// file: items/steelArms.js
+
+//Karambit Gradient
+IDRegistry.genItemID("karambitGradient");
+Item.createItem("karambitGradient", "Karambit Gradient", {name: "karambit_gradient", meta: 0}, {
+    stack: 1
+});
+
+ToolAPI.registerSword(ItemID.karambitGradient, {level: 0, durability: 2048, damage: 10}, {damage:10});
+
+
+//Karambit Gradient
+IDRegistry.genItemID("knifeButterfly");
+Item.createItem("knifeButterfly", "Butterfly", {name: "knife_butterfly", meta: 0}, {
+    stack: 1
+});
+
+ToolAPI.registerSword(ItemID.knifeButterfly, {level: 0, durability: 1856, damage: 7}, {damage:7});
+
+
+
+// file: items/craftingTools.js
+
+IDRegistry.genItemID("craftingHammer");
+Item.createItem("craftingHammer", "Forge Hammer", {name: "crafting_hammer"}, {stack: 1});
+Item.setMaxDamage(ItemID.craftingHammer, CRAFTING_TOOL_MAX_DAMAGE);
+
+IDRegistry.genItemID("craftingCutter");
+Item.createItem("craftingCutter", "Cutter", {name: "crafting_cutter"}, {stack: 1});
+Item.setMaxDamage(ItemID.craftingCutter, CRAFTING_TOOL_MAX_DAMAGE);
+
+
+
+
+
+// file: api/GunRegistry.js
+
+/**
+ * Модуль, предназначенный для регистрации оружия в дополнениях к моду
+ * 
+ * Для регистрации нового оружия воспользуйтесь методом GunRegistry.registerGun(gun);
+ * @param gun объект вида:
+ * {
+ *     gun: gun_id,
+ *     bullet: bullet_id,
+ *     skin: "mob/bullet.png", // Path to bullet texture in texturepack
+ *     speed: speed,
+ *     damage: damage,
+ *     aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png"), // android.graphics.Bitmap object used as an aim
+ *     fov: fov, //Optional. If set, changes the fov of the player (zoom)
+ *     automatic: ticks //Optional. If set, the guns shoots bursts, one shoot every @ticks ticks.
+ * }
+ *
+ */
+
+var GunRegistry = {
+    guns: [],
+    bullets: [],
+    hurt: [],
+    inGame: false,
+    
+    registerGun: function(gun){
+        gun.shooting = false;
+        GunRegistry.guns.push(gun);
+        if(gun.automatic){
+            Item.registerNoTargetUseFunction(gun.gun, GunRegistry.switchShooting);
+            Item.registerUseFunction(gun.gun, GunRegistry.switchShooting);
+        } else {
+            Item.registerNoTargetUseFunction(gun.gun, GunRegistry.shoot);
+            Item.registerUseFunction(gun.gun, GunRegistry.shoot);
+        }
+    },
+    
+    getGun: function(gunId){
+        for(var i in GunRegistry.guns){
+            let gun = GunRegistry.guns[i];
+            if(gun.gun == gunId)
+                return gun;
+        }
+        return false;
+    },
+    
+    switchShooting: function(){
+        let gun = GunRegistry.getGun(Player.getCarriedItem().id);
+        gun.shooting = !gun.shooting;
+    },
+    
+    disableShooting: function(){
+        for(var i in GunRegistry.guns){
+            GunRegistry.guns[i].shooting = false;
+        }
+    },
+    
+    shoot: function(){
+        let gun = GunRegistry.getGun(Player.getCarriedItem().id);
+        if(PlayerInventory.retrieveItem(gun.bullet)){
+            let coords = Entity.getPosition(Player.get());
+            let lookAngle = Entity.getLookAngle(Player.get()); 
+            let velocity = {
+                x: -Math.sin(lookAngle.yaw) * gun.speed,
+                y: Math.sin(lookAngle.pitch) * gun.speed,
+                z: Math.cos(lookAngle.yaw) * gun.speed
+            }
+            let entity = Entity.spawn(coords.x, coords.y, coords.z, 80);
+            GunRegistry.bullets.push({"entity": entity, damage: gun.damage});
+            Entity.setSkin(entity, "mob/bullet.png");
+            Entity.setVelocity(entity, velocity.x, velocity.y, velocity.z);
+        }
+    },
+    
+    showAim: function(gun){
+        if(GunRegistry.aimShown || !GunRegistry.inGame) return;
+        runAsUI(function(){
+            GunRegistry.aimShown = true;
+            GunRegistry.aimImage.setImageBitmap(gun.aim);
+            GunRegistry.windowAim.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.TOP, 0, 0);
+        });
+        if(gun.fov){
+            Player.setFov(gun.fov);
+        }
+    },
+    
+    hideAim: function(){
+        if(!GunRegistry.aimShown) return;
+        runAsUI(function(){
+            GunRegistry.windowAim.dismiss();
+            GunRegistry.aimShown = false;
+            GunRegistry.disableShooting();
+        });
+        Player.resetFov();
+    }
+};
+
+runAsUI(function(){
+    //Main layout of the whole window
+    var layoutMain = new LinearLayout(ctx);
+    layoutMain.setOrientation(0);
+    layoutMain.setGravity(Gravity.CENTER);
+    
+    var params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    layoutMain.setLayoutParams(params);
+    
+    GunRegistry.aimImage = new android.widget.ImageView(ctx);
+    layoutMain.addView(GunRegistry.aimImage);
+    
+    //Popup Window for displaying the staff
+    GunRegistry.windowAim = new android.widget.PopupWindow(layoutMain, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    GunRegistry.windowAim.setTouchable(false);
+    GunRegistry.windowAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+});
+
+
+
+Callback.addCallback("ProjectileHit", function (projectile, item, target) {
+    GunRegistry.bullets = GunRegistry.bullets.filter(function(bullet){
+        if(bullet.entity == projectile){
+            Entity.remove(projectile);
+            if(target.entity != -1){
+                GunRegistry.hurt.push({entity: target.entity, damage: bullet.damage});
+            }
+            return false;
+        }
+        return true;
+    });
+});
+
+Callback.addCallback("EntityHurt", function(attacker, victim, damage){
+    var entity = -1;
+    GunRegistry.hurt = GunRegistry.hurt.filter(function(ent){
+        if(ent.entity == victim){
+            entity = ent;
+            return false;
+        }
+    });
+    if(entity != -1){
+        Entity.damageEntity(entity.entity, entity.damage);
+        Game.prevent();
+    }
+    return true;
+});
+
+Callback.addCallback("tick", function(){
+    let gun = GunRegistry.getGun(Player.getCarriedItem().id);
+    let ticks = World.getThreadTime();
+    if (ticks % 5 === 0) {
+        if(gun){
+            if(gun != GunRegistry.currentGun){
+                GunRegistry.currentGun = gun;
+                GunRegistry.hideAim();
+            }
+            GunRegistry.showAim(gun);
+        } else {
+            GunRegistry.hideAim();
+        }
+    }
+    
+    if(gun && gun.automatic && gun.shooting && ticks % gun.automatic === 0){
+        GunRegistry.shoot();
+    }
+});
+
+Callback.addCallback("NativeGuiChanged", function (screenName) {
+    if(screenName == "hud_screen" || 
+      screenName == "in_game_play_screen"){
+        GunRegistry.inGame = true;
+    }
+    else{
+        GunRegistry.inGame = false;
+        GunRegistry.hideAim();
+    }
+});
+
+Callback.addCallback("DestroyBlockStart", function(){
+    if(GunRegistry.getGun(Player.getCarriedItem().id) != false){
+        Game.prevent();
+    }
+});
+
 
 
 
@@ -285,14 +602,25 @@ Callback.addCallback("PreLoaded", function(){
 IDRegistry.genItemID("Place");
 Item.createItem("Place", "Structure Placer", {name: "place", meta: 0},{isTech:false,stack: 1});
 
+let currentBuilding = 0;
+
 Callback.addCallback("ItemUse", function (coords, item, block) {
     var x = coords.relative.x;
     var y = coords.relative.y;
     var z = coords.relative.z;
     
     if(item.id == ItemID.Place){
-        buildings[14].debug = true;
-        buildings[14].build(x, y, z);
+        buildings[currentBuilding].build(x, y, z);
+    }
+});
+
+
+Callback.addCallback("NativeCommand", function(str){
+    str = str.substring(1);
+    let cmd = str.split(" ");
+    if(cmd[0] == "building"){
+        currentBuilding = parseInt(cmd[1]);
+        Game.prevent();
     }
 });
 
@@ -306,6 +634,115 @@ Callback.addCallback("PostLoaded", function(){
 Callback.addCallback("LevelLoaded", function(){
     Game.message("Raspberry Pi is a trademark of the Raspberry Pi Foundation");
 });
+
+
+
+// file: blocks/ores.js
+
+// Shale Ore
+IDRegistry.genBlockID("oreShaleOil");
+Block.createBlock("oreShaleOil", [{name: "Shale Ore", texture: [["ore_shale_oil", 1], ["ore_shale_oil", 1], ["ore_shale_oil", 0], ["ore_shale_oil", 2], ["ore_shale_oil", 0], ["ore_shale_oil", 2]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreShaleOil, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreShaleOil, "stone", 3, true);
+
+
+// Gallium Arsenide Ore
+IDRegistry.genBlockID("oreGalliumArsenide");
+Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreGalliumArsenide, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreGalliumArsenide, "stone", 3, true);
+Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, diggingLevel, toolLevel){
+     if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.galliumArsenite, 1, 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+});
+
+
+// Titanium Ore
+IDRegistry.genBlockID("oreTitanium"); 
+Block.createBlock("oreTitanium", [{name: "Titanium Ore", texture: [["ore_titanium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTitanium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreTitanium, "stone", 3, true);
+
+
+// Lead Ore
+IDRegistry.genBlockID("oreLead"); 
+Block.createBlock("oreLead", [{name: "Lead Ore", texture: [["ore_lead", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreLead, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreLead, "stone", 2, true);
+
+
+// Alluminium Ore
+IDRegistry.genBlockID("oreAlluminium"); 
+Block.createBlock("oreAlluminium", [{name: "Alluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreAlluminium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreAlluminium, "stone", 2, true);
+
+
+// Sulfur Ore
+IDRegistry.genBlockID("oreSulfur"); 
+Block.createBlock("oreSulfur", [{name: "Sulfur Ore", texture: [["ore_sulfur", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreSulfur,2);
+ToolAPI.registerBlockMaterial(BlockID.oreSulfur, "stone", 2, true);
+Block.registerDropFunction("oreSulfur", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustSulfur, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
+
+
+// Fluorite Ore
+IDRegistry.genBlockID("oreFluorite"); 
+Block.createBlock("oreFluorite", [
+    {name: "Fluorite Ore", texture: [["ore_fluorite", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreFluorite,2);
+ToolAPI.registerBlockMaterial(BlockID.oreFluorite, "stone", 2, true);
+Block.registerDropFunction("oreFluorite", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustFluorite, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune/3 - 1/3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
+
+
+// Copper Ore
+IDRegistry.genBlockID("oreCopper"); 
+Block.createBlock("oreCopper", [
+    {name: "Copper Ore", texture: [["ore_copper", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreCopper,2);
+ToolAPI.registerBlockMaterial(BlockID.oreCopper, "stone", 2, true);
+
+
+// Tin Ore
+IDRegistry.genBlockID("oreTin"); 
+Block.createBlock("oreTin", [
+    {name: "Tin ore", texture: [["ore_tin", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTin,2);
+ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
+
+
+
+
 
 
 
@@ -419,11 +856,13 @@ RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
 IDRegistry.genItemID("granulesPolypropylene");
 Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
 
+
 /* Press Forms */
 
 //Plate Press Form
 IDRegistry.genItemID("pressFormPlate");
 Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
+
 
 //Polypropylene Plate
 IDRegistry.genItemID("platePolypropylene");
@@ -482,6 +921,37 @@ RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
 ], ['a', 20, 0, 'b', 351, 2, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
 
 
+
+/* Other materials */
+
+// Can
+IDRegistry.genItemID("can");
+Item.createItem("can", "Can", {name: "can", meta: 0}, {});
+
+//Battery parts
+IDRegistry.genItemID("batteryCasing");
+Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
+
+IDRegistry.genItemID("batteryCap");
+Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
+
+//Battery
+IDRegistry.genItemID("storageBattery");
+Item.createItem("storageBattery", "Battery", {name: "battery_generic"});
+ChargeItemRegistry.registerItem(ItemID.storageBattery, "Eu", 10000, 0, true);
+RecipiesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
+    "a",
+    "c",
+    "b"
+], ['a', ItemID.batteryCap, 0, 'c', ItemID.nuggetLead, 0, 'b', ItemID.batteryCasing, 0]);
+
+IDRegistry.genItemID("storageBatteryAdv");
+Item.createItem("storageBatteryAdv", "Battary Advanced", {name: "battery_advanced"});
+ChargeItemRegistry.registerItem(ItemID.storageBatteryAdv, "Eu", 100000, 0, true);
+
+RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
+    "acb" 
+], ['a', ItemID.plateAlloy, 0, 'c', ItemID.storageBattery, 0, 'b', ItemID.dustSulfur, 0]);
 
 //Connectors
 
@@ -552,10 +1022,136 @@ Callback.addCallback("ICore", function(api){
     ], ['a', ItemID.waste, 0]);
 });
 
-
+// Uncoment this to test recipes without moving to dimension
 Callback.addCallback("PostLoaded", function(){
     RecipiesManager.onRegisterRecipiesNeeded();
 });
+
+
+
+/* Metals (DansTS) */
+
+
+/* Ingots of new metals (DansTS) */
+
+// Titanium Ingot
+IDRegistry.genItemID("ingotTitanium");
+Item.createItem("ingotTitanium", "Titanium Ingot", {name: "ingot_titanium"});
+Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
+
+// Alloy Ingot
+IDRegistry.genItemID("ingotAlloy");
+Item.createItem("ingotAlloy", "Alloy Ingot", {name: "ingot_advanced_alloy"});
+
+// Steel Ingot
+IDRegistry.genItemID("ingotSteel");
+Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});
+
+// Beryllium Ingot
+IDRegistry.genItemID("ingotBeryllium");
+Item.createItem("ingotBeryllium", "Beryllium Ingot", {name: "ingot_beryllium"});
+Recipes.addFurnace(BlockID.oreBeryllium, ItemID.ingotBeryllium, 0);
+
+// Lead Ingot
+IDRegistry.genItemID("ingotLead");
+Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
+Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
+
+// Alluminium Ingot
+IDRegistry.genItemID("ingotAlluminium");
+Item.createItem("ingotAlluminium", "Alluminium Ingot", {name: "ingot_aluminium"});
+Recipes.addFurnace(BlockID.oreAlluminium, ItemID.ingotAlluminium, 0);
+
+// Copper Ingot
+IDRegistry.genItemID("ingotCopper");
+Item.createItem("ingotCopper", "Copper Ingot", {name: "ingot_copper"});
+Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
+
+// Red Copper Ingot
+IDRegistry.genItemID("ingotCopperRed");
+Item.createItem("ingotCopperRed", "Red Copper Ingot", {name: "ingot_red_copper"});
+Recipes.addFurnace(ItemID.ingotCopper, ItemID.ingotCopperRed, 0);
+
+// Tin Ingot
+IDRegistry.genItemID("ingotTin");
+Item.createItem("ingotTin", "Tin Ingot", {name: "ingot_tin"});
+Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
+
+
+/* Plates of new metals (DansTS) */
+
+// Titanium Plate
+IDRegistry.genItemID("plateTitanium");
+Item.createItem("plateTitanium", "Titanium Plate", {name: "plate_titanium"});
+
+// Iron Plate
+IDRegistry.genItemID("plateIron");
+Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
+
+// Aluminium Plate
+IDRegistry.genItemID("plateAluminium");
+Item.createItem("plateAluminium", "Aluminium Plate", {name: "plate_aluminium"});
+
+// Steel Plate
+IDRegistry.genItemID("plateSteel");
+Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
+
+// Lead Plate
+IDRegistry.genItemID("plateLead");
+Item.createItem("plateLead", "Lead Plate", {name: "plate_lead"});
+
+// Gold Plate
+IDRegistry.genItemID("plateGold");
+Item.createItem("plateGold", "Gold Plate", {name: "plate_gold"});
+
+// Alloy Plate
+IDRegistry.genItemID("plateAlloy");
+Item.createItem("plateAlloy", "Alloy Plate", {name: "plate_advanced_alloy"});
+
+// Copper Plate
+IDRegistry.genItemID("plateCopper");
+Item.createItem("plateCopper", "Copper Plate", {name: "plate_copper"});
+
+// Tin Plate
+IDRegistry.genItemID("plateTin");
+Item.createItem("plateTin", "Tin Plate", {name: "plate_tin"});
+
+
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateSchrabidium, count: 1, data: 0}, [{id: ItemID.ingotSchrabidium, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
+
+
+/* Nuggets of new metals(DansTS) */
+
+// Lead Nugget
+IDRegistry.genItemID("nuggetLead");
+Item.createItem("nuggetLead", "Lead Nugget", {name: "nugget_lead"});
+
+
+/* New dusts (DansTS) */
+
+// Fluorite Dust
+IDRegistry.genItemID("dustFluorite");
+Item.createItem("dustFluorite", "Fluorite Dust", {name: "fluorite"});
+
+// Fluorite Dust
+IDRegistry.genItemID("dustSulfur");
+Item.createItem("dustSulfur", "Sulfur Dust", {name: "sulfur"});
+
+// Lead Dust
+IDRegistry.genItemID("dustLead");
+Item.createItem("dustLead", "Lead Dust", {name: "powder_lead"});
+
+// Blaze Dust
+IDRegistry.genItemID("dustFire");
+Item.createItem("dustFire", "Blaze Dust", {name: "powder_fire"});
+
+
 
 
 
@@ -726,6 +1322,91 @@ Item.createArmorItem("bootsExo", "Exo Boots", {name: "boots_exo"}, {type: "boots
 var armorExo = [ItemID.helmetExo, ItemID.chestplateExo, ItemID.leggingsExo, ItemID.bootsExo];
 
 
+// Can armor
+IDRegistry.genItemID("helmetCan");
+IDRegistry.genItemID("chestplateCan");
+IDRegistry.genItemID("leggingsCan");
+IDRegistry.genItemID("bootsCan");
+
+Item.createArmorItem("helmetCan", "Can Helmet", {name: "helmet_can"}, {type: "helmet", armor: 2, durability: 160, texture: "armor/can_1.png"});
+Item.createArmorItem("chestplateCan", "Can Chestplate", {name: "chestplate_can"}, {type: "chestplate", armor: 5, durability: 235, texture: "armor/can_1.png"});
+Item.createArmorItem("leggingsCan", "Can Leggings", {name: "leggings_can"}, {type: "leggings", armor: 4, durability: 220, texture: "armor/can_2.png"});
+Item.createArmorItem("bootsCan", "Can Boots", {name: "boots_can"}, {type: "boots", armor: 2, durability: 190, texture: "armor/can_1.png"});
+
+RecipiesManager.addShaped({id: ItemID.helmetCan, count: 1, data: 0}, [
+     "aaa",
+     "a a",
+     "   "
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.chestplateCan, count: 1, data: 0}, [
+     "a a",
+     "aaa",
+     "aaa"
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.leggingsCan, count: 1, data: 0}, [
+     "a a",
+     "a a",
+     "a a"
+], ['a', ItemID.can, 0]);
+
+RecipiesManager.addShaped({id: ItemID.bootsCan, count: 1, data: 0}, [
+     "   ",
+     "a a",
+     "a a"
+], ['a', ItemID.can, 0]);
+
+
+// Cardboard Box
+IDRegistry.genItemID("chestplateCardboard");
+Item.createArmorItem("chestplateCardboard", "Cardboard Box", {name: "chestplate_cardboard"}, {type: "chestplate", armor: 1, durability: 15, texture: "armor/chestplate_cardboard.png"});
+
+
+//DansTS code...
+
+IDRegistry.genItemID("hazmatMask");
+Item.createArmorItem("hazmatMask", "Hazmat Mask", {name: "gas_mask"}, {type: "helmet", armor: 1, durability: 92, texture: "armor/MaskOfInfamy_1.png"});
+
+IDRegistry.genItemID("clothHazmat");
+Item.createItem("clothHazmat", "Hazmat Cloth", {name: "hazmat_cloth"});
+
+IDRegistry.genItemID("hazmatHelmet");
+Item.createArmorItem("hazmatHelmet", "Hazmat Helmet", {name: "hazmat_helmet"}, {type: "helmet", armor: 3, durability: 149, texture: "armor/hazmat_1.png"});
+
+IDRegistry.genItemID("hazmatChestplate");
+Item.createArmorItem("hazmatChestplate", "Hazmat Chestplate", {name: "hazmat_plate"}, {type: "chestplate", armor: 4, durability: 216, texture: "armor/hazmat_1.png"});
+
+IDRegistry.genItemID("hazmatLeggings");
+Item.createArmorItem("hazmatLeggings", "Hazmat Leggings", {name: "hazmat_legs"}, {type: "leggings", armor: 2, durability: 203, texture: "armor/hazmat_2.png"});
+
+IDRegistry.genItemID("hazmatBoots");
+Item.createArmorItem("hazmatBoots", "Hazmat Boots", {name: "hazmat_boots"}, {type: "boots", armor: 2, durability: 176, texture: "armor/hazmat_1.png"});
+
+RecipiesManager.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
+    "xxx",
+    "xbx"
+], ['x', ItemID.clothHazmat, 0, 'b', ItemID.hazmatMask, 0]);
+
+RecipiesManager.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
+    "x x",
+    "xxx",
+    "xxx"
+], ['x', ItemID.clothHazmat, 0]);
+
+RecipiesManager.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
+    "xxx",
+    "x x",
+    "x x"
+], ['x', ItemID.clothHazmat, 0]);
+
+RecipiesManager.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
+    "x x",
+    "x x"
+], ['x', ItemID.clothHazmat, 0]);
+
+
+
 
 
 
@@ -741,168 +1422,329 @@ Item.createItem("glock18", "Glock 18", {name: "glock_18", meta: 0}, {
 IDRegistry.genItemID("bullet_9_19");
 Item.createItem("bullet_9_19", "Bullet 9*19", {name: "bullet_9_19", meta: 0}, {});
 
+//Desert eagle
+IDRegistry.genItemID("deserteagle");
+Item.createItem("deserteagle", "Desert eagle", {name: "deserteagle", meta: 0}, {
+    stack: 1
+});
 
-var bullets = [];
-var hurt = [];
+//RSH-12
+IDRegistry.genItemID("rsh_12");
+Item.createItem("rsh_12", "RSH-12", {name: "rsh_12", meta: 0}, {
+    stack: 1
+});
 
-var GunRegistry = {
-    guns: [],
-    bullets: [],
-    hurt: [],
-    
-    registerGun: function(gun){
-        GunRegistry.guns.push(gun);
-        Item.registerNoTargetUseFunction(gun.gun, shoot);
-        Item.registerUseFunction(gun.gun, shoot);
-    },
-    
-    getGun: function(gunId){
-        for(var i in GunRegistry.guns){
-            let gun = GunRegistry.guns[i];
-            if(gun.gun == gunId)
-                return gun;
-        }
-    },
-    
-    shoot: function (){
-    let gun = GunRegistry.getGun(Player.getCarriedItem().id);
-    Game.message("123 " + gun.bullet);
-    if(PlayerInventory.retrieveItem(gun.bullet)){
-        let coords = Entity.getPosition(Player.get());
-        let lookAngle = Entity.getLookAngle(Player.get()); 
-        let velocity = {
-            x: -Math.sin(lookAngle.yaw) * gun.speed,
-            y: Math.sin(lookAngle.pitch) * gun.speed,
-            z: Math.cos(lookAngle.yaw) * gun.speed
-        }
-        let entity = Entity.spawn(coords.x, coords.y, coords.z, 80);
-        GunRegistry.bullets.push({"entity": entity, damage: 50});
-        Entity.setSkin(entity, "mob/bullet.png");
-        Entity.setVelocity(entity, velocity.x, velocity.y, velocity.z);
-    }
-}
-};
+//Bullet 12.7*55
+IDRegistry.genItemID("bullet_12c7_55");
+Item.createItem("bullet_12c7_55", "Bullet 12.7х55", {name: "bullet_12_7_55", meta: 0}, {});
+
+//Avtomat kalashnikova epta
+IDRegistry.genItemID("ak47");
+Item.createItem("ak47", "AK 47", {name: "ak47", meta: 0}, {
+    stack: 1
+});
+
+//Assault ammo
+IDRegistry.genItemID("ammo_assault");
+Item.createItem("ammo_assault", "Assault ammo(5x45)", {name: "ammoassault", meta: 0}, {});
+
+//AAS
+IDRegistry.genItemID("aa12");
+Item.createItem("aa12", "AAs", {name: "aa12", meta: 0}, {
+    stack: 1
+});
+
+//Shotgun motherfucker
+IDRegistry.genItemID("ammo_shotgun");
+Item.createItem("ammo_shotgun", "Shotgun ammo", {name: "ammoshotgun", meta: 0}, {});
+
+//SIG SG 556
+IDRegistry.genItemID("sg_556");
+Item.createItem("sg_556", "RSH-12", {name: "sg_556", meta: 0}, {
+    stack: 1
+});
+
+//Bullet 5.56х45
+IDRegistry.genItemID("bullet_5c56_45");
+Item.createItem("bullet_5c56_45", "Bullet 5.56х45", {name: "bullet_5c56_45", meta: 0}, {});
+
+//sniper rifle
+IDRegistry.genItemID("barrett");
+Item.createItem("barrett", "Barrett", {name: "barrett", meta: 0}, {
+    stack: 1
+});
+
+//Sniper ammo
+IDRegistry.genItemID("ammo_sniper");
+Item.createItem("ammo_sniper", "Sniper ammo(19x9)", {name: "ammosniper", meta: 0}, {});
 
 GunRegistry.registerGun({
     gun: ItemID.glock18,
     bullet: ItemID.bullet_9_19,
     skin: "mob/bullet.png",
     speed: 8,
-    damage: 50,
+    damage: 15,
     aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png")
 });
 
+GunRegistry.registerGun({
+    gun: ItemID.deserteagle,
+    bullet: ItemID.bullet_9_19,
+    skin: "mob/bullet.png",
+    speed: 9,
+    damage: 20,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png")
+});
+
+GunRegistry.registerGun({
+    gun: ItemID.rsh_12,
+    bullet: ItemID.bullet_12c7_55,
+    skin: "mob/bullet.png",
+    speed: 16,
+    damage: 40,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png"),
+    fov: 50
+});
+
+GunRegistry.registerGun({
+    gun: ItemID.barrett,
+    bullet: ItemID.ammo_sniper,
+    skin: "mob/bullet.png",
+    speed: 21,
+    damage: 42,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim_round.png"),
+    fov: 50
+});
+
+GunRegistry.registerGun({
+    gun: ItemID.sg_556,
+    bullet: ItemID.bullet_5c56_45,
+    skin: "mob/bullet.png",
+    speed: 16,
+    damage: 20,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim_round.png"),
+    fov: 20,
+    automatic: 5
+});
+
+GunRegistry.registerGun({
+    gun: ItemID.aa12,
+    bullet: ItemID.ammo_shotgun,
+    skin: "mob/bullet.png",
+    speed: 18,
+    damage: 24,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png"),
+    fov: 20,
+    automatic: 6
+});
+
+GunRegistry.registerGun({
+    gun: ItemID.ak47,
+    bullet: ItemID.ammo_assault,
+    skin: "mob/bullet.png",
+    speed: 18,
+    damage: 30,
+    aim: BitmapFactory.decodeFile(__dir__ + "gui/aim.png"),
+    fov: 20,
+    automatic: 3
+});
 
 
 
 
-Callback.addCallback("ProjectileHit", function (projectile, item, target) {
-    GunRegistry.bullets = GunRegistry.bullets.filter(function(bullet){
-        if(bullet.entity == projectile){
-            Entity.remove(projectile);
-            if(target.entity != -1){
-                hurt.push({entity: target.entity, damage: bullet.damage});
+
+
+// file: blocks/decorations.js
+
+//DansTS decorations and ambience code 
+var Renderer={
+        setSaplingRender:function(id,x){
+        var shape = new ICRender.CollisionShape();     
+        BlockRenderer.setCustomCollisionShape(Block.getNumericId(id), -1, shape);    
+        BlockRenderer.addRenderCallback(id, function(api, coords,block) {
+            if(x!=0){
+                for(var i = 0;i < 1/x;i+=x){
+                api.renderBoxId(coords.x, coords.y, coords.z,0+i, 0.01, 0+i, x+i, 0.99, x+i,id, block.data);
+                api.renderBoxId(coords.x, coords.y, coords.z,(1-x)-i, 0.01, 0+i,1-i, 0.99, x+i,id, block.data);
+                }
             }
-            return false;
-        }
-        return true;
-    });
-});
-
-Callback.addCallback("EntityHurt", function(attacker, victim, damage){
-    var entity = -1;
-    hurt = hurt.filter(function(entity){
-        if(entity.entity == victim){
-            entity = entity.entity;
-            return false;
-        }
-    });
-    if(entity != -1){
-        Entity.damageEntity(entity.entity, entity.damage);
-        Game.prevent();
+            else{
+                api.renderBoxId(coords.x, coords.y, coords.z, 0.4999, 0.01, 0, 0.5, 0.99, 1,id, block.data);
+                api.renderBoxId(coords.x, coords.y, coords.z, 0, 0.01, 0.4999, 1, 0.99, 0.5, id, block.data);
+            }
+        })
+        BlockRenderer.enableCustomRender(id);
     }
-    return true;
+};
+
+
+// Titanuim Block
+IDRegistry.genBlockID("blockTitanium"); 
+Block.createBlock("blockTitanium", [{name: "Titanuim Block", texture: [["block_titanium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockTitanium, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockTitanium, "stone", 3, true);
+
+RecipiesManager.addShaped({id: BlockID.blockTitanium, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotTitanium, 0]);
+
+
+// Uranium Block
+IDRegistry.genBlockID("blockUranium"); 
+Block.createBlock("blockUranium", [{name: "Uranium Block", texture: [["block_uranium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockUranium, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockUranium, "stone", 3, true);
+
+RecipiesManager.addShaped({id: BlockID.blockUranium, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotUranium, 0]);
+
+
+// Lead Block
+IDRegistry.genBlockID("blockLead"); 
+Block.createBlock("blockLead", [{name: "Lead Block", texture: [["block_lead", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockLead, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockLead, "stone", 2, true);
+
+RecipiesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotLead, 0]);
+
+
+//Beryllium block
+IDRegistry.genBlockID("blockBeryllium"); 
+Block.createBlock("blockBeryllium", [{name: "Beryllium block", texture: [["block_beryllium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockBeryllium, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockBeryllium, "stone", 3, true);
+
+RecipiesManager.addShaped({id: BlockID.blockBeryllium, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotBeryllium, 0]);
+
+
+// Alluminium Block
+IDRegistry.genBlockID("blockAlluminium"); 
+Block.createBlock("blockAlluminium", [
+    {name: "Alluminium Block", texture: [["block_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockAlluminium, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockAlluminium, "stone", 2, true);
+
+RecipiesManager.addShaped({id: BlockID.blockAlluminium, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotAlluminium, 0]);
+
+
+// Sulfur Block
+IDRegistry.genBlockID("blockSulfur"); 
+Block.createBlock("blockSulfur", [{name: "Sulfur Block", texture: [["block_sulfur", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockSulfur, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockSulfur, "stone", 2, true);
+
+RecipiesManager.addShaped({id: BlockID.blockSulfur, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.dustSulfur, 0]);
+
+
+// Fluorite Block
+IDRegistry.genBlockID("blockFluorite"); 
+Block.createBlock("blockFluorite", [
+    {name: "Fluorite Block", texture: [["block_fluorite", 0]], inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.blockFluorite, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockFluorite, "stone", 2, true);
+
+RecipiesManager.addShaped({id: BlockID.blockFluorite, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.dustFluorite, 0]);
+
+
+// Copper Block
+IDRegistry.genBlockID("blockCopper"); 
+Block.createBlock("blockCopper", [
+    {name: "Copper Block", texture: [["block_copper", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockCopper,3);
+ToolAPI.registerBlockMaterial(BlockID.blockCopper, "stone", 3, true);
+
+RecipiesManager.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotCopper, 0]);
+
+
+// Tin Block
+IDRegistry.genBlockID("blockTin"); 
+Block.createBlock("blockTin", [{name: "Tin Block", texture: [["block_tin", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockTin, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockTin, "stone", 3, true);
+
+RecipiesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.ingotTin, 0]);
+
+
+// Concerete bricks
+IDRegistry.genBlockID("bricksConcrete");
+Block.createBlock("bricksConcrete", [{name: "Concerete Bricks", texture:[["brick_concrete", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.bricksConcrete, 4);
+ToolAPI.registerBlockMaterial(BlockID.bricksConcrete, "stone", 3, true);
+
+
+// Light Bricks
+IDRegistry.genBlockID("bricksLight");
+Block.createBlock("bricksLight", [{name: "Light Bricks", texture:[["brick_light", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.bricksLight, 6);
+ToolAPI.registerBlockMaterial(BlockID.bricksLight, "stone", 5, true);
+
+
+// Radioactive Musroom
+IDRegistry.genBlockID("mushroomRadioactiveSmall");
+Block.createBlock("mushroomRadioactiveSmall", [{name: "Radioactive Musroom", texture: [["empty", 0], ["empty", 0], ["GLmush", 0]], inCreative: false}], BLOCK_LIGHT);
+ToolAPI.registerBlockMaterial(BlockID.mushroomRadioactiveSmall, "plant");
+
+IDRegistry.genItemID("mushroomRadioactive");
+Item.createItem("mushroomRadioactive", "Radioactive Mushroom", {name: "GLmush"});
+Block.registerDropFunction("mushroomRadioactiveSmall", function(){
+    return [{id: ItemID.mushroomRadioactive}];
 });
 
-
-
-var ctx = UI.getContext();
-
-function runAsUI(func){
-    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
-        try{
-            func();
-        }catch(err){
-            Game.message(err);
-            alert(err);
-        }}
-    }));
-}
-
-
-var windowAim;
-var aimShown = false;
-var inGame = false;
-
-runAsUI(function(){
-    //Main layout of the whole window
-    var layoutMain = new LinearLayout(ctx);
-    layoutMain.setOrientation(0);
-    layoutMain.setGravity(Gravity.CENTER);
-    
-    var params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    layoutMain.setLayoutParams(params);
-    
-    var image = new android.widget.ImageView(ctx);
-    image.setImageBitmap(BitmapFactory.decodeFile(__dir__ + "gui/aim.png"));
-    layoutMain.addView(image);
-    
-    //Popup Window for displaying the staff
-    windowAim = new android.widget.PopupWindow(layoutMain, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    windowAim.setTouchable(false);
-    windowAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-});
-
-
-
-function showAim(){
-    if(aimShown) return;
-    runAsUI(function(){
-        aimShown = true;
-        windowAim.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.TOP, 0, 0);
-    });
-}
-
-function hideAim(){
-    if(!aimShown) return;
-    runAsUI(function(){
-        windowAim.dismiss();
-        aimShown = false;
-    });
-}
-
-
-Callback.addCallback("tick", function(){
-    if (World.getThreadTime() % 5 === 0) {
-        let carried = Player.getCarriedItem();
-        if(carried.id == ItemID.glock18){
-            showAim();
-        } else {
-            hideAim();
-        }
+Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
+    var place = coords.relative;
+    if(GenerationUtils.isTransparentBlock(World.getBlockID(place.x, place.y, place.z))){
+        World.setBlock(place.x, place.y, place.z, BlockID.mushroomRadioactiveSmall);
+        Player.setCarriedItem(item.id, item.count - 1, item.data);
     }
 });
+Renderer.setSaplingRender(BlockID.mushroomRadioactive, 0);
 
-Callback.addCallback("NativeGuiChanged", function (screenName) {
-    if(screenName == "hud_screen" || 
-      screenName == "in_game_play_screen"){
-        inGame = true;
-    }
-    else{
-        inGame = false;
-        hideAim();
-    }
-});
+IDRegistry.genBlockID("stemMushroomRadioactive");
+Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Moshroom Stem", texture: [
+    ["GLmush_block_inside", 0],["GLmush_block_inside", 0],["GLmush_block_stem", 0],["GLmush_block_stem", 0], ["GLmush_block_stem", 0],["GLmush_block_stem", 0]
+], inCreative: true}], BLOCK_LOW_LIGHT);
+
+ToolAPI.registerBlockMaterial(BlockID.stemMushroomRadioactive, "plant");
+
+IDRegistry.genBlockID("capMushroomRadioactive");
+Block.createBlock("capMushroomRadioactive", [{name: "Radioactive Mushroom Cap", texture:[["GLmush_block_skin", 0]],inCreative: true}], BLOCK_LOW_LIGHT); 
+
+
+
+
 
 
 
@@ -1046,18 +1888,109 @@ createBenchRender(BlockID.bench, 1, 2);
 
 // file: blocks/ores.js
 
-//Shale Ore
+// Shale Ore
 IDRegistry.genBlockID("oreShaleOil");
 Block.createBlock("oreShaleOil", [{name: "Shale Ore", texture: [["ore_shale_oil", 1], ["ore_shale_oil", 1], ["ore_shale_oil", 0], ["ore_shale_oil", 2], ["ore_shale_oil", 0], ["ore_shale_oil", 2]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreShaleOil, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreShaleOil, "stone", 3, true);
 
 
-//Gallium Arsenide Ore
+// Gallium Arsenide Ore
 IDRegistry.genBlockID("oreGalliumArsenide");
-Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0], ["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
-
+Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreGalliumArsenide, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreGalliumArsenide, "stone", 3, true);
 Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, diggingLevel, toolLevel){
-     return [[ItemID.galliumArsenite, 1, 0]];
+     if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.galliumArsenite, 1, 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
 });
+
+
+// Titanium Ore
+IDRegistry.genBlockID("oreTitanium"); 
+Block.createBlock("oreTitanium", [{name: "Titanium Ore", texture: [["ore_titanium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTitanium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreTitanium, "stone", 3, true);
+
+
+// Lead Ore
+IDRegistry.genBlockID("oreLead"); 
+Block.createBlock("oreLead", [{name: "Lead Ore", texture: [["ore_lead", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreLead, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreLead, "stone", 2, true);
+
+
+// Alluminium Ore
+IDRegistry.genBlockID("oreAlluminium"); 
+Block.createBlock("oreAlluminium", [{name: "Alluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreAlluminium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreAlluminium, "stone", 2, true);
+
+
+// Sulfur Ore
+IDRegistry.genBlockID("oreSulfur"); 
+Block.createBlock("oreSulfur", [{name: "Sulfur Ore", texture: [["ore_sulfur", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreSulfur,2);
+ToolAPI.registerBlockMaterial(BlockID.oreSulfur, "stone", 2, true);
+Block.registerDropFunction("oreSulfur", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustSulfur, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
+
+
+// Fluorite Ore
+IDRegistry.genBlockID("oreFluorite"); 
+Block.createBlock("oreFluorite", [
+    {name: "Fluorite Ore", texture: [["ore_fluorite", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreFluorite,2);
+ToolAPI.registerBlockMaterial(BlockID.oreFluorite, "stone", 2, true);
+Block.registerDropFunction("oreFluorite", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.dustFluorite, randomInt(1,3), 0]];
+        if(Math.random() < enchant.fortune/3 - 1/3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
+
+
+// Copper Ore
+IDRegistry.genBlockID("oreCopper"); 
+Block.createBlock("oreCopper", [
+    {name: "Copper Ore", texture: [["ore_copper", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreCopper,2);
+ToolAPI.registerBlockMaterial(BlockID.oreCopper, "stone", 2, true);
+
+
+// Tin Ore
+IDRegistry.genBlockID("oreTin"); 
+Block.createBlock("oreTin", [
+    {name: "Tin ore", texture: [["ore_tin", 0]],inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreTin,2);
+ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
+
+
+
 
 
 
@@ -1131,14 +2064,24 @@ var Split = {
         Split.x = x; 
         Split.y = y;
         Split.z = z;
+        World.setBlock(x, y, z, 0);
+        World.setBlock(x, y + 1, z, 0);
+        World.setBlock(x, y, 2, 0);
         Entity.addEffect(Player.get(), 11, 30, 5);
-        
+    },
+    
+    tryStart: function(chance, x, y, z){
+        if(!inCity && Math.random() < chance){
+            Split.summon(x, y, z);
+        }
     }
 }
 
 
+
 Callback.addCallback("tick", function(){
     if(Split.summoning){
+        Entity.setPosition(Player.get(), Split.x, Split.y + 2, Split.z);
         let x = Split.x + Math.random() * 4 - 2;
         let y = Split.y + Math.random() * 4 - 2;
         let z = Split.z + Math.random() * 4 - 2;
@@ -1148,11 +2091,12 @@ Callback.addCallback("tick", function(){
         Split.summon_ticks++;
         if(Split.summon_ticks > 20){
             Split.summoning = false;
-        } else if(Split.summon_ticks > 15){
             Split.build();
         }
     }
 });
+
+
 
 
 
@@ -1464,6 +2408,44 @@ Callback.addCallback("tick", function(){
 
 
 
+// file: environment/splitConditions.js
+
+Callback.addCallback("DestroyBlock", function(coords, block){
+    if(block.id == 56){
+        Split.tryStart(0.1, coords.x, coords.y, coords.z);
+    } else if(block.id == 115){
+        Split.tryStart(0.1, coords.x, coords.y, coords.z);
+    }
+});
+
+
+Callback.addCallback("PlayerAttack", function(player, entity){
+    if(Player.getCarriedItem().id == 276){
+        let coords = Entity.getPosition(Player.get());
+        Split.tryStart(0.1, coords.x, coords.y, coords.z);
+    }
+});
+
+
+Callback.addCallback("GenerateChunk", function(x, z){
+    let coords = Entity.getPosition(Player.get());
+    Split.tryStart(0.002, coords.x, coords.y, coords.z);
+});
+
+
+Callback.addCallback("ItemUse", function(coords, item, block){
+    let x = coords.relative.x;
+    let y = coords.relative.y;
+    let z = coords.relative.z;
+    if(item.id == 116){
+        Split.tryStart(0.2, coords.x, coords.y, coords.z);
+    } else if(block.id == 61){
+        Split.tryStart(0.002, coords.x, coords.y, coords.z);
+    }
+});
+
+
+
 // file: dimension/generation/Dimension.js
 
 const SKY_COLOR = [0.2, 0.13, 0.2];
@@ -1533,11 +2515,17 @@ var APOCity = new Dimension({
         
         generateChunk: function(chunkX, chunkZ) {
             APOGen.generate(chunkX * 16, chunkZ * 16);
+        },
+        
+        loaded: function(){
+            inCity = true;
+            RecipiesManager.onRegisterRecipiesNeeded();
         }
     }
 });
 
 //APOCity.debugTerrainSlice(128, 1, true);
+
 
 
 var APOCityTransferSequence = new TransferSequence(APOCity);
@@ -1574,12 +2562,30 @@ function Building(filename){
     var blocks;
     var loot;
     
+    var parseBlocks = function(array){
+        for(var i = 0; i < array.length; i++){
+            for(var j = 0; j < array[0].length; j++){
+                for(var k = 0; k < array[0][0].length; k++){
+                    array[i][j][k] = eval(array[i][j][k]);
+                }
+            }
+        }
+        return array;
+    }
+    
+    var parseLoot = function(array){
+        for(var i in array){
+            array[i].id = eval(array[i].id);
+        }
+        return array;
+    }
+    
     var json = JSON.parse(readFile(path));
     if(Array.isArray(json)){
-        blocks = json;
+        blocks = parseBlocks(json);
     } else {
-        blocks = json.blocks;
-        loot = json.loot;
+        blocks = parseBlocks(json.blocks);
+        loot = parseLoot(json.loot);
     }
     
     this.debug = false;
@@ -2104,6 +3110,92 @@ Underground.exit = function(x, y, z, direction){
 
 
 
+
+
+
+// file: dimension/generation/AfterTeleportGen.js
+
+Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
+    if(!inCity) return;
+    
+    // Gallium Arsenide Ore
+    for(var i = 0; i < 20; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 5, 60);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreGalliumArsenide, 0, 3);
+    }
+    
+    // Shale Ore 
+    for(var i = 0; i < 5; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 5, 15);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreShaleOil, 0, 100);
+    }
+    
+    // Uranium Ore
+    for(var i = 0; i < 18; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 44);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreUranium, 0, 3);          
+    }
+    
+    // Schrabidium Ore
+    for(var i = 0; i < 23; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 32);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSchrabidium, 0, 4);          
+    }
+    
+    // Titanium Ore
+    for(var i = 0; i <  19; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 30);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTitanium, 0, 3);          
+    }
+    
+    // Tungsten Ore 
+    for(var i = 0; i < 21; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 35);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 3);          
+    }
+    
+    // Lead Ore
+    for(var i = 0; i < 21; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 41);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreLead, 0, 3);          
+    }
+    
+    // Beryllium Ore
+    for(var i = 0; i < 22; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 40);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreBeryllium, 0, 4);          
+    }
+    
+    // Alluminium Ore
+    for(var i = 0; i < 23; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 44);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreAlluminium, 0, 5);
+    }
+    
+    // Sulfur Ore
+    for(var i = 0; i < 22; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 39);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSulfur, 0, 5);          
+    }
+    
+    // Fluorite Ore
+    for(var i = 0; i < 20; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 60);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreFluorite, 0, 5);          
+    } 
+    
+    // Copper Ore
+    for(var i = 0; i < 28; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 54);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreCopper, 0, 5);          
+    } 
+    
+    // Tin Ore
+    for(var i = 0; i < 29; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 55); 
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 5);          
+    } 
+});
 
 
 
@@ -2828,18 +3920,33 @@ var WireSystem = {
     addWire: function(pos1, pos2, distance){
         pos1 = {x: pos1.x + 0.5, y: pos1.y - 1, z: pos1.z + 0.5};
         pos2 = {x: pos2.x + 0.5, y: pos2.y - 1, z: pos2.z + 0.5};
-        var animationWire = new Animation.Base((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2, (pos1.z + pos2.z) / 2);
+        let center = {x: (pos1.x + pos2.x) / 2, y: (pos1.y + pos2.y) / 2, z: (pos1.z + pos2.z) / 2}
+        
+        var animationWire = new Animation.Base(center.x, center.y, center.z);
+        
         var render = new Render({skin: "mob/wire.png"});
         var partWire = render.getPart("body").addPart("wire");
         
-        var angleX = (pos2.y == pos1.y)? 0: Math.atan((pos1.z - pos2.z) / (pos2.y - pos1.y));
+        var angleX = (pos2.y == pos1.y)? Math.PI / 2: Math.atan((pos2.y - pos1.y) / (pos1.z - pos2.z));
         var angleY = (pos2.x == pos1.x)? Math.PI / 2: Math.atan((pos1.z - pos2.z) / (pos1.x - pos2.x));
         var angleZ = (pos1.x == pos2.x)? 0: Math.atan((pos2.y - pos1.y) / (pos1.x - pos2.x));
+        
+        //let vec = {x: center.x - pos1.x, y: center.y - pos1.y, z: center.z - pos1.z};
+        //let veclen = Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2) + Math.pow(vec.z, 2));
+        //let nX = vec.x / veclen;
+        //let nY = vec.y / veclen;
+        //let nZ = vec.z / veclen;
+        
         
         if(!distance) {
             distance = Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2) + Math.pow(pos1.z - pos2.z, 2));
         }
+        
+        //let pitch = Math.asin(nY);
+        //let yaw = pitch == 0? 0: nZ / Math.cos(pitch);
+        
         partWire.setRotation(angleX, angleY, angleZ);
+        //partWire.setRotation(0, yaw, pitch);
         render.setPart("wire", [
             {
                 type: "box",
@@ -2935,7 +4042,6 @@ Item.registerUseFunction("wireCoil", function (coords, item, block) {
     } else {
         let connector2 = {x: coords.x, y: coords.y, z: coords.z};
         if(WireSystem.setupWire(WireSystem.connector1, connector2)){
-            Game.message("Addding wire");
             let transmitters = [];
             WireSystem.getTransmitters(connector2, transmitters);
             for(var i in transmitters){
