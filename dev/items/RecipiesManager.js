@@ -8,6 +8,10 @@ RecipiesManager.addShaped = function(result, recipie, data){
     RecipiesManager.recipies.push({"result": result, "recipie": recipie, "data": data});
 };
 
+RecipiesManager.addShapeless = function(result, data){
+    RecipiesManager.shapeless.push({"result": result, "recipe": data});
+}
+
 RecipiesManager.onRegisterRecipiesNeeded = function(){
     if(!RecipiesManager.recipiesLoaded){
         RecipiesManager.recipiesLoaded = true;
@@ -20,7 +24,11 @@ RecipiesManager.onRegisterRecipiesNeeded = function(){
         // Shapeless
         for(var i in RecipiesManager.shapeless){
             let recipe = RecipiesManager.shapeless[i];
-            Recipes.addShapeless(recipe.result, recipe.recipe, recipe.callback);
+            if(recipe.callback){
+                Recipes.addShapeless(recipe.result, recipe.recipe, recipe.callback);
+            } else {
+                Recipes.addShapeless(recipe.result, recipe.recipe);
+            }
         }
     }
 }

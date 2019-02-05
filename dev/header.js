@@ -7,6 +7,15 @@
  ▀░░▀ █ █▀▀▀ █ ▀▀▀▀ █   ▀▀▀ ▀░▀▀ ▀░░▀ ▀░░ ░░▀░░
  
  You are not welcome here!
+ 
+ Contributors:
+ *IchZerowan
+ *Urpanium
+ *DansTS
+ *TsnZephy
+ *SDesya74
+ *AlexSocol
+ 
 */
 
 IMPORT("dimensions");
@@ -20,6 +29,7 @@ IMPORT("energylib");
 IMPORT("TradeLib");
 IMPORT("Inventory");
 IMPORT("ChargeItem");
+IMPORT("AdvancedAI");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;

@@ -3,8 +3,7 @@ imports.js
 
 RenderTools.js
 items/RecipiesManager.js
-items/steelArms.js
-items/craftingTools.js
+
 
 api/GunRegistry.js
 
@@ -16,12 +15,20 @@ events.js
 
 blocks/ores.js
 
+items/components/hardware.js
+items/components/electricity.js
+items/components/metals.js
+items/components/minerals.js
+items/components/other.js
+
 items/firstAidKit.js
-items/components.js
 items/detectors.js
 items/eggs.js
 items/armor.js
 items/guns.js
+items/steelArms.js
+items/craftingTools.js
+
 
 blocks/decorations.js
 blocks/roads.js
@@ -60,5 +67,6 @@ machine/Wire.js
 mob/ArmorSet.js
 mob/Military.js
 mob/UI.js
+mob/Dementor.js
 
 

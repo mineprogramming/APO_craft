@@ -100,4 +100,22 @@ Block.setDestroyTime(BlockID.oreTin,2);
 ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
 
 
+// Ruby Ore
+IDRegistry.genBlockID("oreRuby"); 
+Block.createBlock("oreRuby", [
+    {name: "Ruby Ore", texture: [["ore_ruby", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreRuby,2);
+ToolAPI.registerBlockMaterial(BlockID.oreRuby, "stone", 2, true);
+Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.ruby, 1, 0]];
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
+
 
