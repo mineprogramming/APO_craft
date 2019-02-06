@@ -38,9 +38,35 @@ IDRegistry.genItemID("hdd");
 Item.createItem("hdd", "Hard Disk Drive", {name: "hdd", meta: 0}, {});
 
 
+// Magnetic Head
+IDRegistry.genItemID("headMagnetic");
+Item.createItem("headMagnetic", "Magnetic Head", {name: "head_magnetic", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.headMagnetic, count: 1, data: 0}, [
+    "   ",
+    "aaa",
+    "ccb"
+], ['a', ItemID.rodTitanium, 0, 'b', ItemID.coilCopper, 0, 'c', ItemID.cableCopper0, 0]);
+
+
+// Magnetic Disk
+IDRegistry.genItemID("diskMagnetic");
+Item.createItem("diskMagnetic", "Magnetic Disk", {name: "disk_magnetic", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.diskMagnetic, count: 1, data: 0}, [
+    "aaa",
+    "bbb",
+    "aaa"
+], ['a', ItemID.dustIron, 0, 'b', 102, 0]);
+
+
 // Socket
 IDRegistry.genItemID("socket");
 Item.createItem("socket", "Socket", {name: "socket", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.socket, count: 1, data: 0}, [
+    "bbb",
+    "aaa",
+    "bbb"
+], ['b', ItemID.platePolypropylene, 0, 'a', ItemID.cableCopper0, 0]);
+
 
 // Space-Time Frequency Generator
 IDRegistry.genItemID("generatorSpaceTime");

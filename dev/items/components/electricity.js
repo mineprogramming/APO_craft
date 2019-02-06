@@ -90,6 +90,10 @@ Item.createItem("smd", "SMD Details", {name: "smd", data: 0});
 // Transformator
 IDRegistry.genItemID("transformator");
 Item.createItem("transformator", "Transformator", {name: "transformator", data: 0});
+RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
+     "aa",
+     "aa"
+], ['a', ItemID.coilCopper, 0]);
 
 
 

@@ -133,10 +133,7 @@ Callback.addCallback("ICore", function(api){
     ], ['a', ItemID.waste, 0]);
 });
 
-// Uncoment this to test recipes without moving to dimension
-Callback.addCallback("PostLoaded", function(){
-    RecipiesManager.onRegisterRecipiesNeeded();
-});
+
 
 
 

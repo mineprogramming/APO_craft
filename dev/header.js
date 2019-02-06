@@ -65,12 +65,16 @@ var inCity = false;
 
 Saver.addSavesScope("inCity", 
     function read(scope){
-        if(!scope.inCity) {
-            RecipiesManager.deleteAll();
-            return;
+        if(__config__.getBool("late_recipies_registration")){
+            if(!scope.inCity) {
+                RecipiesManager.deleteAll();
+                return;
+            } else {
+                RecipiesManager.onRegisterRecipiesNeeded();
+            }
         }
+        
         inCity = scope.inCity;
-        RecipiesManager.onRegisterRecipiesNeeded();
     },
 
     function save(){

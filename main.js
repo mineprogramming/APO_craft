@@ -2,7 +2,7 @@
 NIDE BUILD INFO:
   dir: dev
   target: main.js
-  files: 48
+  files: 53
 */
 
 
@@ -18,6 +18,15 @@ NIDE BUILD INFO:
  ▀░░▀ █ █▀▀▀ █ ▀▀▀▀ █   ▀▀▀ ▀░▀▀ ▀░░▀ ▀░░ ░░▀░░
  
  You are not welcome here!
+ 
+ Contributors:
+ *IchZerowan
+ *Urpanium
+ *DansTS
+ *TsnZephy
+ *SDesya74
+ *AlexSocol
+ 
 */
 
 IMPORT("dimensions");
@@ -31,6 +40,7 @@ IMPORT("energylib");
 IMPORT("TradeLib");
 IMPORT("Inventory");
 IMPORT("ChargeItem");
+IMPORT("AdvancedAI");
 
 const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
@@ -66,7 +76,7 @@ var inCity = false;
 
 Saver.addSavesScope("inCity", 
     function read(scope){
-        if(!scope.inCity) {
+        if(!scope.inCity && __config__.getBool("late_recipies_registration")) {
             RecipiesManager.deleteAll();
             return;
         }
@@ -181,6 +191,10 @@ RecipiesManager.addShaped = function(result, recipie, data){
     RecipiesManager.recipies.push({"result": result, "recipie": recipie, "data": data});
 };
 
+RecipiesManager.addShapeless = function(result, data){
+    RecipiesManager.shapeless.push({"result": result, "recipe": data});
+}
+
 RecipiesManager.onRegisterRecipiesNeeded = function(){
     if(!RecipiesManager.recipiesLoaded){
         RecipiesManager.recipiesLoaded = true;
@@ -193,7 +207,11 @@ RecipiesManager.onRegisterRecipiesNeeded = function(){
         // Shapeless
         for(var i in RecipiesManager.shapeless){
             let recipe = RecipiesManager.shapeless[i];
-            Recipes.addShapeless(recipe.result, recipe.recipe, recipe.callback);
+            if(recipe.callback){
+                Recipes.addShapeless(recipe.result, recipe.recipe, recipe.callback);
+            } else {
+                Recipes.addShapeless(recipe.result, recipe.recipe);
+            }
         }
     }
 }
@@ -232,37 +250,16 @@ RecipiesManager.addRecipeWithCraftingTool = function(result, data, tool){
 
 
 
-
-// file: items/steelArms.js
-
-//Karambit Gradient
-IDRegistry.genItemID("karambitGradient");
-Item.createItem("karambitGradient", "Karambit Gradient", {name: "karambit_gradient", meta: 0}, {
-    stack: 1
-});
-
-ToolAPI.registerSword(ItemID.karambitGradient, {level: 0, durability: 2048, damage: 10}, {damage:10});
-
-
-//Karambit Gradient
-IDRegistry.genItemID("knifeButterfly");
-Item.createItem("knifeButterfly", "Butterfly", {name: "knife_butterfly", meta: 0}, {
-    stack: 1
-});
-
-ToolAPI.registerSword(ItemID.knifeButterfly, {level: 0, durability: 1856, damage: 7}, {damage:7});
+// Register all recipies in PostLoad for debugging or testing
+if(!__config__.getBool("late_recipies_registration")){
+    Callback.addCallback("PostLoaded", function(){
+        RecipiesManager.onRegisterRecipiesNeeded();
+        Logger.Log("RecipiesManager", "Recipies successfully loaded!");
+    });
+}
 
 
 
-// file: items/craftingTools.js
-
-IDRegistry.genItemID("craftingHammer");
-Item.createItem("craftingHammer", "Forge Hammer", {name: "crafting_hammer"}, {stack: 1});
-Item.setMaxDamage(ItemID.craftingHammer, CRAFTING_TOOL_MAX_DAMAGE);
-
-IDRegistry.genItemID("craftingCutter");
-Item.createItem("craftingCutter", "Cutter", {name: "crafting_cutter"}, {stack: 1});
-Item.setMaxDamage(ItemID.craftingCutter, CRAFTING_TOOL_MAX_DAMAGE);
 
 
 
@@ -741,27 +738,222 @@ Block.setDestroyTime(BlockID.oreTin,2);
 ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
 
 
+// Ruby Ore
+IDRegistry.genBlockID("oreRuby"); 
+Block.createBlock("oreRuby", [
+    {name: "Ruby Ore", texture: [["ore_ruby", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreRuby,2);
+ToolAPI.registerBlockMaterial(BlockID.oreRuby, "stone", 2, true);
+Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.ruby, 1, 0]];
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
 
 
 
 
 
-// file: items/firstAidKit.js
 
-IDRegistry.genItemID("firstAidKit");
-Item.createItem("firstAidKit", "First Aid Kit", {name: "first_aid_kit", meta: 0}, {});
+// file: items/components/minerals.js
+
+// Gallium Andesite
+IDRegistry.genItemID("galliumArsenite");
+Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
+
+
+// Ruby
+IDRegistry.genItemID("ruby");
+Item.createItem("ruby", "Ruby", {name: "ruby", meta: 0});
+
+
+/* DUSTS */
+
+// Fluorite Dust
+IDRegistry.genItemID("dustFluorite");
+Item.createItem("dustFluorite", "Fluorite Dust", {name: "fluorite"});
+
+// Sulfur Dust
+IDRegistry.genItemID("dustSulfur");
+Item.createItem("dustSulfur", "Sulfur Dust", {name: "sulfur"});
+
+// Blaze Dust
+IDRegistry.genItemID("dustFire");
+Item.createItem("dustFire", "Blaze Dust", {name: "powder_fire"});
+
+
+
+// file: items/components/metals.js
+
+/* Metals (Thanks to DansTS) */
+
+/* INGOTS */
+
+// Titanium Ingot
+IDRegistry.genItemID("ingotTitanium");
+Item.createItem("ingotTitanium", "Titanium Ingot", {name: "ingot_titanium"});
+Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
+
+// Alloy Ingot
+IDRegistry.genItemID("ingotAlloy");
+Item.createItem("ingotAlloy", "Alloy Ingot", {name: "ingot_advanced_alloy"});
+
+// Steel Ingot
+IDRegistry.genItemID("ingotSteel");
+Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});
+
+// Lead Ingot
+IDRegistry.genItemID("ingotLead");
+Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
+Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
+
+// Alluminium Ingot
+IDRegistry.genItemID("ingotAlluminium");
+Item.createItem("ingotAlluminium", "Alluminium Ingot", {name: "ingot_aluminium"});
+Recipes.addFurnace(BlockID.oreAlluminium, ItemID.ingotAlluminium, 0);
+
+// Copper Ingot
+IDRegistry.genItemID("ingotCopper");
+Item.createItem("ingotCopper", "Copper Ingot", {name: "ingot_copper"});
+Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
+
+// Red Copper Ingot
+IDRegistry.genItemID("ingotCopperRed");
+Item.createItem("ingotCopperRed", "Red Copper Ingot", {name: "ingot_red_copper"});
+Recipes.addFurnace(ItemID.ingotCopper, ItemID.ingotCopperRed, 0);
+
+// Tin Ingot
+IDRegistry.genItemID("ingotTin");
+Item.createItem("ingotTin", "Tin Ingot", {name: "ingot_tin"});
+Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
+
+// Solder Ingot
+IDRegistry.genItemID("ingotSolder");
+Item.createItem("ingotSolder", "Solder Ingot", {name: "ingot_solder"});
+RecipiesManager.addShapeless({id: ItemID.ingotSolder, count: 2, data: 0}, [{id: ItemID.ingotTin, data: 0}, {id: ItemID.ingotLead, data: 0}]);
+
+
+/* PLATES */
+
+// Titanium Plate
+IDRegistry.genItemID("plateTitanium");
+Item.createItem("plateTitanium", "Titanium Plate", {name: "plate_titanium"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
+
+// Iron Plate
+IDRegistry.genItemID("plateIron");
+Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
+
+// Aluminium Plate
+IDRegistry.genItemID("plateAluminium");
+Item.createItem("plateAluminium", "Aluminium Plate", {name: "plate_aluminium"});
+
+// Steel Plate
+IDRegistry.genItemID("plateSteel");
+Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
+
+// Lead Plate
+IDRegistry.genItemID("plateLead");
+Item.createItem("plateLead", "Lead Plate", {name: "plate_lead"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
+
+// Gold Plate
+IDRegistry.genItemID("plateGold");
+Item.createItem("plateGold", "Gold Plate", {name: "plate_gold"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
+
+// Alloy Plate
+IDRegistry.genItemID("plateAlloy");
+Item.createItem("plateAlloy", "Alloy Plate", {name: "plate_advanced_alloy"});
+
+// Copper Plate
+IDRegistry.genItemID("plateCopper");
+Item.createItem("plateCopper", "Copper Plate", {name: "plate_copper"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
+
+// Tin Plate
+IDRegistry.genItemID("plateTin");
+Item.createItem("plateTin", "Tin Plate", {name: "plate_tin"});
+RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
+
+
+/* NUGGETS */
+
+// Lead Nugget
+IDRegistry.genItemID("nuggetLead");
+Item.createItem("nuggetLead", "Lead Nugget", {name: "nugget_lead"});
+
+
+/* DUSTS */
+
+// Lead Dust
+IDRegistry.genItemID("dustLead");
+Item.createItem("dustLead", "Lead Dust", {name: "dust_lead"});
+
+// Iron Dust
+IDRegistry.genItemID("dustIron");
+Item.createItem("dustIron", "Iron Dust", {name: "dust_iron"});
+
+
+/* CABLES */
+
+// Copper Cable
+IDRegistry.genItemID("cableCopper0");
+Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
+
+// Lead Cable
+IDRegistry.genItemID("cableLead0");
+Item.createItem("cableLead0", "Lead Cable", {name: "cable_lead", meta: 0});
+
+
+/* RODS */
+
+// Iron Rod
+IDRegistry.genItemID("rodIron");
+Item.createItem("rodIron", "Iron Rod", {name: "rod_iron", meta: 0});
+
+// Titanium Rod
+IDRegistry.genItemID("rodTitanium");
+Item.createItem("rodTitanium", "Titanium Rod", {name: "rod_titanium", meta: 0});
+
+
+/* COILS */
+
+// Copper Coil
+IDRegistry.genItemID("coilCopper");
+Item.createItem("coilCopper", "Copper Coil", {name: "coil_copper", meta: 0});
+RecipiesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
+    "aaa",
+    "aba",
+    "aaa"
+], ['a', ItemID.cableCopper0, 0, 'b', ItemID.rodIron, 0]);
 
 
 
 
-// file: items/components.js
+
+
+
+
+
+
+
+
+
+// file: items/components/other.js
 
 /* Trading */
 
 //Silver
 IDRegistry.genItemID("silver");
 Item.createItem("silver", "Silver", {name: "silver", meta: 0}, {});
-
 
 
 /*Oil distillation products */
@@ -802,7 +994,6 @@ Item.createItem("kerosene", "Kerosene", {name: "kerosene", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.kerosene, 0, 3000);
 
 
-
 /* Coal coking products*/
 
 //Coal Tar
@@ -813,7 +1004,6 @@ Item.createItem("tarCoal", "Coal Tar", {name: "tar_coal", meta: 0}, {});
 IDRegistry.genItemID("coke");
 Item.createItem("coke", "Coke", {name: "coke", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.coke, 0, 2000);
-
 
 
 /* Textolite production */
@@ -849,7 +1039,6 @@ RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
 ], ['a', ItemID.fiberglass, 0, 'b', ItemID.oilResin, 0]);
 
 
-
 /* Plastics */
 
 //Granules of Polypropylene
@@ -879,22 +1068,77 @@ RecipiesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
 ], ['a', ItemID.platePolypropylene, 0]);
 
 
+/* Other materials */
 
-/* Metals */
-
-//Copper Cable
-IDRegistry.genItemID("cableCopper0");
-Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
-
+// Can
+IDRegistry.genItemID("can");
+Item.createItem("can", "Can", {name: "can", meta: 0}, {});
 
 
-/* Light-Emitting Diodes*/
+Callback.addCallback("ICore", function(api){
+    //Scrap from Waste
+    RecipiesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
+        "aaa",
+        "aaa",
+        "aaa"
+    ], ['a', ItemID.waste, 0]);
+});
 
-//Gallium Andesite
-IDRegistry.genItemID("galliumArsenite");
-Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
 
-//LEDs
+
+
+
+
+
+
+
+
+
+// file: items/components/electricity.js
+
+// Battery Casing
+IDRegistry.genItemID("batteryCasing");
+Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
+
+
+// Battery Cap
+IDRegistry.genItemID("batteryCap");
+Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
+
+
+// Battery
+IDRegistry.genItemID("storageBattery");
+Item.createItem("storageBattery", "Battery", {name: "battery_generic"});
+ChargeItemRegistry.registerItem(ItemID.storageBattery, "Eu", 10000, 0, true);
+RecipiesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
+    "a",
+    "c",
+    "b"
+], ['a', ItemID.batteryCap, 0, 'c', ItemID.nuggetLead, 0, 'b', ItemID.batteryCasing, 0]);
+
+
+// Advanced Battery
+IDRegistry.genItemID("storageBatteryAdv");
+Item.createItem("storageBatteryAdv", "Advanced Battery", {name: "battery_advanced"});
+ChargeItemRegistry.registerItem(ItemID.storageBatteryAdv, "Eu", 100000, 0, true);
+
+RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
+    "acb" 
+], ['a', ItemID.plateAlloy, 0, 'c', ItemID.storageBattery, 0, 'b', ItemID.dustSulfur, 0]);
+
+
+// Button Set
+IDRegistry.genItemID("buttonSet");
+Item.createItem("buttonSet", "Button Set", {name: "button_set", meta: 0}, {});
+
+RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
+     " a ",
+     "aba",
+     " a "
+], ['a', 143, 0, 'b', 77, 0]);
+
+
+// LEDs
 IDRegistry.genItemID("ledRed");
 IDRegistry.genItemID("ledYellow");
 IDRegistry.genItemID("ledGreen");
@@ -921,48 +1165,160 @@ RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
 ], ['a', 20, 0, 'b', 351, 2, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
 
 
+// Capacitor
+IDRegistry.genItemID("capacitor");
+Item.createItem("capacitor", "Capacitor", {name: "capacitor", data: 0});
 
-/* Other materials */
 
-// Can
-IDRegistry.genItemID("can");
-Item.createItem("can", "Can", {name: "can", meta: 0}, {});
+// Transistor
+IDRegistry.genItemID("transistor");
+Item.createItem("transistor", "Transistor", {name: "transistor", data: 0});
 
-//Battery parts
-IDRegistry.genItemID("batteryCasing");
-Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
 
-IDRegistry.genItemID("batteryCap");
-Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
+// Diode
+IDRegistry.genItemID("diode");
+Item.createItem("diode", "Diode", {name: "diode", data: 0});
 
-//Battery
-IDRegistry.genItemID("storageBattery");
-Item.createItem("storageBattery", "Battery", {name: "battery_generic"});
-ChargeItemRegistry.registerItem(ItemID.storageBattery, "Eu", 10000, 0, true);
-RecipiesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
-    "a",
-    "c",
-    "b"
-], ['a', ItemID.batteryCap, 0, 'c', ItemID.nuggetLead, 0, 'b', ItemID.batteryCasing, 0]);
 
-IDRegistry.genItemID("storageBatteryAdv");
-Item.createItem("storageBatteryAdv", "Battary Advanced", {name: "battery_advanced"});
-ChargeItemRegistry.registerItem(ItemID.storageBatteryAdv, "Eu", 100000, 0, true);
+// SMD Details
+IDRegistry.genItemID("smd");
+Item.createItem("smd", "SMD Details", {name: "smd", data: 0});
 
-RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
-    "acb" 
-], ['a', ItemID.plateAlloy, 0, 'c', ItemID.storageBattery, 0, 'b', ItemID.dustSulfur, 0]);
 
-//Connectors
+// Transformator
+IDRegistry.genItemID("transformator");
+Item.createItem("transformator", "Transformator", {name: "transformator", data: 0});
+RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, 
+    [{id: ItemID.coilCopper, data: 0}, {id: ItemID.coilCopper, data: 0}, {id: ItemID.coilCopper, data: 0}, {id: ItemID.coilCopper, data: 0}])
 
 
 
-//Chips
+
+
+
+
+
+
+// file: items/components/hardware.js
+
+// Arduino Central Chip
 IDRegistry.genItemID("chipArduino");
-IDRegistry.genItemID("chipRaspberry");
 Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
+
+
+// Raspberry PI Central Chip
+IDRegistry.genItemID("chipRaspberry");
 Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
 
+
+// Chipset
+IDRegistry.genItemID("chipset");
+Item.createItem("chipset", "Chipset", {name: "chipset", meta: 0}, {});
+
+
+// Motherboard
+IDRegistry.genItemID("motherboard");
+Item.createItem("motherboard", "Motherboard", {name: "motherboard", meta: 0}, {});
+
+
+// CPU
+IDRegistry.genItemID("cpu");
+Item.createItem("cpu", "CPU", {name: "cpu", meta: 0}, {});
+
+
+// Cooling System
+IDRegistry.genItemID("systemCooling");
+Item.createItem("systemCooling", "Cooling System", {name: "cooling_system", meta: 0}, {});
+
+
+// RAM
+IDRegistry.genItemID("ram");
+Item.createItem("ram", "RAM", {name: "ram", meta: 0}, {});
+
+
+// HDD
+IDRegistry.genItemID("hdd");
+Item.createItem("hdd", "Hard Disk Drive", {name: "hdd", meta: 0}, {});
+
+
+// Magnetic Head
+IDRegistry.genItemID("headMagnetic");
+Item.createItem("headMagnetic", "Magnetic Head", {name: "head_magnetic", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.headMagnetic, count: 1, data: 0}, [
+    "   ",
+    "aaa",
+    "ccb"
+], ['a', ItemID.rodTitanium, 0, 'b', ItemID.coilCopper, 0, 'c', ItemID.cableCopper0, 0]);
+
+
+// Magnetic Disk
+IDRegistry.genItemID("diskMagnetic");
+Item.createItem("diskMagnetic", "Magnetic Disk", {name: "disk_magnetic", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.diskMagnetic, count: 1, data: 0}, [
+    "aaa",
+    "bbb",
+    "aaa"
+], ['a', ItemID.dustIron, 0, 'b', 102, 0]);
+
+
+// Socket
+IDRegistry.genItemID("socket");
+Item.createItem("socket", "Socket", {name: "socket", meta: 0}, {});
+RecipiesManager.addShaped({id: ItemID.socket, count: 1, data: 0}, [
+    "bbb",
+    "aaa",
+    "bbb"
+], ['b', ItemID.platePolypropylene, 0, 'a', ItemID.cableCopper0, 0]);
+
+
+// Space-Time Frequency Generator
+IDRegistry.genItemID("generatorSpaceTime");
+Item.createItem("generatorSpaceTime", "Space-Time Frequency Generator", {name: "space_time_generator", meta: 0}, {});
+
+
+// Video Card
+IDRegistry.genItemID("cardVideo");
+Item.createItem("cardVideo", "Video Card", {name: "card_video", meta: 0}, {});
+
+
+// Power Supply
+IDRegistry.genItemID("powerSupply");
+Item.createItem("powerSupply", "Power Supply", {name: "power_supply", meta: 0}, {});
+
+
+// ATtiny 45
+IDRegistry.genItemID("attiny45");
+Item.createItem("attiny45", "ATtiny 45", {name: "attiny45", meta: 0}, {});
+
+
+// Arduino Uno
+IDRegistry.genItemID("arduinoUno");
+Item.createItem("arduinoUno", "Arduino Uno", {name: "arduino_uno", meta: 0}, {});
+
+
+// Arduino Mega
+IDRegistry.genItemID("arduinoMega");
+Item.createItem("arduinoMega", "Arduino Mega", {name: "arduino_mega", meta: 0}, {});
+
+
+// Raspberry PI 3
+IDRegistry.genItemID("raspberryPi3");
+Item.createItem("raspberryPi3", "Raspberry PI 3", {name: "raspberry_pi", meta: 3}, {});
+
+
+// Radiation Sensor
+IDRegistry.genItemID("sensorRadiation");
+Item.createItem("sensorRadiation", "Radiation Sensor", {name: "sensor_radiation", meta: 0}, {});
+
+
+// Viruses Sensor
+IDRegistry.genItemID("sensorViruses");
+Item.createItem("sensorViruses", "Viruses Sensor", {name: "sensor_viruses", meta: 0}, {});
+
+
+// Nitrates Sensor
+IDRegistry.genItemID("sensorNitrates");
+Item.createItem("sensorNitrates", "Nitrates Sensor", {name: "sensor_nitrates", meta: 0}, {});
 
 
 //LED Display
@@ -970,188 +1326,18 @@ IDRegistry.genItemID("displayLed");
 Item.createItem("displayLed", "LED Display", {name: "display_led", meta: 0}, {});
 
 
-//Button Set
-IDRegistry.genItemID("buttonSet");
-Item.createItem("buttonSet", "Button Set", {name: "button_set", meta: 0}, {});
-
-RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
-     " a ",
-     "aba",
-     " a "
-], ['a', 143, 0, 'b', 77, 0]);
-
-//ATtiny 45
-IDRegistry.genItemID("attiny45");
-Item.createItem("attiny45", "ATtiny 45", {name: "attiny45", meta: 0}, {});
-
-
-//Arduino Uno
-IDRegistry.genItemID("arduinoUno");
-Item.createItem("arduinoUno", "Arduino Uno", {name: "arduino_uno", meta: 0}, {});
-
-
-//Raspberry PI 3
-IDRegistry.genItemID("raspberryPi3");
-Item.createItem("raspberryPi3", "Raspberry PI 3", {name: "raspberry_pi", meta: 3}, {});
-
-
-//Radiation Sensor
-IDRegistry.genItemID("sensorRadiation");
-Item.createItem("sensorRadiation", "Radiation Sensor", {name: "sensor_radiation", meta: 0}, {});
-
-
-//Viruses Sensor
-IDRegistry.genItemID("sensorViruses");
-Item.createItem("sensorViruses", "Viruses Sensor", {name: "sensor_viruses", meta: 0}, {});
-
-
-//Nitrates Sensor
-IDRegistry.genItemID("sensorNitrates");
-Item.createItem("sensorNitrates", "Nitrates Sensor", {name: "sensor_nitrates", meta: 0}, {});
 
 
 
 
 
-Callback.addCallback("ICore", function(api){
-    //Scrap from Waste
-    RecipiesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
-        "aaa",
-        "aaa",
-        "aaa"
-    ], ['a', ItemID.waste, 0]);
-});
-
-// Uncoment this to test recipes without moving to dimension
-Callback.addCallback("PostLoaded", function(){
-    RecipiesManager.onRegisterRecipiesNeeded();
-});
 
 
 
-/* Metals (DansTS) */
+// file: items/firstAidKit.js
 
-
-/* Ingots of new metals (DansTS) */
-
-// Titanium Ingot
-IDRegistry.genItemID("ingotTitanium");
-Item.createItem("ingotTitanium", "Titanium Ingot", {name: "ingot_titanium"});
-Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
-
-// Alloy Ingot
-IDRegistry.genItemID("ingotAlloy");
-Item.createItem("ingotAlloy", "Alloy Ingot", {name: "ingot_advanced_alloy"});
-
-// Steel Ingot
-IDRegistry.genItemID("ingotSteel");
-Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});
-
-// Beryllium Ingot
-IDRegistry.genItemID("ingotBeryllium");
-Item.createItem("ingotBeryllium", "Beryllium Ingot", {name: "ingot_beryllium"});
-Recipes.addFurnace(BlockID.oreBeryllium, ItemID.ingotBeryllium, 0);
-
-// Lead Ingot
-IDRegistry.genItemID("ingotLead");
-Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
-Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
-
-// Alluminium Ingot
-IDRegistry.genItemID("ingotAlluminium");
-Item.createItem("ingotAlluminium", "Alluminium Ingot", {name: "ingot_aluminium"});
-Recipes.addFurnace(BlockID.oreAlluminium, ItemID.ingotAlluminium, 0);
-
-// Copper Ingot
-IDRegistry.genItemID("ingotCopper");
-Item.createItem("ingotCopper", "Copper Ingot", {name: "ingot_copper"});
-Recipes.addFurnace(BlockID.oreCopper, ItemID.ingotCopper, 0);
-
-// Red Copper Ingot
-IDRegistry.genItemID("ingotCopperRed");
-Item.createItem("ingotCopperRed", "Red Copper Ingot", {name: "ingot_red_copper"});
-Recipes.addFurnace(ItemID.ingotCopper, ItemID.ingotCopperRed, 0);
-
-// Tin Ingot
-IDRegistry.genItemID("ingotTin");
-Item.createItem("ingotTin", "Tin Ingot", {name: "ingot_tin"});
-Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
-
-
-/* Plates of new metals (DansTS) */
-
-// Titanium Plate
-IDRegistry.genItemID("plateTitanium");
-Item.createItem("plateTitanium", "Titanium Plate", {name: "plate_titanium"});
-
-// Iron Plate
-IDRegistry.genItemID("plateIron");
-Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
-
-// Aluminium Plate
-IDRegistry.genItemID("plateAluminium");
-Item.createItem("plateAluminium", "Aluminium Plate", {name: "plate_aluminium"});
-
-// Steel Plate
-IDRegistry.genItemID("plateSteel");
-Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
-
-// Lead Plate
-IDRegistry.genItemID("plateLead");
-Item.createItem("plateLead", "Lead Plate", {name: "plate_lead"});
-
-// Gold Plate
-IDRegistry.genItemID("plateGold");
-Item.createItem("plateGold", "Gold Plate", {name: "plate_gold"});
-
-// Alloy Plate
-IDRegistry.genItemID("plateAlloy");
-Item.createItem("plateAlloy", "Alloy Plate", {name: "plate_advanced_alloy"});
-
-// Copper Plate
-IDRegistry.genItemID("plateCopper");
-Item.createItem("plateCopper", "Copper Plate", {name: "plate_copper"});
-
-// Tin Plate
-IDRegistry.genItemID("plateTin");
-Item.createItem("plateTin", "Tin Plate", {name: "plate_tin"});
-
-
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateSchrabidium, count: 1, data: 0}, [{id: ItemID.ingotSchrabidium, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
-
-
-/* Nuggets of new metals(DansTS) */
-
-// Lead Nugget
-IDRegistry.genItemID("nuggetLead");
-Item.createItem("nuggetLead", "Lead Nugget", {name: "nugget_lead"});
-
-
-/* New dusts (DansTS) */
-
-// Fluorite Dust
-IDRegistry.genItemID("dustFluorite");
-Item.createItem("dustFluorite", "Fluorite Dust", {name: "fluorite"});
-
-// Fluorite Dust
-IDRegistry.genItemID("dustSulfur");
-Item.createItem("dustSulfur", "Sulfur Dust", {name: "sulfur"});
-
-// Lead Dust
-IDRegistry.genItemID("dustLead");
-Item.createItem("dustLead", "Lead Dust", {name: "powder_lead"});
-
-// Blaze Dust
-IDRegistry.genItemID("dustFire");
-Item.createItem("dustFire", "Blaze Dust", {name: "powder_fire"});
-
-
+IDRegistry.genItemID("firstAidKit");
+Item.createItem("firstAidKit", "First Aid Kit", {name: "first_aid_kit", meta: 0}, {});
 
 
 
@@ -1265,6 +1451,18 @@ Item.registerUseFunctionForID(ItemID.eggMilitary, function(coords, item, block) 
     let entity = Entity.spawnCustom("military", coords.x + .5, coords.y + .5, coords.z + .5);
     armorMilitary.equip(entity.entity);
 });
+
+
+// Dementor
+IDRegistry.genItemID("eggDementor");
+Item.createItem("eggDementor", "Dementor Egg", {name: "egg_dementor", meta: 0}, {isTech:false, stack: 64});
+
+Item.registerUseFunctionForID(ItemID.eggDementor, function(coords, item, block) {
+    coords = coords.relative;
+    let entity = Entity.spawnCustom("dementor", coords.x + .5, coords.y + .5, coords.z + .5);
+});
+
+
 
 
 
@@ -1554,6 +1752,54 @@ GunRegistry.registerGun({
 
 
 
+// file: items/steelArms.js
+
+// Karambit Gradient
+IDRegistry.genItemID("karambitGradient");
+Item.createItem("karambitGradient", "Karambit Gradient", {name: "karambit_gradient", meta: 0}, {
+    stack: 1
+});
+
+ToolAPI.registerSword(ItemID.karambitGradient, {level: 0, durability: 2048, damage: 10}, {damage:10});
+
+
+// Butterfly
+IDRegistry.genItemID("knifeButterfly");
+Item.createItem("knifeButterfly", "Butterfly", {name: "knife_butterfly", meta: 0}, {
+    stack: 1
+});
+
+ToolAPI.registerSword(ItemID.knifeButterfly, {level: 0, durability: 1856, damage: 7}, {damage:7});
+
+
+// Big Sword
+IDRegistry.genItemID("swordBig");
+Item.createItem("swordBig", "Butterfly", {name: "big_sword", meta: 0}, {
+    stack: 1
+});
+
+ToolAPI.registerSword(ItemID.swordBig, {level: 0, durability: 1024, damage: 7}, {damage:7});
+
+
+
+
+
+
+
+// file: items/craftingTools.js
+
+IDRegistry.genItemID("craftingHammer");
+Item.createItem("craftingHammer", "Forge Hammer", {name: "crafting_hammer"}, {stack: 1});
+Item.setMaxDamage(ItemID.craftingHammer, CRAFTING_TOOL_MAX_DAMAGE);
+
+IDRegistry.genItemID("craftingCutter");
+Item.createItem("craftingCutter", "Cutter", {name: "crafting_cutter"}, {stack: 1});
+Item.setMaxDamage(ItemID.craftingCutter, CRAFTING_TOOL_MAX_DAMAGE);
+
+
+
+
+
 // file: blocks/decorations.js
 
 //DansTS decorations and ambience code 
@@ -1591,19 +1837,6 @@ RecipiesManager.addShaped({id: BlockID.blockTitanium, count: 1, data: 0}, [
 ], ['a', ItemID.ingotTitanium, 0]);
 
 
-// Uranium Block
-IDRegistry.genBlockID("blockUranium"); 
-Block.createBlock("blockUranium", [{name: "Uranium Block", texture: [["block_uranium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.blockUranium, 3);
-ToolAPI.registerBlockMaterial(BlockID.blockUranium, "stone", 3, true);
-
-RecipiesManager.addShaped({id: BlockID.blockUranium, count: 1, data: 0}, [
-    "aaa",
-    "aaa",
-    "aaa"
-], ['a', ItemID.ingotUranium, 0]);
-
-
 // Lead Block
 IDRegistry.genBlockID("blockLead"); 
 Block.createBlock("blockLead", [{name: "Lead Block", texture: [["block_lead", 0]], inCreative: true}], "opaque");
@@ -1615,19 +1848,6 @@ RecipiesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
     "aaa",
     "aaa"
 ], ['a', ItemID.ingotLead, 0]);
-
-
-//Beryllium block
-IDRegistry.genBlockID("blockBeryllium"); 
-Block.createBlock("blockBeryllium", [{name: "Beryllium block", texture: [["block_beryllium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.blockBeryllium, 3);
-ToolAPI.registerBlockMaterial(BlockID.blockBeryllium, "stone", 3, true);
-
-RecipiesManager.addShaped({id: BlockID.blockBeryllium, count: 1, data: 0}, [
-    "aaa",
-    "aaa",
-    "aaa"
-], ['a', ItemID.ingotBeryllium, 0]);
 
 
 // Alluminium Block
@@ -1719,9 +1939,9 @@ ToolAPI.registerBlockMaterial(BlockID.mushroomRadioactiveSmall, "plant");
 
 IDRegistry.genItemID("mushroomRadioactive");
 Item.createItem("mushroomRadioactive", "Radioactive Mushroom", {name: "GLmush"});
-Block.registerDropFunction("mushroomRadioactiveSmall", function(){
-    return [{id: ItemID.mushroomRadioactive}];
-});
+//Block.registerDropFunction("mushroomRadioactiveSmall", function(){
+//    return [{id: ItemID.mushroomRadioactive}];
+//});
 
 Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
     var place = coords.relative;
@@ -1730,7 +1950,7 @@ Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
         Player.setCarriedItem(item.id, item.count - 1, item.data);
     }
 });
-Renderer.setSaplingRender(BlockID.mushroomRadioactive, 0);
+Renderer.setSaplingRender(BlockID.mushroomRadioactiveSmall, 0);
 
 IDRegistry.genBlockID("stemMushroomRadioactive");
 Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Moshroom Stem", texture: [
@@ -1989,6 +2209,24 @@ Block.createBlock("oreTin", [
 Block.setDestroyTime(BlockID.oreTin,2);
 ToolAPI.registerBlockMaterial(BlockID.oreTin, "stone", 2, true);
 
+
+// Ruby Ore
+IDRegistry.genBlockID("oreRuby"); 
+Block.createBlock("oreRuby", [
+    {name: "Ruby Ore", texture: [["ore_ruby", 0]],inCreative: true}], BLOCK_LIGHT_O);
+Block.setDestroyTime(BlockID.oreRuby,2);
+ToolAPI.registerBlockMaterial(BlockID.oreRuby, "stone", 2, true);
+Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level, enchant){
+    if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.ruby, 1, 0]];
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+}, 2);
 
 
 
@@ -3130,40 +3368,16 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreShaleOil, 0, 100);
     }
     
-    // Uranium Ore
-    for(var i = 0; i < 18; i++){
-        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 44);
-        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreUranium, 0, 3);          
-    }
-    
-    // Schrabidium Ore
-    for(var i = 0; i < 23; i++){
-        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 32);
-        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreSchrabidium, 0, 4);          
-    }
-    
     // Titanium Ore
     for(var i = 0; i <  19; i++){
         var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 30);
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTitanium, 0, 3);          
     }
     
-    // Tungsten Ore 
-    for(var i = 0; i < 21; i++){
-        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 35);
-        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTungsten, 0, 3);          
-    }
-    
     // Lead Ore
     for(var i = 0; i < 21; i++){
         var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 41);
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreLead, 0, 3);          
-    }
-    
-    // Beryllium Ore
-    for(var i = 0; i < 22; i++){
-        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 40);
-        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreBeryllium, 0, 4);          
     }
     
     // Alluminium Ore
@@ -4155,4 +4369,331 @@ armorMilitary.setSlot(3, [
 
 
 // file: mob/UI.js
+
+
+
+
+
+// file: mob/Dementor.js
+
+var mobDementor = MobRegistry.registerEntity("dementor");
+
+function getDemonRender(){
+    var render = new Render();
+    var partHead = [
+        {
+            type: "box",
+            size: { x: 10, y: 10, z: 10 },
+            uv: { x: 0, y: 0 },
+            coords: { x: 0, y: -21, z: 0 }
+        },
+        {
+            type: "box",
+            size: { x: 6, y: 1, z: 7 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -26, z: -2.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 7, z: 11 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -5.5, y: -17.5, z: -0.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 7, z: 11 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 5.5, y: -17.5, z: -0.5 }
+        },
+        {
+            type: "box",
+            size: { x: 10, y: 7, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -17.5, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 5, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 4.5, y: -23.5, z: -5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 5, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -4.5, y: -23.5, z: -5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 1, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -3.5, y: -25.5, z: -5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 1, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 3.5, y: -25.5, z: -5.5 }
+        },
+        
+    ];
+    
+    var partBody = [
+        {
+            type: "box",
+            size: { x: 16, y: 20, z: 4 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -6, z: 4 }
+        },
+        {
+            type: "box",
+            size: { x: 16, y: 15, z: 3 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -8.5, z: -0.5 }
+        },
+        {
+            type: "box",
+            size: { x: 16, y: 9, z: 3 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -11.5, z: -3.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 17, z: 10 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 8.5, y: -5.5, z: 0 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 17, z: 10 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -8.5, y: -5.5, z: 0 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 3, z: 7 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 8.5, y: 4.5, z: 1.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 3, z: 7 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -8.5, y: 4.5, z: 1.5 }
+        },
+        {
+            type: "box",
+            size: { x: 10, y: 20, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: -4, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 10, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 1, y: 11, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 7, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 2, y: 9.5, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 2, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 0, y: 7, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 3, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -2, y: 7.5, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 7, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -3, y: 9.5, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 1, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -4, y: 6.5, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 3, y: 2, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 6.5, y: 5, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 3, y: 2, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -6.5, y: 5, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 1, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 4, y: 6.5, z: 6.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 4, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 6.5, y: 8, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 10, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 7.5, y: 11, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 9, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: 8.5, y: 10.5, z: 4.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 3, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -7.5, y: 7.5, z: 5.5 }
+        },
+        {
+            type: "box",
+            size: { x: 1, y: 9, z: 1 },
+            uv: { x: 40, y: 0 },
+            coords: { x: -8.5, y: 10.5, z: 4.5 }
+        },
+    ];
+    
+    render.setPart("body", partBody, {});
+    render.setPart("head", partHead, {});
+    return render;
+}
+
+var dementor_model = new EntityModel();
+dementor_model.setRender(getDemonRender());
+var dementor_texture = new Texture("mob/dementor.png");
+dementor_model.setTexture(dementor_texture);
+
+
+mobMilitary.customizeEvents({
+    tick: function(){
+        //Entity.setCarriedItem(this.entity, 267, 1, 0);
+    },
+    death: function(){
+        //addExpAtEntity(this.entity, 4);
+    },
+    getDrop: function(){
+        var coords = Entity.getPosition(entity);
+        World.drop(coords.x, coords.y, coords.z, 267, 1);
+    },
+    attackedBy: function(attacker, amount){
+        //World.playSoundAtEntity(this.entity, "mob.creeper.say1", 1, 1);
+    }
+});
+
+mobDementor.customizeVisual({ 
+    getModels: function() {
+        return {
+            "main": dementor_model
+        };
+    }
+});
+
+mobDementor.customizeDescription({
+    getHitbox: function(){
+        return {w: 1.2, h: 2.8}
+    }
+});
+
+var EntityAISwim = new EntityAIClass({getDefaultPriority: function () {
+    return -1;
+}, getDefaultName: function () {
+    return "swim";
+}, params: {velocity: 0.2}, inWater: false, execute: function () {
+    if (World.getThreadTime() % 5 == 0) {
+        var position = Entity.getPosition(this.entity);
+        var tile = World.getBlockID(position.x, position.y + 0.4, position.z);
+        this.inWater = (tile > 7 && tile < 12);
+    }
+    if (this.inWater) {
+        var velocity = Entity.getVelocity(this.entity);
+        Entity.setVelocity(this.entity, velocity.x, this.params.velocity, velocity.z);
+    }
+}});
+
+
+var EntityAIDementorAttack = new EntityAIClass({params: {
+    attack_damage_close: 100, 
+    attack_range_close: 2.5, 
+    attack_damage_far: 1,
+    attack_range_far: 8,
+    attack_rate: 12
+}, data: {timer: 0, target: null}, execute: function () {
+    if (this.data.target) {
+        var distance = Entity.getDistanceToEntity(this.entity, this.data.target);
+        if (distance < this.params.attack_range_close) {
+            if (this.data.timer-- < 0) {
+                this.data.timer = this.params.attack_rate;
+                Entity.damageEntity(this.data.target, this.params.attack_damage_close);
+            }
+        } else if (distance < this.params.attack_range_far) {
+            if (this.data.timer-- < 0) {
+                this.data.timer = this.params.attack_rate;
+                Entity.damageEntity(this.data.target, this.params.attack_damage_far);
+            }
+        } else {
+            this.data.timer = 0;
+        }
+    }
+}});
+
+mobDementor.customizeAI({ 
+    getAITypes: function(){ 
+        return { 
+            wander: { 
+                type: EntityAI.Wander,
+                priority: 4,
+                speed: 0.09,
+                angular_speed: 0.1,
+                delay_weigth: 0.2
+            },
+            
+            follow: { 
+                type: EntityAI.Follow,
+                priority: 0,
+                speed: 0.2,
+                rotateHead: true
+            },
+            
+            attack: { 
+                type: EntityAIDementorAttack,
+                priority: 0
+            }, 
+            
+            enemy_watcher: {
+                type: AdvancedAI.EnemyWatcher,
+                attackAI: "attack",
+                followAI: "follow",
+                find_delay: 20,
+                priority_on_attack: 5,
+                priority_on_idle: 0,
+                feelingModifier: 18
+            },
+            
+            swim: { 
+                type: EntityAISwim,
+            },
+        } 
+    } 
+});
+
 

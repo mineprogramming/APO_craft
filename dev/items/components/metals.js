@@ -115,7 +115,7 @@ Item.createItem("dustIron", "Iron Dust", {name: "dust_iron"});
 IDRegistry.genItemID("cableCopper0");
 Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
 
-// Copper Cable
+// Lead Cable
 IDRegistry.genItemID("cableLead0");
 Item.createItem("cableLead0", "Lead Cable", {name: "cable_lead", meta: 0});
 
@@ -136,7 +136,11 @@ Item.createItem("rodTitanium", "Titanium Rod", {name: "rod_titanium", meta: 0});
 // Copper Coil
 IDRegistry.genItemID("coilCopper");
 Item.createItem("coilCopper", "Copper Coil", {name: "coil_copper", meta: 0});
-
+RecipiesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
+    "aaa",
+    "aba",
+    "aaa"
+], ['a', ItemID.cableCopper0, 0, 'b', ItemID.rodIron, 0]);
 
 
 

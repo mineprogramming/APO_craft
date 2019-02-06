@@ -64,3 +64,17 @@ RecipiesManager.addRecipeWithCraftingTool = function(result, data, tool){
     }});
 }
 
+
+
+
+// Register all recipies in PostLoad for debugging or testing
+if(!__config__.getBool("late_recipies_registration")){
+    Callback.addCallback("PostLoaded", function(){
+        RecipiesManager.onRegisterRecipiesNeeded();
+        Logger.Log("RecipiesManager", "Recipies successfully loaded!");
+    });
+}
+
+
+
+
