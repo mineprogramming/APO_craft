@@ -54,4 +54,12 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
         var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 55); 
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreTin, 0, 5);          
     } 
+    
+    // Ruby Ore
+    for(var i = 0; i < 12; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 15);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 3);          
+    }
 });
+
+

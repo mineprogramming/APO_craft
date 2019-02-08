@@ -125,6 +125,15 @@ RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
 ], ['a', ItemID.coilCopper, 0]);
 
 
+// Laser
+IDRegistry.genItemID("laser");
+Item.createItem("laser", "Laser", {name: "laser", data: 0});
+RecipiesManager.addShaped({id: ItemID.laser, count: 1, data: 0}, [
+     " a ",
+     "aba",
+     " a "
+], ['a', ItemID.ruby, 0, 'b', 331, 0]);
+
 
 
 
