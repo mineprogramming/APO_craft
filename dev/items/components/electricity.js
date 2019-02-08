@@ -70,21 +70,50 @@ RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
 // Capacitor
 IDRegistry.genItemID("capacitor");
 Item.createItem("capacitor", "Capacitor", {name: "capacitor", data: 0});
+RecipiesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
+     "aaa",
+     "bbb",
+     "aaa"
+], ['a', ItemID.plateCopper, 0, 'b', 336, 0]);
 
 
 // Transistor
 IDRegistry.genItemID("transistor");
 Item.createItem("transistor", "Transistor", {name: "transistor", data: 0});
+RecipiesManager.addShaped({id: ItemID.transistor, count: 1, data: 0}, [
+     "aaa",
+     " a "
+], ['a', ItemID.galliumArsenite, 0]);
 
 
 // Diode
 IDRegistry.genItemID("diode");
 Item.createItem("diode", "Diode", {name: "diode", data: 0});
+RecipiesManager.addShapeless({id: ItemID.diode, count: 1, data: 0}, [{id: ItemID.galliumArsenite, data: 0}, {id: ItemID.galliumArsenite, data: 0}]);
+
+
+// Resistor
+IDRegistry.genItemID("resistor");
+Item.createItem("resistor", "Resistor", {name: "resistor", data: 0});
+RecipiesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
+     "aaa",
+     "bbb",
+     "aaa"
+], ['a', 336, 0, 'b', ItemID.cableLead0, 0]);
 
 
 // SMD Details
 IDRegistry.genItemID("smd");
 Item.createItem("smd", "SMD Details", {name: "smd", data: 0});
+/**
+ * Inner Core creates unique numeric IDs in the order of registration,
+ * so we can use loops if some items were registered in the proper order
+ */
+for(var i = ItemID.ledRed; i <= ItemID.ledGreen; i++){
+    RecipiesManager.addShapeless({id: ItemID.smd, count: 1, data: 0}, [{id: ItemID.resistor, data: 0}, {id: ItemID.resistor, data: 0},
+        {id: ItemID.resistor, data: 0}, {id: ItemID.transistor, data: 0}, {id: ItemID.transistor, data: 0}, {id: ItemID.diode, data: 0}, 
+        {id: i, data: 0}, {id: ItemID.capacitor, data: 0}, {id: ItemID.capacitor, data: 0}]);
+}
 
 
 // Transformator
@@ -94,6 +123,7 @@ RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
      "aa",
      "aa"
 ], ['a', ItemID.coilCopper, 0]);
+
 
 
 
