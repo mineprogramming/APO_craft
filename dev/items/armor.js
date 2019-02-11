@@ -61,25 +61,25 @@ Item.createArmorItem("chestplateCan", "Can Chestplate", {name: "chestplate_can"}
 Item.createArmorItem("leggingsCan", "Can Leggings", {name: "leggings_can"}, {type: "leggings", armor: 4, durability: 220, texture: "armor/can_2.png"});
 Item.createArmorItem("bootsCan", "Can Boots", {name: "boots_can"}, {type: "boots", armor: 2, durability: 190, texture: "armor/can_1.png"});
 
-RecipiesManager.addShaped({id: ItemID.helmetCan, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.helmetCan, count: 1, data: 0}, [
      "aaa",
      "a a",
      "   "
 ], ['a', ItemID.can, 0]);
 
-RecipiesManager.addShaped({id: ItemID.chestplateCan, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.chestplateCan, count: 1, data: 0}, [
      "a a",
      "aaa",
      "aaa"
 ], ['a', ItemID.can, 0]);
 
-RecipiesManager.addShaped({id: ItemID.leggingsCan, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.leggingsCan, count: 1, data: 0}, [
      "a a",
      "a a",
      "a a"
 ], ['a', ItemID.can, 0]);
 
-RecipiesManager.addShaped({id: ItemID.bootsCan, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.bootsCan, count: 1, data: 0}, [
      "   ",
      "a a",
      "a a"
@@ -111,24 +111,24 @@ Item.createArmorItem("hazmatLeggings", "Hazmat Leggings", {name: "hazmat_legs"},
 IDRegistry.genItemID("hazmatBoots");
 Item.createArmorItem("hazmatBoots", "Hazmat Boots", {name: "hazmat_boots"}, {type: "boots", armor: 2, durability: 176, texture: "armor/hazmat_1.png"});
 
-RecipiesManager.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
     "xxx",
     "xbx"
 ], ['x', ItemID.clothHazmat, 0, 'b', ItemID.hazmatMask, 0]);
 
-RecipiesManager.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
     "x x",
     "xxx",
     "xxx"
 ], ['x', ItemID.clothHazmat, 0]);
 
-RecipiesManager.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
     "xxx",
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
 
-RecipiesManager.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);

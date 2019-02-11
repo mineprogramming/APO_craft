@@ -69,7 +69,7 @@ var APOCity = new Dimension({
         
         loaded: function(){
             inCity = true;
-            RecipiesManager.onRegisterRecipiesNeeded();
+            RecipesManager.onRegisterRecipesNeeded();
         }
     }
 });

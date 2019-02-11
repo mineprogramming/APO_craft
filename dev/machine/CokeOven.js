@@ -58,7 +58,7 @@ MachineEssentials.registerStandart(BlockID.cokeOven, {
 
 
 Callback.addCallback("PreLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("cokeOven", {
         263: [ItemID.propylene, 1, ItemID.coke, 1, ItemID.tarCoal, 1]
     });

@@ -16,10 +16,10 @@ IDRegistry.genItemID("ingotLead");
 Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
 Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
 
-// Alluminium Ingot
-IDRegistry.genItemID("ingotAlluminium");
-Item.createItem("ingotAlluminium", "Alluminium Ingot", {name: "ingot_aluminium"});
-Recipes.addFurnace(BlockID.oreAlluminium, ItemID.ingotAlluminium, 0);
+// Aluminium Ingot
+IDRegistry.genItemID("ingotAluminium");
+Item.createItem("ingotAluminium", "Aluminium Ingot", {name: "ingot_aluminium"});
+Recipes.addFurnace(BlockID.oreAluminium, ItemID.ingotAluminium, 0);
 
 // Copper Ingot
 IDRegistry.genItemID("ingotCopper");
@@ -39,7 +39,7 @@ Recipes.addFurnace(BlockID.oreTin, ItemID.ingotTin, 0);
 // Solder Ingot
 IDRegistry.genItemID("ingotSolder");
 Item.createItem("ingotSolder", "Solder Ingot", {name: "ingot_solder"});
-RecipiesManager.addShapeless({id: ItemID.ingotSolder, count: 2, data: 0}, [{id: ItemID.ingotTin, data: 0}, {id: ItemID.ingotLead, data: 0}]);
+RecipesManager.addShapeless({id: ItemID.ingotSolder, count: 2, data: 0}, [{id: ItemID.ingotTin, data: 0}, {id: ItemID.ingotLead, data: 0}]);
 
 
 /* PLATES */
@@ -47,12 +47,12 @@ RecipiesManager.addShapeless({id: ItemID.ingotSolder, count: 2, data: 0}, [{id: 
 // Titanium Plate
 IDRegistry.genItemID("plateTitanium");
 Item.createItem("plateTitanium", "Titanium Plate", {name: "plate_titanium"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateTitanium, count: 1, data: 0}, [{id: ItemID.ingotTitanium, data: 0}], ItemID.craftingHammer);
 
 // Iron Plate
 IDRegistry.genItemID("plateIron");
 Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
 
 // Aluminium Plate
 IDRegistry.genItemID("plateAluminium");
@@ -65,12 +65,12 @@ Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
 // Lead Plate
 IDRegistry.genItemID("plateLead");
 Item.createItem("plateLead", "Lead Plate", {name: "plate_lead"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateLead, count: 1, data: 0}, [{id: ItemID.ingotLead, data: 0}], ItemID.craftingHammer);
 
 // Gold Plate
 IDRegistry.genItemID("plateGold");
 Item.createItem("plateGold", "Gold Plate", {name: "plate_gold"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateGold, count: 1, data: 0}, [{id: 266, data: 0}], ItemID.craftingHammer);
 
 // Alloy Plate
 IDRegistry.genItemID("plateAlloy");
@@ -79,12 +79,12 @@ Item.createItem("plateAlloy", "Alloy Plate", {name: "plate_advanced_alloy"});
 // Copper Plate
 IDRegistry.genItemID("plateCopper");
 Item.createItem("plateCopper", "Copper Plate", {name: "plate_copper"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateCopper, count: 1, data: 0}, [{id: ItemID.ingotCopper, data: 0}], ItemID.craftingHammer);
 
 // Tin Plate
 IDRegistry.genItemID("plateTin");
 Item.createItem("plateTin", "Tin Plate", {name: "plate_tin"});
-RecipiesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0}, [{id: ItemID.ingotTin, data: 0}], ItemID.craftingHammer);
 
 
 /* NUGGETS */
@@ -132,7 +132,7 @@ Item.createItem("rodTitanium", "Titanium Rod", {name: "rod_titanium", meta: 0});
 // Copper Coil
 IDRegistry.genItemID("coilCopper");
 Item.createItem("coilCopper", "Copper Coil", {name: "coil_copper", meta: 0});
-RecipiesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
     "aaa",
     "aba",
     "aaa"

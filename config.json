@@ -1,5 +1,5 @@
 {
     "enabled": true,
     "debug_mode": true,
-    "late_recipies_registration": false
+    "late_recipes_registration": false
 }

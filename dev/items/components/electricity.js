@@ -12,7 +12,7 @@ Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
 IDRegistry.genItemID("storageBattery");
 Item.createItem("storageBattery", "Battery", {name: "battery_generic"});
 ChargeItemRegistry.registerItem(ItemID.storageBattery, "Eu", 10000, 0, true);
-RecipiesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.storageBattery, count: 1, data: 0}, [
     "a",
     "c",
     "b"
@@ -24,7 +24,7 @@ IDRegistry.genItemID("storageBatteryAdv");
 Item.createItem("storageBatteryAdv", "Advanced Battery", {name: "battery_advanced"});
 ChargeItemRegistry.registerItem(ItemID.storageBatteryAdv, "Eu", 100000, 0, true);
 
-RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
     "acb" 
 ], ['a', ItemID.plateAlloy, 0, 'c', ItemID.storageBattery, 0, 'b', ItemID.dustSulfur, 0]);
 
@@ -33,7 +33,7 @@ RecipiesManager.addShaped({id: ItemID.storageBatteryAdv, count: 1, data: 0}, [
 IDRegistry.genItemID("buttonSet");
 Item.createItem("buttonSet", "Button Set", {name: "button_set", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.buttonSet, count: 1, data: 0}, [
      " a ",
      "aba",
      " a "
@@ -48,19 +48,19 @@ Item.createItem("ledRed", "Red Light-Emitting Diode", {name: "led", meta: 0}, {}
 Item.createItem("ledYellow", "Yellow Light-Emitting Diode", {name: "led", meta: 1}, {});
 Item.createItem("ledGreen", "Green Light-Emitting Diode", {name: "led", meta: 2}, {});
 
-RecipiesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
+RecipesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
 ], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
 
-RecipiesManager.addShaped({id: ItemID.ledYellow, count: 16, data: 0}, [
+RecipesManager.addShaped({id: ItemID.ledYellow, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
 ], ['a', 20, 0, 'b', 351, 11, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
 
-RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
+RecipesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
@@ -70,7 +70,7 @@ RecipiesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
 // Capacitor
 IDRegistry.genItemID("capacitor");
 Item.createItem("capacitor", "Capacitor", {name: "capacitor", data: 0});
-RecipiesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
+RecipesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
      "aaa",
      "bbb",
      "aaa"
@@ -80,7 +80,7 @@ RecipiesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
 // Transistor
 IDRegistry.genItemID("transistor");
 Item.createItem("transistor", "Transistor", {name: "transistor", data: 0});
-RecipiesManager.addShaped({id: ItemID.transistor, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.transistor, count: 1, data: 0}, [
      "aaa",
      " a "
 ], ['a', ItemID.galliumArsenite, 0]);
@@ -89,13 +89,13 @@ RecipiesManager.addShaped({id: ItemID.transistor, count: 1, data: 0}, [
 // Diode
 IDRegistry.genItemID("diode");
 Item.createItem("diode", "Diode", {name: "diode", data: 0});
-RecipiesManager.addShapeless({id: ItemID.diode, count: 1, data: 0}, [{id: ItemID.galliumArsenite, data: 0}, {id: ItemID.galliumArsenite, data: 0}]);
+RecipesManager.addShapeless({id: ItemID.diode, count: 1, data: 0}, [{id: ItemID.galliumArsenite, data: 0}, {id: ItemID.galliumArsenite, data: 0}]);
 
 
 // Resistor
 IDRegistry.genItemID("resistor");
 Item.createItem("resistor", "Resistor", {name: "resistor", data: 0});
-RecipiesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
+RecipesManager.addShaped({id: ItemID.capacitor, count: 3, data: 0}, [
      "aaa",
      "bbb",
      "aaa"
@@ -110,7 +110,7 @@ Item.createItem("smd", "SMD Details", {name: "smd", data: 0});
  * so we can use loops if some items were registered in the proper order
  */
 for(var i = ItemID.ledRed; i <= ItemID.ledGreen; i++){
-    RecipiesManager.addShapeless({id: ItemID.smd, count: 1, data: 0}, [{id: ItemID.resistor, data: 0}, {id: ItemID.resistor, data: 0},
+    RecipesManager.addShapeless({id: ItemID.smd, count: 1, data: 0}, [{id: ItemID.resistor, data: 0}, {id: ItemID.resistor, data: 0},
         {id: ItemID.resistor, data: 0}, {id: ItemID.transistor, data: 0}, {id: ItemID.transistor, data: 0}, {id: ItemID.diode, data: 0}, 
         {id: i, data: 0}, {id: ItemID.capacitor, data: 0}, {id: ItemID.capacitor, data: 0}]);
 }
@@ -119,7 +119,7 @@ for(var i = ItemID.ledRed; i <= ItemID.ledGreen; i++){
 // Transformator
 IDRegistry.genItemID("transformator");
 Item.createItem("transformator", "Transformator", {name: "transformator", data: 0});
-RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
      "aa",
      "aa"
 ], ['a', ItemID.coilCopper, 0]);
@@ -128,7 +128,7 @@ RecipiesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
 // Laser
 IDRegistry.genItemID("laser");
 Item.createItem("laser", "Laser", {name: "laser", data: 0});
-RecipiesManager.addShaped({id: ItemID.laser, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.laser, count: 1, data: 0}, [
      " a ",
      "aba",
      " a "

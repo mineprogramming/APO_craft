@@ -38,11 +38,11 @@ Block.setDestroyTime(BlockID.oreLead, 2);
 ToolAPI.registerBlockMaterial(BlockID.oreLead, "stone", 2, true);
 
 
-// Alluminium Ore
-IDRegistry.genBlockID("oreAlluminium"); 
-Block.createBlock("oreAlluminium", [{name: "Alluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.oreAlluminium, 2);
-ToolAPI.registerBlockMaterial(BlockID.oreAlluminium, "stone", 2, true);
+// Aluminium Ore
+IDRegistry.genBlockID("oreAluminium"); 
+Block.createBlock("oreAluminium", [{name: "Aluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreAluminium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreAluminium, "stone", 2, true);
 
 
 // Sulfur Ore

@@ -25,10 +25,10 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreLead, 0, 3);          
     }
     
-    // Alluminium Ore
+    // Aluminium Ore
     for(var i = 0; i < 23; i++){
         var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 44);
-        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreAlluminium, 0, 5);
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreAluminium, 0, 5);
     }
     
     // Sulfur Ore

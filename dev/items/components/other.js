@@ -65,7 +65,7 @@ Item.createItem("threadGlass", "Glass Thread", {name: "thread_glass", meta: 0}, 
 IDRegistry.genItemID("fiberglass");
 Item.createItem("fiberglass", "Fiberglass", {name: "fiberglass", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
      "aaa",
      "aaa",
      "aaa"
@@ -75,13 +75,13 @@ RecipiesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
 IDRegistry.genItemID("textolite");
 Item.createItem("textolite", "Textolite", {name: "textolite", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
+RecipesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
      "aaa",
      "bbb",
      "aaa"
 ], ['a', ItemID.fiberglass, 0, 'b', ItemID.tarCoal, 0]);
 
-RecipiesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
+RecipesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
      "aaa",
      "bbb",
      "aaa"
@@ -110,7 +110,7 @@ Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polyp
 IDRegistry.genItemID("casingPolypropylene");
 Item.createItem("casingPolypropylene", "Polypropylene Casing", {name: "casing_polypropylene", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
+RecipesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
      "aa",
      "aa",
      "aa"
@@ -126,7 +126,7 @@ Item.createItem("can", "Can", {name: "can", meta: 0}, {});
 
 Callback.addCallback("ICore", function(api){
     //Scrap from Waste
-    RecipiesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
+    RecipesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
         "aaa",
         "aaa",
         "aaa"

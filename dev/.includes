@@ -2,7 +2,7 @@ header.js
 imports.js
 
 RenderTools.js
-items/RecipiesManager.js
+items/RecipesManager.js
 items/drawings.js
 
 

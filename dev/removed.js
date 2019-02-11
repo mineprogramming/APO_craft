@@ -25,7 +25,7 @@ Block.createBlock("blockSchrabidium", [{name: "Schrabidiumm Block", texture: [["
 Block.setDestroyTime(BlockID.blockSchrabidium, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockSchrabidium, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockSchrabidium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockSchrabidium, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -38,7 +38,7 @@ Block.createBlock("blockTungsten", [{name: "Tungsten Block", texture: [["block_t
 Block.setDestroyTime(BlockID.blockTungsten, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockTungsten, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockTungsten, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockTungsten, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -141,7 +141,7 @@ Block.createBlock("blockBeryllium", [{name: "Beryllium block", texture: [["block
 Block.setDestroyTime(BlockID.blockBeryllium, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockBeryllium, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockBeryllium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockBeryllium, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -163,24 +163,24 @@ Item.createArmorItem("schrabidiumLeggings", "Schrabidium Leggings", {name: "schr
 IDRegistry.genItemID("schrabidiumBoots");
 Item.createArmorItem("schrabidiumBoots", "Schrabidium Boots", {name: "schrabidium_boots"}, {type: "boots", armor: 4, durability: 1116, texture: "armor/schrabidium_1.png"});
 
-RecipiesManager.addShaped({id: ItemID.schrabidiumHelmet, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.schrabidiumHelmet, count: 1, data: 0}, [
     "xxx",
     "x x"
 ], ['x', ItemID.ingotSchrabidium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.schrabidiumChestplate, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.schrabidiumChestplate, count: 1, data: 0}, [
     "x x",
     "xxx",
     "xxx"
 ], ['x', ItemID.ingotSchrabidium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.schrabidiumLeggings, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.schrabidiumLeggings, count: 1, data: 0}, [
     "xxx",
     "x x",
     "x x"
 ], ['x', ItemID.ingotSchrabidium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.schrabidiumBoots, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.schrabidiumBoots, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.ingotSchrabidium, 0]);
@@ -198,24 +198,24 @@ Item.createArmorItem("euphemiumLeggings", "Euphemium Leggings", {name: "euphemiu
 IDRegistry.genItemID("euphemiumBoots");
 Item.createArmorItem("euphemiumBoots", "Euphemium Boots", {name: "euphemium_boots"}, {type: "boots", armor: 4, durability: 1323, texture: "armor/euphemium_1.png"});
 
-RecipiesManager.addShaped({id: ItemID.euphemiumHelmet, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.euphemiumHelmet, count: 1, data: 0}, [
     "xxx",
     "x x"
 ], ['x', ItemID.ingotEuphemium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.euphemiumChestplate, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.euphemiumChestplate, count: 1, data: 0}, [
     "x x",
     "xxx",
     "xxx"
 ], ['x', ItemID.ingotEuphemium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.euphemiumLeggings, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.euphemiumLeggings, count: 1, data: 0}, [
     "xxx",
     "x x",
     "x x"
 ], ['x', ItemID.ingotEuphemium, 0]);
 
-RecipiesManager.addShaped({id: ItemID.euphemiumBoots, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.euphemiumBoots, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.ingotEuphemium, 0]);
@@ -260,7 +260,7 @@ Block.createBlock("blockUranium", [{name: "Uranium Block", texture: [["block_ura
 Block.setDestroyTime(BlockID.blockUranium, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockUranium, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockUranium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockUranium, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"

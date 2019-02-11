@@ -54,7 +54,7 @@ MachineEssentials.registerStandart(BlockID.polymerizer, {
 
 
 Callback.addCallback("PreLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("polymerizer", {
         "ItemID.propylene": {id: ItemID.granulesPolypropylene, count: 1, data: 0}
     }, true);

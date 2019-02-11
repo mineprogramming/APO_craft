@@ -1,7 +1,7 @@
 IDRegistry.genItemID("chemicalLD");
 Item.createItem("chemicalLD", "Chemical Contamination Level Detector", {name: "chemical_ld", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.chemicalLD, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.chemicalLD, count: 1, data: 0}, [
      " d ",
      "ea ",
      " cb"
@@ -16,7 +16,7 @@ RecipiesManager.addShaped({id: ItemID.chemicalLD, count: 1, data: 0}, [
 IDRegistry.genItemID("radiationLD");
 Item.createItem("radiationLD", "Radiation Level Detector", {name: "radiation_ld", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.radiationLD, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.radiationLD, count: 1, data: 0}, [
      "bdf",
      "eag",
      " ch"
@@ -33,7 +33,7 @@ RecipiesManager.addShaped({id: ItemID.radiationLD, count: 1, data: 0}, [
 IDRegistry.genItemID("biologicalLD");
 Item.createItem("biologicalLD", "Biological Contamination Level Detector", {name: "biological_ld", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.biologicalLD, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.biologicalLD, count: 1, data: 0}, [
      " db",
      "eah",
      " c "
@@ -48,7 +48,7 @@ RecipiesManager.addShaped({id: ItemID.biologicalLD, count: 1, data: 0}, [
 IDRegistry.genItemID("multiPurposeLD");
 Item.createItem("multiPurposeLD", "Multi-Purpose Level Detector", {name: "multi_purpose_ld", meta: 0}, {});
 
-RecipiesManager.addShaped({id: ItemID.multiPurposeLD, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.multiPurposeLD, count: 1, data: 0}, [
      "geh",
      "fai",
      "bcd"

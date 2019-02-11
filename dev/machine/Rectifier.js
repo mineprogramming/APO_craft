@@ -68,7 +68,7 @@ MachineEssentials.registerStandart(BlockID.rectifier, {
 
 
 Callback.addCallback("PostLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("rectifier", {
         "BlockID.oreShaleOil": [ItemID.waste, 1, ItemID.dustQuartz, 1, ItemID.bitumen, 1, ItemID.propylene, 1, ItemID.oilResin, 1, ItemID.oilFuel, 1, ItemID.petrol, 1, ItemID.kerosene, 1],
         "BlockID.asphalt": [ItemID.bitumen, 1, 13, 2]

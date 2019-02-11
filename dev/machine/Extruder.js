@@ -54,7 +54,7 @@ MachineEssentials.registerStandart(BlockID.extruder, {
 
 
 Callback.addCallback("PreLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("extruder", {
         20: {id: ItemID.threadGlass, count: 4, data: 0}
     });

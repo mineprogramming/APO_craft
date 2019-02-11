@@ -26,7 +26,7 @@ Block.createBlock("blockTitanium", [{name: "Titanuim Block", texture: [["block_t
 Block.setDestroyTime(BlockID.blockTitanium, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockTitanium, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockTitanium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockTitanium, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -39,25 +39,25 @@ Block.createBlock("blockLead", [{name: "Lead Block", texture: [["block_lead", 0]
 Block.setDestroyTime(BlockID.blockLead, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockLead, "stone", 2, true);
 
-RecipiesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
 ], ['a', ItemID.ingotLead, 0]);
 
 
-// Alluminium Block
-IDRegistry.genBlockID("blockAlluminium"); 
-Block.createBlock("blockAlluminium", [
-    {name: "Alluminium Block", texture: [["block_aluminium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.blockAlluminium, 3);
-ToolAPI.registerBlockMaterial(BlockID.blockAlluminium, "stone", 2, true);
+// Aluminium Block
+IDRegistry.genBlockID("blockAluminium"); 
+Block.createBlock("blockAluminium", [
+    {name: "Aluminium Block", texture: [["block_aluminium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockAluminium, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockAluminium, "stone", 2, true);
 
-RecipiesManager.addShaped({id: BlockID.blockAlluminium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockAluminium, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
-], ['a', ItemID.ingotAlluminium, 0]);
+], ['a', ItemID.ingotAluminium, 0]);
 
 
 // Sulfur Block
@@ -66,7 +66,7 @@ Block.createBlock("blockSulfur", [{name: "Sulfur Block", texture: [["block_sulfu
 Block.setDestroyTime(BlockID.blockSulfur, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockSulfur, "stone", 2, true);
 
-RecipiesManager.addShaped({id: BlockID.blockSulfur, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockSulfur, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -80,7 +80,7 @@ Block.createBlock("blockFluorite", [
 Block.setDestroyTime(BlockID.blockFluorite, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockFluorite, "stone", 2, true);
 
-RecipiesManager.addShaped({id: BlockID.blockFluorite, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockFluorite, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -94,7 +94,7 @@ Block.createBlock("blockCopper", [
 Block.setDestroyTime(BlockID.blockCopper,3);
 ToolAPI.registerBlockMaterial(BlockID.blockCopper, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
@@ -107,7 +107,7 @@ Block.createBlock("blockTin", [{name: "Tin Block", texture: [["block_tin", 0]], 
 Block.setDestroyTime(BlockID.blockTin, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockTin, "stone", 3, true);
 
-RecipiesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"

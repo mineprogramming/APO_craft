@@ -67,7 +67,7 @@ MachineEssentials.registerStandart(BlockID.tableAssembly, {
 
 
 Callback.addCallback("PreLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("tableAssembly", {
         "ItemID.granulesPolypropylene": {
             "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}

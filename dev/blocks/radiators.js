@@ -58,14 +58,14 @@ Block.createBlock("radiatorLead", [{
 renderRadiator(BlockID.radiatorLead, "block_lead", 0);
 
 
-// Alluminium Radiator
-IDRegistry.genBlockID("radiatorAlluminium");
-Block.createBlock("radiatorAlluminium", [{
-    name: "Alluminium Radiator",
+// Aluminium Radiator
+IDRegistry.genBlockID("radiatorAluminium");
+Block.createBlock("radiatorAluminium", [{
+    name: "Aluminium Radiator",
     texture: [["block_aluminium", 0]],
     inCreative: true
 }]);
-renderRadiator(BlockID.radiatorAlluminium, "block_aluminium", 0);
+renderRadiator(BlockID.radiatorAluminium, "block_aluminium", 0);
 
 
 // Copper Radiator

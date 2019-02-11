@@ -66,12 +66,12 @@ var inCity = false;
 
 Saver.addSavesScope("inCity", 
     function read(scope){
-        if(__config__.getBool("late_recipies_registration")){
+        if(__config__.getBool("late_recipes_registration")){
             if(!scope.inCity) {
-                RecipiesManager.deleteAll();
+                RecipesManager.deleteAll();
                 return;
             } else {
-                RecipiesManager.onRegisterRecipiesNeeded();
+                RecipesManager.onRegisterRecipesNeeded();
             }
         }
         

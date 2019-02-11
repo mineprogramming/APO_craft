@@ -26,7 +26,7 @@ Item.createItem("controllerHdd", "HDD Controller", {name: "controller_hdd", meta
 // Magnetic Head
 IDRegistry.genItemID("headMagnetic");
 Item.createItem("headMagnetic", "Magnetic Head", {name: "head_magnetic", meta: 0}, {});
-RecipiesManager.addShaped({id: ItemID.headMagnetic, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.headMagnetic, count: 1, data: 0}, [
     "   ",
     "aaa",
     "ccb"
@@ -36,7 +36,7 @@ RecipiesManager.addShaped({id: ItemID.headMagnetic, count: 1, data: 0}, [
 // Magnetic Disk
 IDRegistry.genItemID("diskMagnetic");
 Item.createItem("diskMagnetic", "Magnetic Disk", {name: "disk_magnetic", meta: 0}, {});
-RecipiesManager.addShaped({id: ItemID.diskMagnetic, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.diskMagnetic, count: 1, data: 0}, [
     "aaa",
     "bbb",
     "aaa"
@@ -46,7 +46,7 @@ RecipiesManager.addShaped({id: ItemID.diskMagnetic, count: 1, data: 0}, [
 // Socket
 IDRegistry.genItemID("socket");
 Item.createItem("socket", "Socket", {name: "socket", meta: 0}, {});
-RecipiesManager.addShaped({id: ItemID.socket, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.socket, count: 1, data: 0}, [
     "bbb",
     "aaa",
     "bbb"

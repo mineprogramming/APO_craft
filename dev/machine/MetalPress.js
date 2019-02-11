@@ -65,7 +65,7 @@ MachineEssentials.registerStandart(BlockID.pressMetal, {
 
 
 Callback.addCallback("PreLoaded", function(){
-    // Recipies
+    // Recipes
     MachineRecipeRegistry.registerRecipesFor("pressMetal", {
         "ItemID.granulesPolypropylene": {
             "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
