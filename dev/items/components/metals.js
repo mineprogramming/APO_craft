@@ -7,10 +7,6 @@ IDRegistry.genItemID("ingotTitanium");
 Item.createItem("ingotTitanium", "Titanium Ingot", {name: "ingot_titanium"});
 Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
 
-// Alloy Ingot
-IDRegistry.genItemID("ingotAlloy");
-Item.createItem("ingotAlloy", "Alloy Ingot", {name: "ingot_advanced_alloy"});
-
 // Steel Ingot
 IDRegistry.genItemID("ingotSteel");
 Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});

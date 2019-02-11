@@ -135,6 +135,67 @@ RecipiesManager.addShaped({id: ItemID.laser, count: 1, data: 0}, [
 ], ['a', ItemID.ruby, 0, 'b', 331, 0]);
 
 
+/* Printed Circuit Boards */
+
+// Motherboard PCB
+IDRegistry.genItemID("pcbMotherboard");
+Item.createItem("pcbMotherboard", "Motherboard PCB", {name: "pcb_motherboard", data: 0});
+
+// Power Supply PCB
+IDRegistry.genItemID("pcbPowerSupply");
+Item.createItem("pcbPowerSupply", "Power Supply PCB", {name: "pcb_power_supply", data: 0});
+
+// RAM PCB
+IDRegistry.genItemID("pcbRam");
+Item.createItem("pcbRam", "RAM PCB", {name: "pcb_ram", data: 0});
+
+// Video Card PCB
+IDRegistry.genItemID("pcbCardVideo");
+Item.createItem("pcbCardVideo", "Video Card PCB", {name: "pcb_card_video"});
+
+// HDD Controller PCB
+IDRegistry.genItemID("pcbControllerHdd");
+Item.createItem("pcbControllerHdd", "HDD Controller PCB", {name: "pcb_controller_hdd"});
+
+
+/* Chips */
+
+// Arduino Central Chip
+IDRegistry.genItemID("chipArduino");
+Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
+
+// Raspberry PI Central Chip
+IDRegistry.genItemID("chipRaspberry");
+Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
+
+// Chipset
+IDRegistry.genItemID("chipset");
+Item.createItem("chipset", "Chipset", {name: "chipset", meta: 0}, {});
+
+// CPU
+IDRegistry.genItemID("cpu");
+Item.createItem("cpu", "CPU", {name: "cpu", meta: 0}, {});
+
+// RAM Chip
+IDRegistry.genItemID("chipRam");
+Item.createItem("chipRam", "RAM Chip", {name: "chip_ram"});
+
+// Video Chip Drawing
+IDRegistry.genItemID("chipVideo");
+Item.createItem("chipVideo", "Video Chip", {name: "chip_video"});
+
+// Space-Time Frequency Generator Chip
+IDRegistry.genItemID("chipGeneratorSpaceTime");
+Item.createItem("chipGeneratorSpaceTime", "Space-Time Frequency Generator Chip", {name: "chip_generator_space_time"});
+
+
+
+
+
+
+
+
+
 
 
 

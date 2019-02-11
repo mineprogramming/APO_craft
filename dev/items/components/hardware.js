@@ -1,26 +1,6 @@
-// Arduino Central Chip
-IDRegistry.genItemID("chipArduino");
-Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
-
-
-// Raspberry PI Central Chip
-IDRegistry.genItemID("chipRaspberry");
-Item.createItem("chipRaspberry", "Raspberry PI Central Chip", {name: "chip", meta: 1}, {});
-
-
-// Chipset
-IDRegistry.genItemID("chipset");
-Item.createItem("chipset", "Chipset", {name: "chipset", meta: 0}, {});
-
-
 // Motherboard
 IDRegistry.genItemID("motherboard");
 Item.createItem("motherboard", "Motherboard", {name: "motherboard", meta: 0}, {});
-
-
-// CPU
-IDRegistry.genItemID("cpu");
-Item.createItem("cpu", "CPU", {name: "cpu", meta: 0}, {});
 
 
 // Cooling System
@@ -36,6 +16,11 @@ Item.createItem("ram", "RAM", {name: "ram", meta: 0}, {});
 // HDD
 IDRegistry.genItemID("hdd");
 Item.createItem("hdd", "Hard Disk Drive", {name: "hdd", meta: 0}, {});
+
+
+// HDD Controller
+IDRegistry.genItemID("controllerHdd");
+Item.createItem("controllerHdd", "HDD Controller", {name: "controller_hdd", meta: 0}, {});
 
 
 // Magnetic Head

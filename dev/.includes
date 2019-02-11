@@ -3,6 +3,7 @@ imports.js
 
 RenderTools.js
 items/RecipiesManager.js
+items/drawings.js
 
 
 api/GunRegistry.js
@@ -14,6 +15,7 @@ core/MachineRecipeRegistry.js
 events.js
 
 blocks/ores.js
+blocks/radiators.js
 
 items/components/minerals.js
 items/components/metals.js
@@ -62,6 +64,8 @@ machine/PlasticPress.js
 machine/Rectifier.js
 machine/Polymerizer.js
 machine/Wire.js
+machine/MetalPress.js
+machine/AssemblyTable.js
 
 
 mob/ArmorSet.js
