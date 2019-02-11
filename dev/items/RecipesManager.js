@@ -4,11 +4,41 @@ var RecipesManager = {
     shapeless: [],
 }
 
+RecipesManager.RecipeException = function(result, data){
+    this.result = result;
+    this.data = data;
+    this.toString = function(){
+        return "Invalid recipe entry in recipe: " + JSON.stringify(data) + " => " + JSON.stringify(result);
+    }
+}
+
 RecipesManager.addShaped = function(result, recipe, data){
+    // Check everything and throw exceptions if found any
+    if(!result.id){
+        throw new RecipesManager.RecipeException(result, data);
+    }
+    
+    for(var i = 0; i < data.length; i+=3){
+        if(!data[i]){
+            throw new RecipesManager.RecipeException(result, data);
+        }
+    }
+    
     RecipesManager.recipes.push({"result": result, "recipe": recipe, "data": data});
 };
 
 RecipesManager.addShapeless = function(result, data){
+    // Check everything and throw exceptions if found any
+    if(!result.id){
+        throw new RecipesManager.RecipeException(result, data);
+    }
+    
+    for(var i in data){
+        if(!data[i].id){
+            throw new RecipesManager.RecipeException(result, data);
+        }
+    }
+    
     RecipesManager.shapeless.push({"result": result, "recipe": data});
 }
 
