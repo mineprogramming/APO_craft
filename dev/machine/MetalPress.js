@@ -30,26 +30,12 @@ var guiMetalPress = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.pressMetal, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: ["slotResult"]};
-    },
-    
-    result: function(resultSlots, result){
-        resultSlots[0].id = result.id;
-        resultSlots[0].data = result.data;
-        resultSlots[0].count += result.count;
-    },
-
-    getGuiScreen: function(){
-      return guiMetalPress;
-    }
-    
-}, {
     machine_name: "pressMetal",
-    source_slot: "slotSource",
+    source_slots: ["slotSource"],
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
+    guiScreen: guiMetalPress,
     
     customResult:  function(result, container){
         var slotPressForm = container.getSlot("slotPressForm");
@@ -59,17 +45,62 @@ MachineEssentials.registerStandart(BlockID.pressMetal, {
             }
         }
         return false;
-    }
+    },
+    
+    resultFunc: function(resultSlots, result){
+        resultSlots[0].id = result.id;
+        resultSlots[0].data = result.data;
+        resultSlots[0].count += result.count;
+    },
 });
 
 
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("pressMetal", {
-        "ItemID.granulesPolypropylene": {
-            "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
+    MachineRecipeRegistry.registerRecipesFor("pressMetal", [
+        {
+            "source": {"id": 42, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorIron, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": 41, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorGold, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": BlockID.blockTitanium, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorTitanium, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": BlockID.blockLead, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorLead, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": BlockID.blockAluminium, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorAluminium, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": BlockID.blockCopper, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorCopper, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": BlockID.blockTin, "data": 0},
+            "result": {
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorTin, count: 1, data: 0}
+            }
         }
-    }, true);
+    ]);
 });
 

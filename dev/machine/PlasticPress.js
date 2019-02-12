@@ -3,7 +3,7 @@ Block.createBlockWithRotation("pressPlastic", [
     {name: "Plastic Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
 
-var guiPress = new UI.StandartWindow({
+var guiPlasticPress = new UI.StandartWindow({
     standart: {
         header: {text: {text: "Plastic Press"}},
         inventory: {standart: true},
@@ -35,7 +35,7 @@ MachineEssentials.registerStandart(BlockID.pressPlastic, {
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
-    guiScreen: guiPress,
+    guiScreen: guiPlasticPress,
     
     customResult:  function(result, container){
         var slotPressForm = container.getSlot("slotPressForm");

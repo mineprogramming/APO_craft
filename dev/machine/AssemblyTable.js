@@ -32,26 +32,18 @@ var guiMetalPress = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.tableAssembly, {
-    getTransportSlots: function(){
-        return {input: ["slotSource0", "slotSource1", "slotSource2", "slotSource3"], output: ["slotResult"]};
-    },
+    machine_name: "tableAssembly",
+    source_slots: ["slotSource"],
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    guiScreen: guiMetalPress,
     
-    result: function(resultSlots, result){
+    resultFunc: function(resultSlots, result){
         resultSlots[0].id = result.id;
         resultSlots[0].data = result.data;
         resultSlots[0].count += result.count;
     },
-
-    getGuiScreen: function(){
-      return guiMetalPress;
-    }
-    
-}, {
-    machine_name: "tableAssembly",
-    source_slot: "slotSource",
-    result_slots: ["slotResult"],
-    progress_scale: "progressScale",
-    energy_scale: "energyScale",
     
     customResult:  function(result, container){
         var slotPressForm = container.getSlot("slotPressForm");
@@ -68,10 +60,8 @@ MachineEssentials.registerStandart(BlockID.tableAssembly, {
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("tableAssembly", {
-        "ItemID.granulesPolypropylene": {
-            "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
-        }
-    }, true);
+    MachineRecipeRegistry.registerRecipesFor("tableAssembly", [
+        
+    ]);
 });
 

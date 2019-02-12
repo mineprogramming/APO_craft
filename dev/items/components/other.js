@@ -97,16 +97,21 @@ Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "gr
 
 /* Press Forms */
 
-//Plate Press Form
+// Plate Press Form
 IDRegistry.genItemID("pressFormPlate");
 Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
 
+// Radiator Press Form
+IDRegistry.genItemID("pressFormRadiator");
+Item.createItem("pressFormRadiator", "Radiator Press Form", {name: "press_form_radiator", meta: 0}, {});
 
-//Polypropylene Plate
+
+
+// Polypropylene Plate
 IDRegistry.genItemID("platePolypropylene");
 Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polypropylene", meta: 0}, {});
 
-//Polypropylene Casing
+// Polypropylene Casing
 IDRegistry.genItemID("casingPolypropylene");
 Item.createItem("casingPolypropylene", "Polypropylene Casing", {name: "casing_polypropylene", meta: 0}, {});
 

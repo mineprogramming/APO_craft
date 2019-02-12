@@ -26,6 +26,7 @@ Block.createBlock("radiatorIron", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorIron, "iron_block", 0);
+Recipes.addFurnace(BlockID.radiatorIron, 42, 0);
 
 
 // Gold Radiator
@@ -36,6 +37,7 @@ Block.createBlock("radiatorGold", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorGold, "gold_block", 0);
+Recipes.addFurnace(BlockID.radiatorGold, 41, 0);
 
 
 // Titanium Radiator
@@ -46,6 +48,7 @@ Block.createBlock("radiatorTitanium", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorTitanium, "block_titanium", 0);
+Recipes.addFurnace(BlockID.radiatorTitanium, BlockID.blockTitanium, 0);
 
 
 // Lead Radiator
@@ -56,6 +59,7 @@ Block.createBlock("radiatorLead", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorLead, "block_lead", 0);
+Recipes.addFurnace(BlockID.radiatorLead, BlockID.blockLead, 0);
 
 
 // Aluminium Radiator
@@ -66,6 +70,7 @@ Block.createBlock("radiatorAluminium", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorAluminium, "block_aluminium", 0);
+Recipes.addFurnace(BlockID.radiatorAluminium, BlockID.blockAluminium, 0);
 
 
 // Copper Radiator
@@ -76,6 +81,7 @@ Block.createBlock("radiatorCopper", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorCopper, "block_copper", 0);
+Recipes.addFurnace(BlockID.radiatorCopper, BlockID.blockCopper, 0);
 
 
 // Tin Radiator
@@ -86,6 +92,7 @@ Block.createBlock("radiatorTin", [{
     inCreative: true
 }]);
 renderRadiator(BlockID.radiatorTin, "block_tin", 0);
+Recipes.addFurnace(BlockID.radiatorTin, BlockID.blockTin, 0);
 
 
 /* Big radiator */
