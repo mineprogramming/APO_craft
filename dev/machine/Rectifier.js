@@ -41,37 +41,35 @@ var guiRectifier = new UI.StandartWindow(layoutRectifier);
 
 
 MachineEssentials.registerStandart(BlockID.rectifier, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: resultSlotsRectifier};
-    },
+    machine_name: "rectifier",
+    source_slots: ["slotSource"],
+    result_slots: resultSlotsRectifier,
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    guiScreen: guiRectifier,
     
-    result: function(resultSlots, result){
+    resultFunc: function(resultSlots, result){
         for(var i in resultSlots){
             resultSlots[i].id = result[i * 2];
             resultSlots[i].data = 0;
             resultSlots[i].count += result[i * 2 + 1];
         }
     },
-
-    getGuiScreen: function(){
-        return guiRectifier;
-    }
-    
-}, {
-    machine_name: "rectifier",
-    source_slot: "slotSource",
-    result_slots: resultSlotsRectifier,
-    progress_scale: "progressScale",
-    energy_scale: "energyScale"
 });
 
 
 
 Callback.addCallback("PostLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("rectifier", {
-        "BlockID.oreShaleOil": [ItemID.waste, 1, ItemID.dustQuartz, 1, ItemID.bitumen, 1, ItemID.propylene, 1, ItemID.oilResin, 1, ItemID.oilFuel, 1, ItemID.petrol, 1, ItemID.kerosene, 1],
-        "BlockID.asphalt": [ItemID.bitumen, 1, 13, 2]
-    }, true);
+    MachineRecipeRegistry.registerRecipesFor("rectifier", [
+        {
+            "source": {"id": BlockID.oreShaleOil, "data": 0},
+            "result": [ItemID.waste, 1, ItemID.dustQuartz, 1, ItemID.bitumen, 1, ItemID.propylene, 1, ItemID.oilResin, 1, ItemID.oilFuel, 1, ItemID.petrol, 1, ItemID.kerosene, 1]
+        },
+        {
+            "source": {"id": BlockID.asphalt, "data": 0},
+            "result": [ItemID.bitumen, 1, 13, 2]
+        }
+    ]);
 });
 

@@ -1,1 +1,3 @@
-var i = if(a){};
+var i = 1;
+
+if(i) print("true"); else print("false");

@@ -29,34 +29,29 @@ var guiExtruder = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.extruder, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: ["slotResult"]};
-    },
+    machine_name: "extruder",
+    source_slots: ["slotSource"],
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    guiScreen: guiExtruder,
     
-    result: function(resultSlots, result){
+    resultFunc: function(resultSlots, result){
         resultSlots[0].id = result.id;
         resultSlots[0].data = result.data;
         resultSlots[0].count += result.count;
-    },
-
-    getGuiScreen: function(){
-      return guiExtruder;
     }
-    
-}, {
-    machine_name: "extruder",
-    source_slot: "slotSource",
-    result_slots: ["slotResult"],
-    progress_scale: "progressScale",
-    energy_scale: "energyScale"
 });
 
 
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("extruder", {
-        20: {id: ItemID.threadGlass, count: 4, data: 0}
-    });
+    MachineRecipeRegistry.registerRecipesFor("extruder", [
+        {
+            "source": {id: 20, data: 0},
+            "result": {id: ItemID.threadGlass, count: 4, data: 0}
+        }
+    ]);
 });
 

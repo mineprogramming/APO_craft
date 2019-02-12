@@ -1,5 +1,6 @@
 var MachineEssentials = {
-    registerStandart: function(id, prototype, params){
+    registerStandart: function(id, params){
+        let prototype = {};
         
         //Prototype's standart params and functions
         let defaultValues = {};
@@ -10,6 +11,8 @@ var MachineEssentials = {
         defaultValues.progress = 0;
         prototype.defaultValues = defaultValues;
         
+        prototype.result = params.resultFunc;
+        
         prototype.getEnergyStorage = function(){
             return this.data.energy_storage;
         }
@@ -17,6 +20,14 @@ var MachineEssentials = {
         prototype.energyTick = function(type, src){
             var energyNeed = this.getEnergyStorage() - this.data.energy;
             this.data.energy += src.get(energyNeed);
+        }
+        
+        prototype.getTransportSlots = function(){
+            return {input: params.source_slots, output: params.result_slots};
+        }
+        
+        prototype.getGuiScreen = function(){
+            return params.guiScreen;
         }
         
         prototype.checkResult = function(result, resultSlots){
@@ -40,20 +51,40 @@ var MachineEssentials = {
         }
         
         prototype.tick = function(){
-            var sourceSlot = this.container.getSlot(params.source_slot);
+            // Get all slots
+            var sourceSlots = [];
+            for(var i in params.source_slots){
+                sourceSlots[i] = this.container.getSlot(params.source_slots[i]);
+            }
             var resultSlots = [];
             for(var i in params.result_slots){
                 resultSlots[i] = this.container.getSlot(params.result_slots[i]);
             }
-            var result = MachineRecipeRegistry.getRecipeResult(params.machine_name, sourceSlot.id, sourceSlot.data);
+            
+            // Get recipe source to look for
+            let source;
+            if(sourceSlots.length == 1){
+                source = {"id": sourceSlots[0].id, "data": sourceSlots[0].data};
+            } else {
+                source = [];
+                for(var i in sourceSlots){
+                    source[i] = {"id": sourceSlots[i].id, "data": sourceSlots[i].data};
+                }
+            }
+            
+            var result = MachineRecipeRegistry.getRecipeResult(params.machine_name, source);
+            
             if(params.customResult) result = params.customResult(result, this.container);
+            
             if(result && this.checkResult(result, resultSlots)){
                 if(this.data.energy >= this.data.energy_consumption){
                     this.data.energy -= this.data.energy_consumption;
                     this.data.progress += 1/this.data.work_time;
                 }
                 if(this.data.progress >= 1){
-                    sourceSlot.count--;
+                    for(var i in sourceSlots){
+                        sourceSlots[i].count--;
+                    }
                     this.result(resultSlots, result);
                     this.container.validateAll();
                     this.data.progress = 0;

@@ -31,36 +31,31 @@ var guiCokeOven = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.cokeOven, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: ["slotResult0", "slotResult1", "slotResult2"]};
-    },
+    machine_name: "cokeOven",
+    source_slots: ["slotSource"],
+    result_slots: ["slotResult0", "slotResult1", "slotResult2"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    guiScreen: guiCokeOven,
     
-    result: function(resultSlots, result){
+    resultFunc: function(resultSlots, result){
         for(var i in resultSlots){
             resultSlots[i].id = result[i * 2];
             resultSlots[i].data = 0;
             resultSlots[i].count += result[i * 2 + 1];
         }
     },
-
-    getGuiScreen: function(){
-      return guiCokeOven;
-    }
-    
-}, {
-    machine_name: "cokeOven",
-    source_slot: "slotSource",
-    result_slots: ["slotResult0", "slotResult1", "slotResult2"],
-    progress_scale: "progressScale",
-    energy_scale: "energyScale"
 });
 
 
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("cokeOven", {
-        263: [ItemID.propylene, 1, ItemID.coke, 1, ItemID.tarCoal, 1]
-    });
+    MachineRecipeRegistry.registerRecipesFor("cokeOven", [
+        {
+            "source": {"id": 263, "data": 0},
+            "result": [ItemID.propylene, 1, ItemID.coke, 1, ItemID.tarCoal, 1]
+        }
+    ]);
 });
 

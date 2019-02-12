@@ -3,7 +3,7 @@ Block.createBlockWithRotation("pressPlastic", [
     {name: "Plastic Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
 
-var guiPlasticPress = new UI.StandartWindow({
+var guiPress = new UI.StandartWindow({
     standart: {
         header: {text: {text: "Plastic Press"}},
         inventory: {standart: true},
@@ -30,26 +30,12 @@ var guiPlasticPress = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.pressPlastic, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: ["slotResult"]};
-    },
-    
-    result: function(resultSlots, result){
-        resultSlots[0].id = result.id;
-        resultSlots[0].data = result.data;
-        resultSlots[0].count += result.count;
-    },
-
-    getGuiScreen: function(){
-      return guiPlasticPress;
-    }
-    
-}, {
     machine_name: "pressPlastic",
-    source_slot: "slotSource",
+    source_slots: ["slotSource"],
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
+    guiScreen: guiPress,
     
     customResult:  function(result, container){
         var slotPressForm = container.getSlot("slotPressForm");
@@ -59,17 +45,26 @@ MachineEssentials.registerStandart(BlockID.pressPlastic, {
             }
         }
         return false;
-    }
+    },
+    
+    resultFunc: function(resultSlots, result){
+        resultSlots[0].id = result.id;
+        resultSlots[0].data = result.data;
+        resultSlots[0].count += result.count;
+    },
 });
 
 
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("pressPlastic", {
-        "ItemID.granulesPolypropylene": {
-            "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
+    MachineRecipeRegistry.registerRecipesFor("pressPlastic", [
+        {
+            "source": {"id": ItemID.granulesPolypropylene, "data": 0},
+            "result": {
+                "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
+            }
         }
-    }, true);
+    ]);
 });
 

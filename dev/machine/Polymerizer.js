@@ -29,34 +29,29 @@ var guiPolymerizer = new UI.StandartWindow({
 });
 
 MachineEssentials.registerStandart(BlockID.polymerizer, {
-    getTransportSlots: function(){
-        return {input: ["slotSource"], output: ["slotResult"]};
-    },
+    machine_name: "polymerizer",
+    source_slots: ["slotSource"],
+    result_slots: ["slotResult"],
+    progress_scale: "progressScale",
+    energy_scale: "energyScale",
+    guiScreen: guiPolymerizer,
     
-    result: function(resultSlots, result){
+    resultFunc: function(resultSlots, result){
         resultSlots[0].id = result.id;
         resultSlots[0].data = result.data;
         resultSlots[0].count += result.count;
     },
-
-    getGuiScreen: function(){
-      return guiPolymerizer;
-    }
-    
-}, {
-    machine_name: "polymerizer",
-    source_slot: "slotSource",
-    result_slots: ["slotResult"],
-    progress_scale: "progressScale",
-    energy_scale: "energyScale"
 });
 
 
 
 Callback.addCallback("PreLoaded", function(){
     // Recipes
-    MachineRecipeRegistry.registerRecipesFor("polymerizer", {
-        "ItemID.propylene": {id: ItemID.granulesPolypropylene, count: 1, data: 0}
-    }, true);
+    MachineRecipeRegistry.registerRecipesFor("polymerizer", [
+        {
+            "source": {"id": ItemID.propylene, "data": 0},
+            "result": {id: ItemID.granulesPolypropylene, count: 1, data: 0}
+        }
+    ]);
 });
 
