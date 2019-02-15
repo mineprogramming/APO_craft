@@ -15,7 +15,6 @@ core/MachineRecipeRegistry.js
 events.js
 
 blocks/ores.js
-blocks/radiators.js
 
 items/components/minerals.js
 items/components/metals.js
@@ -36,7 +35,7 @@ blocks/decorations.js
 blocks/roads.js
 blocks/signs.js
 blocks/bench.js
-blocks/ores.js
+blocks/radiators.js
 
 environment/fog.js
 environment/split.js
@@ -66,6 +65,7 @@ machine/Polymerizer.js
 machine/Wire.js
 machine/MetalPress.js
 machine/AssemblyTable.js
+machine/SolderingStation.js
 
 
 mob/ArmorSet.js

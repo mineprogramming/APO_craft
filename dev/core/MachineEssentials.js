@@ -13,6 +13,12 @@ var MachineEssentials = {
         
         prototype.result = params.resultFunc;
         
+        prototype.init = function(){
+            if(params.liquidLimit){
+                this.liquidStorage.setLimit(null, params.liquidLimit);
+            }
+        }
+        
         prototype.getEnergyStorage = function(){
             return this.data.energy_storage;
         }
@@ -50,6 +56,15 @@ var MachineEssentials = {
             return true;
         }
         
+        prototype.updateScales = function(){
+            var energyStorage = this.getEnergyStorage();
+            this.data.energy = Math.min(this.data.energy, energyStorage);
+            //this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), Math.min(32, energyStorage - this.data.energy), 0);
+            
+            this.container.setScale(params.progress_scale, this.data.progress);
+            this.container.setScale(params.energy_scale, this.data.energy / energyStorage);
+        }
+        
         prototype.tick = function(){
             // Get all slots
             var sourceSlots = [];
@@ -59,6 +74,7 @@ var MachineEssentials = {
                 // Save execution time
                 if(sourceSlots[i].id == 0){
                     this.data.progress = 0;
+                    this.updateScales();
                     return;
                 }
             }
@@ -83,9 +99,12 @@ var MachineEssentials = {
             if(params.customResult) result = params.customResult(result, this.container);
             
             if(result && this.checkResult(result, resultSlots)){
-                if(this.data.energy >= this.data.energy_consumption){
+                if(this.data.energy >= this.data.energy_consumption && (!params.condition || params.condition(this))){
                     this.data.energy -= this.data.energy_consumption;
                     this.data.progress += 1/this.data.work_time;
+                    if(params.progress){
+                        params.progress(this);
+                    }
                 }
                 if(this.data.progress >= 1){
                     for(var i in sourceSlots){
@@ -100,12 +119,7 @@ var MachineEssentials = {
                 this.data.progress = 0;
             }
         
-            var energyStorage = this.getEnergyStorage();
-            this.data.energy = Math.min(this.data.energy, energyStorage);
-            //this.data.energy += ChargeItemRegistry.getEnergyFrom(this.container.getSlot("slotEnergy"), Math.min(32, energyStorage - this.data.energy), 0);
-            
-            this.container.setScale(params.progress_scale, this.data.progress);
-            this.container.setScale(params.energy_scale, this.data.energy / energyStorage);
+            this.updateScales();
         }
         
         TileEntity.registerPrototype(id, prototype);

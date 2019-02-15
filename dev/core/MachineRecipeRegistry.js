@@ -51,8 +51,8 @@ MachineRecipeRegistry = {
                     }
                 }
             }
-            
         }
+        return false;
     },
     
     compareObjects: function(obj1, obj2){
