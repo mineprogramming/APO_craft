@@ -104,6 +104,9 @@ Block.createBlock("bigRadiator", [{
     inCreative: true
 }]);
 Block.setShape(BlockID.bigRadiator, -1, 0, -1, 1, 1, 1);
+Block.registerDropFunction("bigRadiator",function(coords, blockID, blockData, level, enchant){
+    return [[0,0,0]];
+});
 
 // Run in the separate function to avoid name collisions
 (function(texture){
@@ -173,9 +176,151 @@ Block.setShape(BlockID.bigRadiator, -1, 0, -1, 1, 1, 1);
 })("block_copper");
 
 
+RadiatorAPI = {
+    worldRadiators:{},
+    radiatorsIDs:{},
+    coordsToString:function(x,y,z){
+        return x+':'+y+':'+z;
+    },
+    deleteRadiatorInWorld:function(x,y,z){
+        //Debug.m("Deleting");
+        var stringCoords = this.coordsToString(x,y,z);
+        for(var i in this.worldRadiators){
+            var rad = this.worldRadiators[i];
+            if(rad==stringCoords){
+                //Debug.m("deleted "+rad);
+                this.worldRadiators[i] = null;
+            }
+        }
+    },
+    getRadiatorDrop:function(x,y,z){
+        var stringCoords = this.coordsToString(x,y,z);
+        return this.worldRadiators[stringCoords];
+    },
+    stringToCoords:function(stringCoords){
+        var arr = stringCoords.split(":");
+        return {x:arr[0], y:arr[1], z:arr[2]}
+    },
+    addRadiatorID:function(id){
+        this.radiatorsIDs[id] = true
+    },
+    isRadiator:function(id){
+        return this.radiatorsIDs[id];
+    },
+    checkStructure2:function(coords){
+        for(var currX = -2; currX<=2; currX++){
+            for(var currZ = -2; currZ<=2; currZ++){
+               var block = World.getBlockID(coords.x+currX,coords.y,coords.z+currZ);
+               //Logger.Log("checking structure currX "+currX+' addZ '+currZ + ' '+block);
+               if(this.isRadiator(block)){
+                   var x = coords.x+currX;
+                   var y = coords.y;
+                   var z = coords.z+currZ;
+                   var crds = {
+                        x:coords.x+currX,
+                        y:coords.y,
+                        z:coords.z+currZ
+                   };
+                    this.checkCircle(crds);
+               }
+            }
+        }
+    },
+   checkCircle:function(coords){
+       var count = 0;
+       var center = {};
+        for(var addX = 0; addX<3; addX++){
+            for(var addZ = 0; addZ<3; addZ++){
+                var block = World.getBlockID(coords.x+addX, coords.y, coords.z+addZ);
+                //Logger.Log("checking circle addX "+addX+' addZ'+addZ+ ' '+block);
+                if(this.isRadiator(block)){
+                    count++;
+                }
+                if(addX==1&&addZ==1){
+                    center = {
+                        x:coords.x+addX,
+                        y:coords.y,
+                        z:coords.z+addZ
+                    };
+                }
+            }
+        }
+        if(count>8){
+            this.remakeStructure(center);
+        }
+   },
+   remakeStructure:function(center){
+       var blocks = [];
+       
+       Game.prevent(); 
+       blocks.push(World.getBlockID(center.x+1,center.y,center.z));
+       World.setBlock(center.x+1,center.y,center.z, 0, 0);
+       
+       blocks.push(World.getBlockID(center.x + 1,center.y, center.z + 1));       
+       World.setBlock(center.x + 1, center.y, center.z + 1, 0, 0);
+       
+       blocks.push(World.getBlockID(center.x+1,center.y,center.z-1));       
+       World.setBlock(center.x+1,center.y,center.z-1,0,0);
+       
+       blocks.push(World.getBlockID(center.x-1,center.y,center.z+1));              
+       World.setBlock(center.x-1,center.y,center.z+1,0,0);
+       
+       blocks.push(World.getBlockID(center.x-1,center.y,center.z-1));              
+       World.setBlock(center.x-1,center.y,center.z-1,0,0);
+       
+       blocks.push(World.getBlockID(center.x-1,center.y,center.z));              
+       World.setBlock(center.x-1,center.y,center.z,0,0);
+       
+       blocks.push(World.getBlockID(center.x,center.y,center.z+1));              
+       World.setBlock(center.x,center.y,center.z+1,0,0);
+       
+       blocks.push(World.getBlockID(center.x,center.y,center.z-1));              
+       World.setBlock(center.x,center.y,center.z-1,0,0);
+       
+       blocks.push(World.getBlockID(center.x,center.y,center.z));              
+       World.setBlock(center.x,center.y,center.z, BlockID.bigRadiator,0);
 
+       this.worldRadiators[this.coordsToString(center.x,center.y,center.z)] = blocks;
+   }
+};
+RadiatorAPI.addRadiatorID(BlockID.radiatorIron);
+RadiatorAPI.addRadiatorID(BlockID.radiatorGold);
+RadiatorAPI.addRadiatorID(BlockID.radiatorTitanium);
+RadiatorAPI.addRadiatorID(BlockID.radiatorLead);
+RadiatorAPI.addRadiatorID(BlockID.radiatorAluminium);
+RadiatorAPI.addRadiatorID(BlockID.radiatorCopper);
+RadiatorAPI.addRadiatorID(BlockID.radiatorTin);
 
-
-
+for(var regID = BlockID.radiatorIron; regID<=BlockID.radiatorTin;regID++){
+    Block.registerPlaceFunctionForID(regID,function(coords,item,block){
+        World.setBlock(coords.relative.x, coords.relative.y, coords.relative.z,item.id, item.data);
+        RadiatorAPI.checkStructure2(coords.relative);
+    });
+}
+Callback.addCallback("DestroyBlock", function(coords, block, player){
+    if(block.id==BlockID.bigRadiator){
+        var drop = RadiatorAPI.getRadiatorDrop(coords.x,coords.y,coords.z);
+        RadiatorAPI.deleteRadiatorInWorld(coords.x,coords.y,coords.z);
+        
+        for(var id in drop){
+            World.drop(coords.x,coords.y,coords.z,drop[id],1,0);
+        }
+    }
+});
+Saver.addSavesScope("RadiatorsPosition",
+    function read(scope) {
+        for(var i in scope){
+            RadiatorAPI.worldRadiators[i] = scope[i];
+        }
+    },
+    
+    function save() {
+        var sObj = [];
+        for(var i in RadiatorAPI.worldRadiators){
+            sObj[i] = RadiatorAPI.worldRadiators[i];
+        }
+        return sObj
+    }
+);
 
 
