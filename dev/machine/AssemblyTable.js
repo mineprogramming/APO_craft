@@ -18,10 +18,10 @@ var guiMetalPress = new UI.StandartWindow({
     elements: {
         "progressScale": {type: "scale", x: 590, y: 146, direction: 0, value: 0.5, bitmap: "extruder_bar_scale", scale: GUI_BAR_STANDART_SCALE},
         "energyScale": {type: "scale", x: 450, y: 230, direction: 1, value: 0.5, bitmap: "energy_small_scale", scale: GUI_BAR_STANDART_SCALE},
-        "slotSource0": {type: "slot", x: 441, y: 150},
-        "slotSource1": {type: "slot", x: 362, y: 95},
-        "slotSource2": {type: "slot", x: 441, y: 75},
-        "slotSource3": {type: "slot", x: 520, y: 95},
+        "slotSource0": {type: "slot", x: 400, y: 75},
+        "slotSource1": {type: "slot", x: 475, y: 75},
+        "slotSource2": {type: "slot", x: 400, y: 150},
+        "slotSource3": {type: "slot", x: 475, y: 150},
         "slotEnergy": {type: "slot", x: 441, y: 292},
         "slotResult": {type: "slot", x: 675, y: 142},
         "slotUpgrade1": {type: "slot", x: 820, y: 48},
@@ -33,7 +33,7 @@ var guiMetalPress = new UI.StandartWindow({
 
 MachineEssentials.registerStandart(BlockID.tableAssembly, {
     machine_name: "tableAssembly",
-    source_slots: ["slotSource"],
+    source_slots: ["slotSource0", "slotSource1", "slotSource2", "slotSource3"],
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
@@ -44,16 +44,6 @@ MachineEssentials.registerStandart(BlockID.tableAssembly, {
         resultSlots[0].data = result.data;
         resultSlots[0].count += result.count;
     },
-    
-    customResult:  function(result, container){
-        var slotPressForm = container.getSlot("slotPressForm");
-        for(var i in result){
-            if(eval(i) == slotPressForm.id){
-                return result[i];
-            }
-        }
-        return false;
-    }
 });
 
 
@@ -61,7 +51,14 @@ MachineEssentials.registerStandart(BlockID.tableAssembly, {
 Callback.addCallback("PreLoaded", function(){
     // Recipes
     MachineRecipeRegistry.registerRecipesFor("tableAssembly", [
-        
+        {
+            "source": [{id: ItemID.controllerHdd, data: 0}, {id: ItemID.headMagnetic, data: 0}, {id: ItemID.diskMagnetic, data: 0}, {id: ItemID.diskMagnetic, data: 0}],
+            "result": {id: ItemID.hdd, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.chipGeneratorSpaceTime, data: 0}, {id: 356, data: 0}, {id: 76, data: 0}, {id: ItemID.coilCopper, data: 0}],
+            "result": {id: ItemID.generatorSpaceTime, count: 1, data: 0}
+        }
     ]);
 });
 

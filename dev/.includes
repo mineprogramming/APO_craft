@@ -66,6 +66,7 @@ machine/Wire.js
 machine/MetalPress.js
 machine/AssemblyTable.js
 machine/SolderingStation.js
+machine/LaserBurner.js
 
 
 mob/ArmorSet.js
