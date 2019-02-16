@@ -43,13 +43,6 @@ environment/plane.js
 environment/exoskeleton.js
 environment/splitConditions.js
 
-dimension/generation/Dimension.js
-dimension/generation/Building.js
-dimension/generation/APOGen.js
-dimension/generation/Roads.js
-dimension/generation/Underground.js
-dimension/generation/AfterTeleportGen.js
-
 dimension/events/RandomEvents.js
 dimension/events/events.js
 
@@ -75,5 +68,12 @@ mob/ArmorSet.js
 mob/Military.js
 mob/UI.js
 mob/Dementor.js
+
+dimension/generation/Dimension.js
+dimension/generation/Building.js
+dimension/generation/APOGen.js
+dimension/generation/Roads.js
+dimension/generation/Underground.js
+dimension/generation/AfterTeleportGen.js
 
 

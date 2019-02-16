@@ -1,11 +1,20 @@
+// Stabilizer Casing
+IDRegistry.genBlockID("casingStabilizer");
+Block.createBlock("casingStabilizer", [
+    {name: "Stabilizer Casing", texture: [["casing_stabilizer", 0]], inCreative: true}
+], "opaque");
+
+
 // Stabilizer
 IDRegistry.genBlockID("stabilizer");
 Block.createBlock("stabilizer", [
     {name: "Stabilizer", texture: [["stabilizer", 0], ["stabilizer", 0], ["stabilizer", 0], ["stabilizer", 0], ["stabilizer", 0], ["stabilizer", 0]], inCreative: true}
 ], BLOCK_HARD);
-
-
-// Stabilizer casing
+RecipesManager.addShaped({id: BlockID.stabilizer, count: 1, data: 0}, [
+    "aba",
+    "bcb",
+    "aba"
+], ['a', ItemID.generatorSpaceTime, 0, 'b', ItemID.cableCopper0, 0, 'c', BlockID.casingStabilizer, 0]);
 
 
 // Stabilizer Winding
