@@ -77,6 +77,22 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": [{id: ItemID.pcbMotherboard, data: 0}, {id: ItemID.chipset, data: 0}, {id: ItemID.socket, data: 0}, {id: ItemID.smd, data: 0}],
             "result": {id: ItemID.motherboard, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbPowerSupply, data: 0}, {id: ItemID.transformator, data: 0}, {id: ItemID.smd, data: 0}],
+            "result": {id: ItemID.powerSupply, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbControllerHdd, data: 0}, {id: ItemID.smd, data: 0}, {id: ItemID.smd, data: 0}],
+            "result": {id: ItemID.controllerHdd, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbRam, data: 0}, {id: ItemID.chipRam, data: 0}, {id: ItemID.smd, data: 0}, {id: ItemID.chipRam, data: 0}],
+            "result": {id: ItemID.ram, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbCardVideo, data: 0}, {id: ItemID.chipVideo, data: 0}, {id: ItemID.smd, data: 0}, {id: ItemID.chipVideo, data: 0}],
+            "result": {id: ItemID.cardVideo, count: 1, data: 0}
         }
     ]);
 });

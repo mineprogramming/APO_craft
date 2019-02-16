@@ -31,15 +31,8 @@ MachineRecipeRegistry = {
                 // Several objects
                 for(var i in data){
                     let dataSource = data[i].source;
-                    if(Array.isArray(dataSource)){
-                        if(dataSource.length != source.length){
-                            continue;
-                        }
-                        for(var i in source){
-                            if(this.compareObjects(source[i], dataSource[i])){
-                                return data[i].result;
-                            }
-                        }
+                    if(Array.isArray(dataSource) && this.compareArrays(dataSource, source)){
+                         return data[i].result;
                     }
                 }
             } else {
@@ -57,5 +50,17 @@ MachineRecipeRegistry = {
     
     compareObjects: function(obj1, obj2){
         return obj1.id == obj2.id && obj1.data == obj2.data;
+    },
+    
+    compareArrays: function(arr1, arr2){
+        if(arr1.length != arr1.length){
+            return false;
+        }
+        for(var i in arr1){
+            if(!this.compareObjects(arr1[i], arr2[i])){
+                return false;
+            }
+        }
+        return true;
     }
 }

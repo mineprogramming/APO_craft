@@ -70,13 +70,6 @@ var MachineEssentials = {
             var sourceSlots = [];
             for(var i in params.source_slots){
                 sourceSlots[i] = this.container.getSlot(params.source_slots[i]);
-                
-                // Save execution time
-                if(sourceSlots[i].id == 0){
-                    this.data.progress = 0;
-                    this.updateScales();
-                    return;
-                }
             }
             var resultSlots = [];
             for(var i in params.result_slots){
