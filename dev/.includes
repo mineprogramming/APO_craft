@@ -68,6 +68,7 @@ machine/AssemblyTable.js
 machine/SolderingStation.js
 machine/LaserBurner.js
 machine/Crystalizer.js
+machine/Stabilizer.js
 
 
 mob/ArmorSet.js

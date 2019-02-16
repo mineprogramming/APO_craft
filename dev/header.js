@@ -56,11 +56,17 @@ var BLOCK_LIGHT_O = Block.createSpecialType({
 
 var BLOCK_LOW_LIGHT = Block.createSpecialType({
     lightlevel: 9,
-    opaque: true});
+    opaque: true
+});
 
 var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
     lightlevel: 4,
-    opaque: true});
+    opaque: true
+});
+
+var BLOCK_HARD = Block.createSpecialType({
+    explosionres: 2000
+});
 
 
 var inCity = false;
