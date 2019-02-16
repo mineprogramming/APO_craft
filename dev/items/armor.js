@@ -99,36 +99,36 @@ Item.createArmorItem("hazmatMask", "Hazmat Mask", {name: "gas_mask"}, {type: "he
 IDRegistry.genItemID("clothHazmat");
 Item.createItem("clothHazmat", "Hazmat Cloth", {name: "hazmat_cloth"});
 
-IDRegistry.genItemID("hazmatHelmet");
-Item.createArmorItem("hazmatHelmet", "Hazmat Helmet", {name: "hazmat_helmet"}, {type: "helmet", armor: 3, durability: 149, texture: "armor/hazmat_1.png"});
+IDRegistry.genItemID("hazmatHelmetApo");
+Item.createArmorItem("hazmatHelmetApo", "Hazmat Helmet", {name: "apo_hazmat_helmet"}, {type: "helmet", armor: 3, durability: 149, texture: "armor/hazmat_1.png"});
 
-IDRegistry.genItemID("hazmatChestplate");
-Item.createArmorItem("hazmatChestplate", "Hazmat Chestplate", {name: "hazmat_plate"}, {type: "chestplate", armor: 4, durability: 216, texture: "armor/hazmat_1.png"});
+IDRegistry.genItemID("hazmatChestplateApo");
+Item.createArmorItem("hazmatChestplateApo", "Hazmat Chestplate", {name: "apo_hazmat_chestplate"}, {type: "chestplate", armor: 4, durability: 216, texture: "armor/hazmat_1.png"});
 
-IDRegistry.genItemID("hazmatLeggings");
-Item.createArmorItem("hazmatLeggings", "Hazmat Leggings", {name: "hazmat_legs"}, {type: "leggings", armor: 2, durability: 203, texture: "armor/hazmat_2.png"});
+IDRegistry.genItemID("hazmatLeggingsApo");
+Item.createArmorItem("hazmatLeggingsApo", "Hazmat Leggings", {name: "apo_hazmat_leggings"}, {type: "leggings", armor: 2, durability: 203, texture: "armor/hazmat_2.png"});
 
-IDRegistry.genItemID("hazmatBoots");
-Item.createArmorItem("hazmatBoots", "Hazmat Boots", {name: "hazmat_boots"}, {type: "boots", armor: 2, durability: 176, texture: "armor/hazmat_1.png"});
+IDRegistry.genItemID("hazmatBootsApo");
+Item.createArmorItem("hazmatBootsApo", "Hazmat Boots", {name: "apo_hazmat_boots"}, {type: "boots", armor: 2, durability: 176, texture: "armor/hazmat_1.png"});
 
-RecipesManager.addShaped({id: ItemID.hazmatHelmet, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatHelmetApo, count: 1, data: 0}, [
     "xxx",
     "xbx"
 ], ['x', ItemID.clothHazmat, 0, 'b', ItemID.hazmatMask, 0]);
 
-RecipesManager.addShaped({id: ItemID.hazmatChestplate, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatChestplateApo, count: 1, data: 0}, [
     "x x",
     "xxx",
     "xxx"
 ], ['x', ItemID.clothHazmat, 0]);
 
-RecipesManager.addShaped({id: ItemID.hazmatLeggings, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatLeggingsApo, count: 1, data: 0}, [
     "xxx",
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
 
-RecipesManager.addShaped({id: ItemID.hazmatBoots, count: 1, data: 0}, [
+RecipesManager.addShaped({id: ItemID.hazmatBootsApo, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
