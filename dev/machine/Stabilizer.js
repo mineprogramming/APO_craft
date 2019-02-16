@@ -158,7 +158,6 @@ TileEntity.registerPrototype(BlockID.stabilizer, {
         
         // Spawn Lightnings
         if(this.data.progress % 100 == 0){
-            Game.message("light!");
             for(var i = 0; i < this.data.progress / 100; i++){
                 Entity.spawn(this.x + Math.random() - 0.5, this.y + 1, this.z + Math.random() - 0.5, Native.EntityType.LIGHTNING_BOLT);
             }

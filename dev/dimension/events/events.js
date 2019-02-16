@@ -1,16 +1,26 @@
 const EVENT_FREQUENCY_EXPLOSION_FIRE = 0.1;
 const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
+var CUSTOM_MOBS = ["dementor", "military"];
 
-//RandomEvents.registerEvent("zombies", 0.0005, function(){
-//    let count = Math.random() * 5;
-//    for(var i = 0; i < count; i++){
-//        var coords = RandomEvents.randomCoordsNearPlayer();
-//        coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
-//        var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
-//        Entity.spawn(coords.x, coords.y + 1, coords.z, type);
-//    }
-//});
+
+RandomEvents.registerEvent("zombies", 0.0003, function(){
+    let count = Math.random() * 5;
+    for(var i = 0; i < count; i++){
+        var coords = RandomEvents.randomCoordsNearPlayer();
+        coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
+        var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
+        Entity.spawn(coords.x, coords.y + 1, coords.z, type);
+    }
+});
+
+RandomEvents.registerEvent("mod", 0.0001, function() {
+    var coords = RandomEvents.randomCoordsNearPlayer();
+    coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
+    
+    var i = Math.floor(Math.random() * CUSTOM_MOBS.length);
+    Entity.spawnCustom(CUSTOM_MOBS[i], coords.x + .5, coords.y + .5, coords.z + .5);
+});
 
 
 RandomEvents.registerEvent("weather", 0.005, function(){
