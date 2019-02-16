@@ -60,6 +60,12 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
         var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 15);
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreRuby, 0, 3);          
     }
+    
+    // Magnesium Ore
+    for(var i = 0; i < 20; i++){
+        var coords = GenerationUtils.randomCoords(chunkX, chunkZ, 0, 55); 
+        GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreMagnesium, 0, 5);           
+    }
 });
 
 

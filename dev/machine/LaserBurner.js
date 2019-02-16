@@ -68,6 +68,16 @@ Callback.addCallback("PreLoaded", function(){
                 "ItemID.drawingPcbRam": {id: ItemID.pcbRam, count: 1, data: 0},
                 "ItemID.drawingPcbCardVideo": {id: ItemID.pcbCardVideo, count: 1, data: 0}
             }
+        },
+        {
+            "source": {"id": ItemID.crystalSilicon, "data": 0},
+            "result": {
+                "ItemID.drawingChipset": {id: ItemID.chipset, count: 1, data: 0},
+                "ItemID.drawingCpu": {id: ItemID.cpu, count: 1, data: 0},
+                "ItemID.drawingChipRam": {id: ItemID.chipRam, count: 1, data: 0},
+                "ItemID.drawingChipVideo": {id: ItemID.chipVideo, count: 1, data: 0},
+                "ItemID.drawingChipGeneratorSpaceTime": {id: ItemID.chipGeneratorSpaceTime, count: 1, data: 0}
+            }
         }
     ]);
 });

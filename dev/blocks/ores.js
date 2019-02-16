@@ -10,12 +10,31 @@ IDRegistry.genBlockID("oreGalliumArsenide");
 Block.createBlock("oreGalliumArsenide", [{name: "Gallium Arsenide Ore", texture: [["ore_gallium_arsenide", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.oreGalliumArsenide, 2);
 ToolAPI.registerBlockMaterial(BlockID.oreGalliumArsenide, "stone", 3, true);
-Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, diggingLevel, toolLevel){
+Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, level, enchant){
      if(level > 2){
         if(enchant.silk){
             return [[blockID, 1, 0]];
         }
         var drop = [[ItemID.galliumArsenite, 1, 0]];
+        if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
+        ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
+        return drop;
+    }
+    return [];
+});
+
+
+// Magnesium Ore
+IDRegistry.genBlockID("oreMagnesium");
+Block.createBlock("oreMagnesium", [{name: "Magnesium Ore", texture: [["ore_magnesium", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreMagnesium, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreMagnesium, "stone", 3, true);
+Block.registerDropFunction("oreMagnesium", function(coords, id, data, level, enchant){
+     if(level > 2){
+        if(enchant.silk){
+            return [[blockID, 1, 0]];
+        }
+        var drop = [[ItemID.magnesium, 1, 0]];
         if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
         ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
         return drop;

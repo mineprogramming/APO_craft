@@ -67,6 +67,7 @@ machine/MetalPress.js
 machine/AssemblyTable.js
 machine/SolderingStation.js
 machine/LaserBurner.js
+machine/Crystalizer.js
 
 
 mob/ArmorSet.js

@@ -1,5 +1,10 @@
 /* Metals (Thanks to DansTS) */
 
+// Magnesium 
+IDRegistry.genItemID("magnesium");
+Item.createItem("magnesium", "Magnesium", {name: "magnesium"});
+Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
+
 /* INGOTS */
 
 // Titanium Ingot

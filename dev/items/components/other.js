@@ -139,7 +139,17 @@ Callback.addCallback("ICore", function(api){
 });
 
 
+/* Chips production */
 
+// Silicon
+IDRegistry.genItemID("silicon");
+Item.createItem("silicon", "Silicon", {name: "silicon", meta: 0}, {});
+RecipesManager.addShapeless({id: ItemID.silicon, count: 1, data: 0}, [{id: ItemID.magnesium, data: 0}, {id: 406, data: 0}]);
+
+
+// Silicon Crystal
+IDRegistry.genItemID("crystalSilicon");
+Item.createItem("crystalSilicon", "Silicon Crystal", {name: "crystal_silicon", meta: 0}, {});
 
 
 
