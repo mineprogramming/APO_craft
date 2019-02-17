@@ -328,7 +328,7 @@ function Building(filename){
                     World.setBlock(x + x1, y + y1, z + z1, block.id, block.meta);
                     if(block.id == 54 && loot){
                         var container = World.getContainer(x + x1, y + y1, z + z1);
-                        if(container){
+                        if(container != null){
                             for(var key in loot){
                                 let item = loot[key];
                                 if(Math.random() < item.rarity){
