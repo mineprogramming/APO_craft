@@ -7,13 +7,13 @@ var Underground = {
 Underground.railOnData.putBoolean("powered", true);
 
 var setRandomWall = function(x, y, z){
-        if(Math.random() < 0.2)
-            World.setBlock(x, y, z, 98, 1);
-        else if(Math.random() > 0.8)
-            World.setBlock(x, y, z, 98, 2);
-        else
-            World.setBlock(x, y, z, 98, 0);
-    }
+    if(Math.random() < 0.2)
+        World.setBlock(x, y, z, 98, 1);
+    else if(Math.random() > 0.8)
+        World.setBlock(x, y, z, 98, 2);
+    else
+        World.setBlock(x, y, z, 98, 0);
+}
 
 Underground.generateTunnel = function(x, y, z, direction){
     var generateSingleTunnel = function(x, y, z, dirtection){

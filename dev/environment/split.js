@@ -33,12 +33,11 @@ var Split = {
         Split.summon_ticks = 0;
         Split.summoning = true;
         Split.x = x; 
-        Split.y = y;
+        Split.y = Math.round(y - 2);
         Split.z = z;
         World.setBlock(x, y, z, 0);
         World.setBlock(x, y + 1, z, 0);
-        World.setBlock(x, y, 2, 0);
-        Entity.addEffect(Player.get(), 11, 30, 5);
+        World.setBlock(x, y - 1, z, 0);
     },
     
     tryStart: function(chance, x, y, z){
@@ -57,6 +56,7 @@ Callback.addCallback("tick", function(){
         let y = Split.y + Math.random() * 4 - 2;
         let z = Split.z + Math.random() * 4 - 2;
         
+        Entity.addEffect(Player.get(), 11, 30, 5);
         Entity.spawn(x, y, z, Native.EntityType.LIGHTNING_BOLT);
         
         Split.summon_ticks++;
@@ -64,15 +64,6 @@ Callback.addCallback("tick", function(){
             Split.summoning = false;
             Split.build();
         }
-    }
-});
-
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        Split.summon(x, y, z);
     }
 });
 

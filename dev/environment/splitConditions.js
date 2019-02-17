@@ -31,3 +31,4 @@ Callback.addCallback("ItemUse", function(coords, item, block){
         Split.tryStart(0.002, coords.x, coords.y, coords.z);
     }
 });
+

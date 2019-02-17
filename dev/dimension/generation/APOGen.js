@@ -1,7 +1,7 @@
 var Random = java.util.Random;
 var rnd = new Random();
 
-//GENERATION
+// GENERATION
 const GENERATION_HEIGHT = 78;
 const ROADS_FREQUENCY = 0.15;
 const UNDERGROUNG_FREQUENCY = 0.05;
@@ -61,7 +61,7 @@ APOGen.lateGen = function(x, z){
     var srandX = srand(x);
     var srandZ = srand(z);
     
-    //GENERATE ROADS
+    // GENERATE ROADS
     if(srandX < ROADS_FREQUENCY && srandZ < ROADS_FREQUENCY){
         Roads.generateSimpleRoad(x, GENERATION_HEIGHT, z, true);
         Roads.generateSimpleRoad(x, GENERATION_HEIGHT, z, false);
@@ -74,24 +74,25 @@ APOGen.lateGen = function(x, z){
         Roads.generateSimpleRoad(x, GENERATION_HEIGHT, z, false);
     }
     
-    //GENERATE BUILDINGS
+    // GENERATE BUILDINGS
     else if(Math.random() < BUILDING_FREQUENCY){
         var i = Math.floor(Math.random() * BUILDINGS_COUNT);
         buildings[i].build(x, GENERATION_HEIGHT, z);
     }
     
-    //GRAVEL DUMPS
+    // GRAVEL DUMPS
     if(Math.random() < GRAVEL_FREQUENCY){
         var coords = GenerationUtils.findSurface(x + Math.random() * 16, GENERATION_HEIGHT, z + Math.random() * 16);
         coords.y++;
         
     } 
     
-    //CRATERS AND EXPLOSIONS
-    if(Math.random() < EXPLOSION_FREQENCY){
-        var coords = GenerationUtils.findSurface(x + Math.random() * 16, GENERATION_HEIGHT, z + Math.random() * 16);
-        World.explode(coords.x, coords.y, coords.z, Math.random() * 16, false);
-    } 
+    // Caused issue in surival
+    // CRATERS AND EXPLOSIONS
+    //if(Math.random() < EXPLOSION_FREQENCY){
+    //    var coords = GenerationUtils.findSurface(x + Math.random() * 16, GENERATION_HEIGHT, z + Math.random() * 16);
+    //    World.explode(coords.x, coords.y, coords.z, Math.random() * 16, false);
+    //}
     
     NativeAPI.setTileUpdateAllowed(true);
 }
