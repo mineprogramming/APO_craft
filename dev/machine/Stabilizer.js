@@ -27,6 +27,11 @@ IDRegistry.genBlockID("windingStabilizer");
 Block.createBlock("windingStabilizer", [
     {name: "Stabilizer Winding", texture: [["block_lead", 0]], inCreative: true}
 ], BLOCK_HARD);
+RecipesManager.addShaped({id: BlockID.windingStabilizer, count: 1, data: 0}, [
+    "aaa",
+    "a a",
+    "aaa"
+], ['a', ItemID.ingotLead, 0]);
 
 (function(){
     var width = 0.1;

@@ -3,7 +3,6 @@
 // Magnesium 
 IDRegistry.genItemID("magnesium");
 Item.createItem("magnesium", "Magnesium", {name: "magnesium"});
-Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
 
 /* INGOTS */
 
@@ -115,10 +114,12 @@ Item.createItem("dustIron", "Iron Dust", {name: "dust_iron"});
 // Copper Cable
 IDRegistry.genItemID("cableCopper0");
 Item.createItem("cableCopper0", "Copper Cable", {name: "cable_copper", meta: 0});
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.cableCopper0, count: 3, data: 0}, [{id: ItemID.plateCopper, data: 0}], ItemID.craftingCutter);
 
 // Lead Cable
 IDRegistry.genItemID("cableLead0");
 Item.createItem("cableLead0", "Lead Cable", {name: "cable_lead", meta: 0});
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.cableLead0, count: 3, data: 0}, [{id: ItemID.plateLead, data: 0}], ItemID.craftingCutter);
 
 
 /* RODS */

@@ -118,6 +118,10 @@ Item.createItem("pressFormBlade", "Blade Press Form", {name: "press_form_blade",
 IDRegistry.genItemID("pressFormRadiator");
 Item.createItem("pressFormRadiator", "Radiator Press Form", {name: "press_form_radiator", meta: 0}, {});
 
+// Rod Press Form 
+IDRegistry.genItemID("pressFormRod");
+Item.createItem("pressFormRod", "Rod Press Form", {name: "press_form_rod", meta: 0}, {});
+
 
 
 // Polypropylene Plate

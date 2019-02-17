@@ -142,6 +142,12 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 1 }
     },
     {
+        "id": ItemID.pressFormRod,
+        "meta": 0,
+        "rarity": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
         "id": ItemID.pressFormRadiator,
         "meta": 0,
         "rarity": 0.01,

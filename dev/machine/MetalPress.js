@@ -119,6 +119,18 @@ Callback.addCallback("PreLoaded", function(){
             "result": {
                 "ItemID.pressFormRadiator": {id: BlockID.radiatorTin, count: 1, data: 0}
             }
+        },
+        {
+            "source": {"id": 265, "data": 0},
+            "result": {
+                "ItemID.pressFormRod": {id: ItemID.rodIron, count: 1, data: 0}
+            }
+        },
+        {
+            "source": {"id": ItemID.ingotTitanium, "data": 0},
+            "result": {
+                "ItemID.pressFormRod": {id: ItemID.rodTitanium, count: 1, data: 0}
+            }
         }
     ]);
 });
