@@ -100,8 +100,7 @@ Recipes.addFurnace(BlockID.radiatorTin, BlockID.blockTin, 0);
 IDRegistry.genBlockID("bigRadiator");
 Block.createBlock("bigRadiator", [{
     name: "Big Radiator",
-    texture: [["block_copper", 0]],
-    inCreative: true
+    texture: [["hopper_side", 0]]
 }]);
 Block.setShape(BlockID.bigRadiator, -1, 0, -1, 1, 1, 1);
 Block.registerDropFunction("bigRadiator",function(coords, blockID, blockData, level, enchant){
@@ -173,7 +172,7 @@ Block.registerDropFunction("bigRadiator",function(coords, blockID, blockData, le
     model.addBox(-8/16, 2/16, -8/16, -6/16, 16/16, -6/16, texture, 0);
 
     render.addEntry(model);
-})("block_copper");
+})("hopper_side");
 
 
 RadiatorAPI = {

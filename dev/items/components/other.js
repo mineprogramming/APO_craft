@@ -37,7 +37,7 @@ IDRegistry.genItemID("petrol");
 Item.createItem("petrol", "Petrol", {name: "petrol", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.petrol, 0, 3000);
 
-//Kerosene
+// Kerosene
 IDRegistry.genItemID("kerosene");
 Item.createItem("kerosene", "Kerosene", {name: "kerosene", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.kerosene, 0, 3000);
@@ -45,11 +45,11 @@ Recipes.addFurnaceFuel(ItemID.kerosene, 0, 3000);
 
 /* Coal coking products*/
 
-//Coal Tar
+// Coal Tar
 IDRegistry.genItemID("tarCoal");
 Item.createItem("tarCoal", "Coal Tar", {name: "tar_coal", meta: 0}, {});
 
-//Coke
+// Coke
 IDRegistry.genItemID("coke");
 Item.createItem("coke", "Coke", {name: "coke", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.coke, 0, 2000);
@@ -57,11 +57,11 @@ Recipes.addFurnaceFuel(ItemID.coke, 0, 2000);
 
 /* Textolite production */
 
-//Glass Thread
+// Glass Thread
 IDRegistry.genItemID("threadGlass");
 Item.createItem("threadGlass", "Glass Thread", {name: "thread_glass", meta: 0}, {});
 
-//Fiberglass
+// Fiberglass
 IDRegistry.genItemID("fiberglass");
 Item.createItem("fiberglass", "Fiberglass", {name: "fiberglass", meta: 0}, {});
 
@@ -71,7 +71,7 @@ RecipesManager.addShaped({id: ItemID.fiberglass, count: 1, data: 0}, [
      "aaa"
 ], ['a', ItemID.threadGlass, 0]);
 
-//Textolite
+// Textolite
 IDRegistry.genItemID("textolite");
 Item.createItem("textolite", "Textolite", {name: "textolite", meta: 0}, {});
 
@@ -87,10 +87,19 @@ RecipesManager.addShaped({id: ItemID.textolite, count: 2, data: 0}, [
      "aaa"
 ], ['a', ItemID.fiberglass, 0, 'b', ItemID.oilResin, 0]);
 
+// Foil Textolite
+IDRegistry.genItemID("textoliteFoil");
+Item.createItem("textoliteFoil", "Foil Textolite", {name: "textolite_foil", meta: 0}, {});
+RecipesManager.addShaped({id: ItemID.textoliteFoil, count: 3, data: 0}, [
+     "aaa",
+     "bbb",
+     "aaa"
+], ['a', ItemID.plateCopper, 0, 'b', ItemID.textolite, 0]);
+
 
 /* Plastics */
 
-//Granules of Polypropylene
+// Granules of Polypropylene
 IDRegistry.genItemID("granulesPolypropylene");
 Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
 
@@ -101,6 +110,10 @@ Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "gr
 IDRegistry.genItemID("pressFormPlate");
 Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
 
+// Blade Press Form
+IDRegistry.genItemID("pressFormBlade");
+Item.createItem("pressFormBlade", "Blade Press Form", {name: "press_form_blade", meta: 0}, {});
+
 // Radiator Press Form
 IDRegistry.genItemID("pressFormRadiator");
 Item.createItem("pressFormRadiator", "Radiator Press Form", {name: "press_form_radiator", meta: 0}, {});
@@ -110,6 +123,10 @@ Item.createItem("pressFormRadiator", "Radiator Press Form", {name: "press_form_r
 // Polypropylene Plate
 IDRegistry.genItemID("platePolypropylene");
 Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polypropylene", meta: 0}, {});
+
+// Polypropylene Blade
+IDRegistry.genItemID("bladePolypropylene");
+Item.createItem("bladePolypropylene", "Polypropylene Blade", {name: "blade_polypropylene", meta: 0}, {});
 
 // Polypropylene Casing
 IDRegistry.genItemID("casingPolypropylene");

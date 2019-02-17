@@ -70,6 +70,8 @@ var APOCity = new Dimension({
         loaded: function(){
             inCity = true;
             RecipesManager.onRegisterRecipesNeeded();
+            let position = Player.getPosition();
+            NativeAPI.setRespawnCoords(position.x, position.y, position.z);
         }
     }
 });

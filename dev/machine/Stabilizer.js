@@ -3,6 +3,11 @@ IDRegistry.genBlockID("casingStabilizer");
 Block.createBlock("casingStabilizer", [
     {name: "Stabilizer Casing", texture: [["casing_stabilizer", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.casingStabilizer, count: 1, data: 0}, [
+    "abc",
+    "bdb",
+    "bbb"
+], ['a', ItemID.ledGreen, 0, 'b', ItemID.plateIron, 0, 'c', ItemID.ledRed, 0, 'd', ItemID.casingPolypropylene, 0]);
 
 
 // Stabilizer

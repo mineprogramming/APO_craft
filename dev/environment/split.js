@@ -1,18 +1,18 @@
 var Split = {
-    done: 0,
     summoning: false,
     summon_ticks: 0,
     
     build: function(){
-        let x = Split.x;
-        let y = Split.y;
-        let z = Split.z;
-        Split.done = 0;
+        let x = Math.round(Split.x);
+        let y = Math.round(Split.y);
+        let z = Math.round(Split.z);
         Split.buildRecursive(x, y, z);
+        Split.buildRecursive(x - 1, y, z);
+        Split.buildRecursive(x, y, z - 1);
+        Split.buildRecursive(x - 1, y, z - 1);
     },
     
     buildRecursive: function(x, y, z){
-        Split.done++;
         World.setBlock(x, y, z, BlockID.aetherPortal, 0);
         for(var i = 0; i < 4; i++){
             var dx = (i - 2) % 2;
@@ -20,7 +20,7 @@ var Split = {
             
             var block = World.getBlockID(x + dx, y, z + dz);
             if(block != BlockID.aetherPortal){
-                if(Split.done < 4 || Math.random() < 0.3){
+                if(Math.random() < 0.3){
                     Split.buildRecursive(x + dx, y, z + dz);
                 } else {
                     World.setBlock(x + dx, y, z + dz, 1, 0);
@@ -64,6 +64,15 @@ Callback.addCallback("tick", function(){
             Split.summoning = false;
             Split.build();
         }
+    }
+});
+
+Callback.addCallback("ItemUse", function(coords, item, block){
+    let x = coords.relative.x;
+    let y = coords.relative.y;
+    let z = coords.relative.z;
+    if(item.id == 280){
+        Split.summon(x, y, z);
     }
 });
 

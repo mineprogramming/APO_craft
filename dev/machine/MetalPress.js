@@ -1,7 +1,26 @@
 IDRegistry.genBlockID("pressMetal");
 Block.createBlockWithRotation("pressMetal", [
     {name: "Metal Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
-], "opaque");
+]);
+
+(function(){
+    var render = new ICRender.Model();
+    BlockRenderer.setStaticICRender(BlockID.pressMetal, -1, render);
+    var model = BlockRenderer.createModel();
+
+    model.addBox(0/16, 9/16, 0/16, 16/16, 11/16, 16/16, "block_titanium", 0);
+    model.addBox(1/16, 0/16, 1/16, 5/16, 9/16, 5/16, "block_titanium", 0);
+    model.addBox(11/16, 0/16, 1/16, 15/16, 9/16, 5/16, "block_titanium", 0);
+    model.addBox(11/16, 0/16, 11/16, 15/16, 9/16, 15/16, "block_titanium", 0);
+    model.addBox(1/16, 0/16, 11/16, 5/16, 9/16, 15/16, "block_titanium", 0);
+    model.addBox(6.5/16, 11/16, 12/16, 9.5/16, 20/16, 15/16, "block_titanium", 0);
+    model.addBox(6.5/16, 11/16, 1/16, 9.5/16, 20/16, 4/16, "block_titanium", 0);
+    model.addBox(6.5/16, 20/16, 1/16, 9.5/16, 22/16, 15/16, "block_titanium", 0);
+    model.addBox(7.5/16, 16/16, 7.5/16, 8.5/16, 20/16, 8.5/16, "block_titanium", 0);
+    model.addBox(6.5/16, 14/16, 6.5/16, 9.5/16, 16/16, 9.5/16, "block_titanium", 0);
+
+    render.addEntry(model);
+})();
 
 var guiMetalPress = new UI.StandartWindow({
     standart: {

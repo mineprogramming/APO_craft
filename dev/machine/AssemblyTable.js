@@ -58,7 +58,11 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": [{id: ItemID.chipGeneratorSpaceTime, data: 0}, {id: 356, data: 0}, {id: 76, data: 0}, {id: ItemID.coilCopper, data: 0}],
             "result": {id: ItemID.generatorSpaceTime, count: 1, data: 0}
-        }
+        },
+        {
+            "source": [{id: ItemID.coilCopper, data: 0}, {id: ItemID.bladePolypropylene, data: 0}, {id: ItemID.bladePolypropylene, data: 0}],
+            "result": {id: ItemID.systemCooling, count: 1, data: 0}
+        },
     ]);
 });
 

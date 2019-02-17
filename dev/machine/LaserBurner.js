@@ -60,7 +60,7 @@ Callback.addCallback("PreLoaded", function(){
     // Recipes
     MachineRecipeRegistry.registerRecipesFor("burnerLaser", [
         {
-            "source": {"id": ItemID.textolite, "data": 0},
+            "source": {"id": ItemID.textoliteFoil, "data": 0},
             "result": {
                 "ItemID.drawingPcbMotherboard": {id: ItemID.pcbMotherboard, count: 1, data: 0},
                 "ItemID.drawingPcbPowerSupply": {id: ItemID.pcbPowerSupply, count: 1, data: 0},

@@ -1,7 +1,26 @@
 IDRegistry.genBlockID("pressPlastic");
 Block.createBlockWithRotation("pressPlastic", [
     {name: "Plastic Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
-], "opaque");
+]);
+
+(function(){
+    var render = new ICRender.Model();
+    BlockRenderer.setStaticICRender(BlockID.pressPlastic, -1, render);
+    var model = BlockRenderer.createModel();
+
+    model.addBox(0/16, 9/16, 0/16, 16/16, 11/16, 16/16, "std_top", 0);
+    model.addBox(1/16, 0/16, 1/16, 5/16, 9/16, 5/16, "std_top", 0);
+    model.addBox(11/16, 0/16, 1/16, 15/16, 9/16, 5/16, "std_top", 0);
+    model.addBox(11/16, 0/16, 11/16, 15/16, 9/16, 15/16, "std_top", 0);
+    model.addBox(1/16, 0/16, 11/16, 5/16, 9/16, 15/16, "std_top", 0);
+    model.addBox(7/16, 11/16, 12/16, 9/16, 19/16, 14/16, "std_top", 0);
+    model.addBox(7/16, 11/16, 2/16, 9/16, 19/16, 4/16, "std_top", 0);
+    model.addBox(7/16, 19/16, 2/16, 9/16, 21/16, 14/16, "std_top", 0);
+    model.addBox(7.5/16, 15/16, 7.5/16, 8.5/16, 19/16, 8.5/16, "std_top", 0);
+    model.addBox(6.5/16, 14/16, 6.5/16, 9.5/16, 15/16, 9.5/16, "std_top", 0);
+
+    render.addEntry(model);
+})();
 
 var guiPlasticPress = new UI.StandartWindow({
     standart: {
@@ -62,7 +81,8 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": {"id": ItemID.granulesPolypropylene, "data": 0},
             "result": {
-                "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0}
+                "ItemID.pressFormPlate": {id: ItemID.platePolypropylene, count: 1, data: 0},
+                "ItemID.pressFormBlade": {id: ItemID.bladePolypropylene, count: 1, data: 0}
             }
         }
     ]);
