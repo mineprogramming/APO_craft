@@ -1,25 +1,25 @@
 IDRegistry.genItemID("Place");
 Item.createItem("Place", "Structure Placer", {name: "place", meta: 0},{isTech:false,stack: 1});
 
-let currentBuilding = 0;
-
 Callback.addCallback("ItemUse", function (coords, item, block) {
-    var x = coords.relative.x;
-    var y = coords.relative.y;
-    var z = coords.relative.z;
+    var x = coords.relative.x,
+		y = coords.relative.y,
+		z = coords.relative.z;
     
-    if(item.id == ItemID.Place){
-        buildings[currentBuilding].build(x, y, z);
-    }
-});
-
-
-Callback.addCallback("NativeCommand", function(str){
-    str = str.substring(1);
-    let cmd = str.split(" ");
-    if(cmd[0] == "building"){
-        currentBuilding = parseInt(cmd[1]);
-        Game.prevent();
+    if(item.id == ItemID.Place) {
+		runAsUI(function() {
+			var items = [];
+			for(i in buildings) {
+				items.push("Build " + i);
+			}
+			
+			var dialog = new AlertDialog.Builder(ctx);
+			dialog.setTitle("What do you want to build?");
+			dialog.setItems(items, function(d, item) {
+				buildings[item].build(x, y, z);
+			});
+			dialog.create().show();
+		});
     }
 });
 
