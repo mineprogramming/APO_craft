@@ -72,12 +72,12 @@ var BLOCK_HARD = Block.createSpecialType({
 var inCity = false;
 
 Saver.addSavesScope("inCity", 
-    function read(scope) {
+    function read(scope){
         if(__config__.getBool("late_recipes_registration")){
-            if(!scope.inCity) {
+            if(!scope.inCity){
                 RecipesManager.deleteAll();
                 return;
-            } else {
+            }else{
                 RecipesManager.onRegisterRecipesNeeded();
             }
         }
@@ -85,7 +85,7 @@ Saver.addSavesScope("inCity",
         inCity = scope.inCity;
     },
 
-    function save() {
+    function save(){
         return {inCity: inCity};
     }
 );
@@ -94,16 +94,16 @@ Saver.addSavesScope("inCity",
 
 /* Just some useful functions */
 
-function randomInt(min, max) {
+function randomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function srand(seed) {
+function srand(seed){
     seed = Math.sin(seed) * 10000;
     return seed - Math.floor(seed);
 }
 
-function getSideCoords(coords) {
+function getSideCoords(coords){
     return [
         {x: coords.x, y: coords.y + 1, z: coords.z},
         {x: coords.x, y: coords.y - 1, z: coords.z},
@@ -114,14 +114,12 @@ function getSideCoords(coords) {
     ];
 }
 
-function runAsUI(func) {
-    ctx.runOnUiThread(new java.lang.Runnable({
-		run: function() {
-        	try {
-            	func();
-        	} catch(e) {
-            	Game.message(e);
-        	}
-		}
+function runAsUI(func){
+    ctx.runOnUiThread(new java.lang.Runnable({ run: function(){
+        try{
+            func();
+        }catch(e){
+            Game.message(e);
+        }}
     }));
 }

@@ -266,15 +266,27 @@ function Building(filename){
             }
         }
         return array;
-    }
+    };
     
     var parseLoot = function(array){
         for(var i in array){
             array[i].id = eval(array[i].id);
         }
         return array;
-    }
+    };
     
+	var getCount = function(){
+		var count = 0;
+		for(a in blocks){
+			for(b in blocks[a]){
+				for(c in blocks[a][b]){
+					count += 1;
+				}
+			}
+		}
+		return count;
+	};
+	
     var json = JSON.parse(readFile(path));
     if(Array.isArray(json)){
         blocks = parseBlocks(json);
@@ -292,6 +304,7 @@ function Building(filename){
     }
     
     this.debug = false;
+	this.count = getCount();
     
     this.build = function(x1, y1, z1){
         //Choose random block for generation
@@ -343,15 +356,6 @@ function Building(filename){
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 function readFile(path){
     var reader = new BufferedReader(new FileReader(path));
