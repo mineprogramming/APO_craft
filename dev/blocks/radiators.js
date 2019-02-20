@@ -1,5 +1,3 @@
-/* Radiators (Thanks to MaXFeeD) */
-
 /* Regular radiators */
 
 function renderRadiator(block, texture, data){
