@@ -14,6 +14,7 @@ var Split = {
     
     buildRecursive: function(x, y, z){
         World.setBlock(x, y, z, BlockID.aetherPortal, 0);
+		World.setBlock(x, y - 1, z, 1, 0);
         for(var i = 0; i < 4; i++){
             var dx = (i - 2) % 2;
             var dz = (i - 1) % 2;
