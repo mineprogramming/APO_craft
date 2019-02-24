@@ -63,6 +63,8 @@ machine/LaserBurner.js
 machine/Crystalizer.js
 machine/Stabilizer.js
 machine/Shredder.js
+machine/FuelGenerator.js
+machine/LightningGenerator.js
 
 
 mob/ArmorSet.js

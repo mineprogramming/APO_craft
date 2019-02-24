@@ -118,5 +118,72 @@ var MachineEssentials = {
         TileEntity.registerPrototype(id, prototype);
         ICRender.getGroup("ic-wire").add(id, -1);
         EnergyTileRegistry.addEnergyTypeForId(id, EU);
-    }
+    },
+    
+    registerGenerator: function(id, params){
+        let prototype = {};
+        
+        let values = {};
+        values.energy = 0;
+        for(var i in params.defaultValues){
+            values[i] = params.defaultValues[i];
+        }
+        prototype.defaultValues = values;
+        
+        prototype.isGenerator = function(){
+            return true;
+        }
+        
+        prototype.getGuiScreen = function(){
+            return params.guiScreen;
+        }
+        
+        prototype.getEnergyStorage = function(){
+            return params.energyStorage;
+        }
+        
+        prototype.tick = function(){
+            var energyStorage = this.getEnergyStorage();
+            
+            if(!params.condition || params.condition(this)){
+                this.data.energy = Math.min(this.data.energy + params.production, energyStorage);
+                //this.data.energy -= ChargeItemRegistry.addEnergyTo(this.container.getSlot("slotEnergy"), "Eu", 1, 32, 0);
+                if(params.progress){
+                    params.progress(this);
+                }
+            }
+            
+            this.container.setScale(params.energyScale, this.data.energy / energyStorage);
+            if(params.textInfo){
+                this.container.setText(params.textInfo[0], this.data.energy + "/");
+                this.container.setText(params.textInfo[1], energyStorage + "");
+            }
+            
+            if(params.update){
+                params.update(this);
+            }
+        }
+        
+        prototype.energyTick = function(type, src){
+            var output = Math.min(params.returnMax, this.data.energy);
+            this.data.energy += src.add(output) - output;
+        }
+        
+        TileEntity.registerPrototype(id, prototype);
+        ICRender.getGroup("ic-wire").add(id, -1);
+        EnergyTileRegistry.addEnergyTypeForId(id, EU);
+    },
+    
+    getFuel: function(scope, slotName){
+        var fuelSlot = scope.container.getSlot(slotName);
+        if (fuelSlot.id > 0){
+            var burn = Recipes.getFuelBurnDuration(fuelSlot.id, fuelSlot.data);
+            if (burn && !LiquidRegistry.getItemLiquid(fuelSlot.id, fuelSlot.data)){
+                fuelSlot.count--;
+                scope.container.validateSlot(slotName);
+                return burn;
+            }
+        }
+        return 0;
+    },
 };
