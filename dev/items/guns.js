@@ -24,7 +24,7 @@ Item.createItem("rsh_12", "RSH-12", {name: "rsh_12", meta: 0}, {
 IDRegistry.genItemID("bullet_12c7_55");
 Item.createItem("bullet_12c7_55", "Bullet 12.7х55", {name: "bullet_12_7_55", meta: 0}, {});
 
-//Avtomat kalashnikova epta
+//Avtomat kalashnikova 
 IDRegistry.genItemID("ak47");
 Item.createItem("ak47", "AK 47", {name: "ak47", meta: 0}, {
     stack: 1
@@ -40,7 +40,7 @@ Item.createItem("aa12", "AAs", {name: "aa12", meta: 0}, {
     stack: 1
 });
 
-//Shotgun motherfucker
+//Shotgun 
 IDRegistry.genItemID("ammo_shotgun");
 Item.createItem("ammo_shotgun", "Shotgun ammo", {name: "ammoshotgun", meta: 0}, {});
 

@@ -124,6 +124,18 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 1 }
     },
     {
+        "id": BlockID.generatorLightning,
+        "meta": 0,
+        "rarity": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.generatorFuel,
+        "meta": 0,
+        "rarity": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
         "id": BlockID.casingStabilizer,
         "meta": 0,
         "rarity": 0.01,
@@ -275,18 +287,18 @@ function Building(filename){
         return array;
     };
     
-	var getCount = function(){
-		var count = 0;
-		for(a in blocks){
-			for(b in blocks[a]){
-				for(c in blocks[a][b]){
-					count += 1;
-				}
-			}
-		}
-		return count;
-	};
-	
+    var getCount = function(){
+        var count = 0;
+        for(a in blocks){
+            for(b in blocks[a]){
+                for(c in blocks[a][b]){
+                    count += 1;
+                }
+            }
+        }
+        return count;
+    };
+    
     var json = JSON.parse(readFile(path));
     if(Array.isArray(json)){
         blocks = parseBlocks(json);
@@ -304,7 +316,7 @@ function Building(filename){
     }
     
     this.debug = false;
-	this.count = getCount();
+    this.count = getCount();
     
     this.build = function(x1, y1, z1){
         //Choose random block for generation
