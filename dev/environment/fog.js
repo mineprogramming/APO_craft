@@ -20,6 +20,6 @@ function addFog(coords, radius, count){
 Callback.addCallback("tick", function(){
     if(fog){
         let coords = Entity.getPosition(Player.get());
-        addFog(coords, 3, 7);
+        addFog(coords, 3, 4);
     }
 });
