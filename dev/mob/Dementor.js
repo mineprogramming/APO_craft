@@ -205,23 +205,6 @@ dementor_model.setRender(getDemonRender());
 var dementor_texture = new Texture("mob/dementor.png");
 dementor_model.setTexture(dementor_texture);
 
-
-mobMilitary.customizeEvents({
-    tick: function(){
-        //Entity.setCarriedItem(this.entity, 267, 1, 0);
-    },
-    death: function(){
-        //addExpAtEntity(this.entity, 4);
-    },
-    getDrop: function(){
-        var coords = Entity.getPosition(entity);
-        World.drop(coords.x, coords.y, coords.z, 267, 1);
-    },
-    attackedBy: function(attacker, amount){
-        //World.playSoundAtEntity(this.entity, "mob.creeper.say1", 1, 1);
-    }
-});
-
 mobDementor.customizeVisual({ 
     getModels: function() {
         return {
@@ -233,6 +216,11 @@ mobDementor.customizeVisual({
 mobDementor.customizeDescription({
     getHitbox: function(){
         return {w: 1.2, h: 2.8}
+    },
+    
+    getDrop: function(){
+        Game.message("drop");
+        return GLOBAL_LOOT;
     }
 });
 
@@ -254,7 +242,7 @@ var EntityAISwim = new EntityAIClass({getDefaultPriority: function () {
 
 
 var EntityAIDementorAttack = new EntityAIClass({params: {
-    attack_damage_close: 100, 
+    attack_damage_close: 6, 
     attack_range_close: 2.5, 
     attack_damage_far: 1,
     attack_range_far: 8,

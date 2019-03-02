@@ -1,260 +1,392 @@
 var GLOBAL_LOOT = [
     {
         "id": ItemID.drawingChipset,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingCpu,
-        "meta": 0,
-        "rarity": 0.005,
+        "data": 0,
+        "chance": 0.005,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingCpu,
-        "meta": 0,
-        "rarity": 0.005,
+        "data": 0,
+        "chance": 0.005,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingChipRam,
-        "meta": 0,
-        "rarity": 0.02,
+        "data": 0,
+        "chance": 0.02,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingChipVideo,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingChipGeneratorSpaceTime,
-        "meta": 0,
-        "rarity": 0.003,
+        "data": 0,
+        "chance": 0.003,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingPcbMotherboard,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingPcbPowerSupply,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingPcbCardVideo,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.drawingPcbControllerHdd,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.tableAssembly,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.cokeOven,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.crystalizer,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.extruder,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.burnerLaser,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
-        "id": BlockID.pressMetal,
-        "meta": 0,
-        "rarity": 0.01,
+        "id": BlockID.pressdatal,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.pressPlastic,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.polymerizer,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.rectifier,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.solderingStation,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.generatorLightning,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.generatorFuel,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": BlockID.casingStabilizer,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.pressFormPlate,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.pressFormBlade,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.pressFormRod,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.pressFormRadiator,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.karambitGradient,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.knifeButterfly,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.swordBig,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.glock18,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.bullet_9_19,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.deserteagle,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.rsh_12,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.bullet_12c7_55,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.ak47,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.ammo_assault,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.aa12,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.ammo_shotgun,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.sg_556,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.bullet_5c56_45,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.barrett,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
         "id": ItemID.ammo_sniper,
-        "meta": 0,
-        "rarity": 0.01,
+        "data": 0,
+        "chance": 0.01,
         "count": { "min": 1, "max": 1 }
-    }
+    },
+    {
+        "id": ItemID.helmetMilitary,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.helmetAltyn,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.helmetOpsCore,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.helmetShch1,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplateBKZ6,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplateIOTVgen3,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplate6B43,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplateSplinterVest,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.leggingsPantsArmy,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.bootsArmy,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.can,
+        "data": 0,
+        "chance": 0.1,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.helmetCan,
+        "data": 0,
+        "chance": 0.05,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplateCan,
+        "data": 0,
+        "chance": 0.04,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.leggingsCan,
+        "data": 0,
+        "chance": 0.04,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.bootsCan,
+        "data": 0,
+        "chance": 0.05,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chestplateCardboard,
+        "data": 0,
+        "chance": 0.05,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.clothHazmat,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
+    {
+        "id": ItemID.hazmatMask,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
+    {
+        "id": ItemID.hazmatHelmetApo,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
+    {
+        "id": ItemID.hazmatChestplateApo,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
+    {
+        "id": ItemID.hazmatLeggingsApo,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
+    {
+        "id": ItemID.hazmatBootsApo,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 3, "max": 5 }
+    },
 ];

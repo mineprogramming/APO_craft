@@ -1,21 +1,15 @@
 var mobMilitary = MobRegistry.registerEntity("military");
 
-mobMilitary.customizeEvents({
-    tick: function(){
-        Entity.setRender(this.entity, 3);
-        Entity.setSkin(this.entity, "mob/military.png");
-        Entity.setNameTag(this.entity,"Military");
-        //Entity.setCarriedItem(this.entity, 267, 1, 0);
-    },
-    death: function(){
-        //addExpAtEntity(this.entity, 4);
-    },
-    getDrop: function(){
-        var coords = Entity.getPosition(entity);
-        World.drop(coords.x, coords.y, coords.z, 267, 1);
-    },
-    attackedBy: function(attacker, amount){
-        //World.playSoundAtEntity(this.entity, "mob.creeper.say1", 1, 1);
+var military_model = new EntityModel();
+military_model.setRender(new Render(3));
+var military_texture = new Texture("mob/military.png");
+military_model.setTexture(military_texture);
+
+mobMilitary.customizeVisual({ 
+    getModels: function() {
+        return {
+            "main": military_model
+        };
     }
 });
 
@@ -41,7 +35,7 @@ mobMilitary.customizeAI({
 
 TradeLib.registerTrader("military", [
     {price: {id: ItemID.silver, count: 5, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}},
-    {price: {id: 264, count: 1, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
+    {price: {id: 264, count: 2, data: 0}, good: {id: ItemID.helmetMilitary, count: 1, data: 0}}
 ]);
 
 var armorMilitary = new ArmorSet();
