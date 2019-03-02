@@ -1,267 +1,6 @@
 var buildings = [];
 
 
-var GLOBAL_LOOT = [
-    {
-        "id": ItemID.drawingChipset,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingCpu,
-        "meta": 0,
-        "rarity": 0.005,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingCpu,
-        "meta": 0,
-        "rarity": 0.005,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingChipRam,
-        "meta": 0,
-        "rarity": 0.02,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingChipVideo,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingChipGeneratorSpaceTime,
-        "meta": 0,
-        "rarity": 0.003,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingPcbMotherboard,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingPcbPowerSupply,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingPcbCardVideo,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.drawingPcbControllerHdd,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.tableAssembly,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.cokeOven,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.crystalizer,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.extruder,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.burnerLaser,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.pressMetal,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.pressPlastic,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.polymerizer,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.rectifier,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.solderingStation,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.generatorLightning,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.generatorFuel,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.casingStabilizer,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.pressFormPlate,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.pressFormBlade,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.pressFormRod,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.pressFormRadiator,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.karambitGradient,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.knifeButterfly,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.swordBig,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.glock18,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.bullet_9_19,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.deserteagle,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.rsh_12,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.bullet_12c7_55,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.ak47,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.ammo_assault,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.aa12,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.ammo_shotgun,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.sg_556,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.bullet_5c56_45,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.barrett,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.ammo_sniper,
-        "meta": 0,
-        "rarity": 0.01,
-        "count": { "min": 1, "max": 1 }
-    }
-];
-
 function Building(filename){
     this.path = __dir__ + "buildings/" + filename;
     
@@ -419,6 +158,36 @@ if(DEBUG){
     const GREEN = "§a";
     const RED = "§c";
     
+    // WorldEdit integrations
+    var WorldEdit;
+    var WorldEditCommands;
+
+    ModAPI.addAPICallback("WorldEdit", function(api){
+        WorldEdit = api.WorldEdit;
+        WorldEditCommands = api.WorldEditCommands;
+        
+        // Register //save command
+        WorldEditCommands["//save"] = {
+            name:"//save",
+            description:"Saves A.P.O. Craft building to file",
+            args:"",
+            func:function(){
+                if(!WorldEdit.getValidPosition()){
+                    Game.message("Area is not selected");
+                    return;
+                }
+                
+                if(Array.isArray(BuildingEditor.current.json)){
+                    BuildingEditor.current.json = BuildingEditor.getBlocks();
+                } else {
+                    BuildingEditor.current.json.blocks = BuildingEditor.getBlocks();
+                }
+                FileTools.WriteText(BuildingEditor.current.path, JSON.stringify(BuildingEditor.current.json));
+                Game.message(GREEN + "Successfully saved to " + BuildingEditor.current.path);
+            },
+        }
+    });
+    
     
     // Structure Placer
     IDRegistry.genItemID("placerStructure");
@@ -437,21 +206,15 @@ if(DEBUG){
                 dialog.setItems(items, function(d, item){
                     BuildingEditor.current = buildings[item];
                     BuildingEditor.current.build(x, y, z, true);
-                    BuildingEditor.position = {x: x, y: y, z: z};
+                    WorldEdit.selectPosition({x: x, y: y, z: z}, {
+                        x: x + BuildingEditor.current.size.x,
+                        y: y + BuildingEditor.current.size.y,
+                        z: z + BuildingEditor.current.size.z
+                    });
                     Game.message(AQUA + "Editing building with id: " + item);
                 });
                 dialog.create().show();
             });
-        },
-        
-        save: function(){
-            if(Array.isArray(BuildingEditor.current.json)){
-                BuildingEditor.current.json = BuildingEditor.getBlocks();
-            } else {
-                BuildingEditor.current.json.blocks = BuildingEditor.getBlocks();
-            }
-            FileTools.WriteText(BuildingEditor.current.path, JSON.stringify(BuildingEditor.current.json));
-            Game.message(GREEN + "Successfully saved to " + BuildingEditor.current.path);
         },
         
         getBlocks: function(){
@@ -459,12 +222,12 @@ if(DEBUG){
             let ztiles = [];
             let xtiles = [];
             
-            let x1 = BuildingEditor.position.x;
-            let y1 = BuildingEditor.position.y;
-            let z1 = BuildingEditor.position.z;
-            let x2 = x1 + BuildingEditor.current.size.x;
-            let y2 = y1 + BuildingEditor.current.size.y;
-            let z2 = z1 + BuildingEditor.current.size.z;
+            let x1 = WorldEdit.pos1.x;
+            let y1 = WorldEdit.pos1.y;
+            let z1 = WorldEdit.pos1.z;
+            let x2 = WorldEdit.pos2.x;
+            let y2 = WorldEdit.pos2.y;
+            let z2 = WorldEdit.pos2.z;
 
             for(var y = y1; y <= y2; y++){
                 for(var x = x1; x <= x2; x++){
@@ -506,17 +269,6 @@ if(DEBUG){
         
         if(item.id == ItemID.placerStructure){
             BuildingEditor.edit(x, y, z);
-        }
-    });
-    
-    Callback.addCallback("NativeCommand", function(command){
-        if(command.indexOf("//") == 0){
-            command = command.substring(2);
-            switch(command){
-                case "save": 
-                    BuildingEditor.save();
-                    break;
-            }
         }
     });
 }
