@@ -106,9 +106,9 @@ function Building(filename){
                         if(container != null){
                             for(var key in loot){
                                 let item = loot[key];
-                                if(Math.random() < item.rarity){
-                                    var count = Math.floor(Math.random() * (item.count.max - item.count.min + 1) + item.count.min);
-                                    container.setSlot(Math.floor(Math.random() * 27), item.id, count, item.meta || item.data || 0);
+                                if(Math.random() < item.chance){
+                                    var count = randomInt(item.count.min, item.count.max);
+                                    container.setSlot(Math.floor(Math.random() * 27), item.id || 0, count, item.meta || item.data || 0);
                                 }
                             }
                         }
