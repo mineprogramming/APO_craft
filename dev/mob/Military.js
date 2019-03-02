@@ -60,3 +60,10 @@ armorMilitary.setSlot(2, [
 armorMilitary.setSlot(3, [
     ItemID.bootsArmy
 ]);
+
+var Military = {
+    spawn: function(x, y, z){
+        let entity = Entity.spawnCustom("military", x, y, z);
+        armorMilitary.equip(entity.entity, 1);
+    }
+}

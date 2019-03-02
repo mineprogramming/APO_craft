@@ -219,7 +219,6 @@ mobDementor.customizeDescription({
     },
     
     getDrop: function(){
-        Game.message("drop");
         return GLOBAL_LOOT;
     }
 });
@@ -306,4 +305,9 @@ mobDementor.customizeAI({
     } 
 });
 
+var Dementor = {
+    spawn: function(x, y, z){
+        let entity = Entity.spawnCustom("dementor", x, y, z);
+    }
+}
 

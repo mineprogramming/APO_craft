@@ -1,28 +1,16 @@
 const EVENT_FREQUENCY_EXPLOSION_FIRE = 0.1;
 const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
-var CUSTOM_MOBS = ["dementor", "military"];
+var CUSTOM_MOBS = [Dementor, Military, Survived];
 
 
-RandomEvents.registerEvent("zombies", 0.0003, function(){
-    if(Entity.getAll().length < ENTITIES_MAX_COUNT){
-        let count = Math.random() * 5;
-        for(var i = 0; i < count; i++){
-            var coords = RandomEvents.randomCoordsNearPlayer();
-            coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
-            var type = Math.random() < EVENT_FREQUENCY_SPAWN_HUSK? 47: 32;
-            Entity.spawn(coords.x, coords.y + 1, coords.z, type);
-        }
-    }
-});
-
-RandomEvents.registerEvent("mod", 0.0001, function() {
+RandomEvents.registerEvent("mod", 0.0005, function() {
     if(Entity.getAll().length < ENTITIES_MAX_COUNT){
         var coords = RandomEvents.randomCoordsNearPlayer();
         coords = GenerationUtils.findSurface(coords.x, coords.y, coords.z);
         
-        var i = Math.floor(Math.random() * CUSTOM_MOBS.length);
-        Entity.spawnCustom(CUSTOM_MOBS[i], coords.x + .5, coords.y + .5, coords.z + .5);
+        var i = randomInt(0, CUSTOM_MOBS.length - 1);
+        CUSTOM_MOBS[i].spawn(coords.x + 0.5, coords.y + 0.5, coords.z + 0.5);
     }
 });
 

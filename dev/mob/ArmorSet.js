@@ -9,10 +9,12 @@ var ArmorSet = function(){
         this.slots[slot] = items;
     }
     
-    this.equip = function(entity){
+    this.equip = function(entity, chance){
         for(var slot in this.slots){
-            var id = this.slots[slot][randomInt(0, this.slots[slot].length - 1)];
-            Entity.setArmorSlot(entity, slot, id, 1, 0);
+            if(Math.random() < chance){
+                var id = this.slots[slot][randomInt(0, this.slots[slot].length - 1)];
+                Entity.setArmorSlot(entity, slot, id, 1, 0);
+            }
         }
     }
 }

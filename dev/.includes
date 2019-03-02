@@ -5,7 +5,6 @@ RenderTools.js
 items/RecipesManager.js
 items/drawings.js
 
-
 api/GunRegistry.js
 
 core/IC2Integration.js
@@ -30,7 +29,6 @@ items/guns.js
 items/steelArms.js
 items/craftingTools.js
 
-
 blocks/decorations.js
 blocks/roads.js
 blocks/signs.js
@@ -42,9 +40,6 @@ environment/split.js
 environment/plane.js
 environment/exoskeleton.js
 environment/splitConditions.js
-
-dimension/events/RandomEvents.js
-dimension/events/events.js
 
 scales/chemical.js
 scales/radiation.js
@@ -70,8 +65,11 @@ dimension/loot.js
 
 mob/ArmorSet.js
 mob/Military.js
-mob/UI.js
 mob/Dementor.js
+mob/Survived.js
+
+dimension/events/RandomEvents.js
+dimension/events/events.js
 
 dimension/generation/Dimension.js
 dimension/generation/Building.js
