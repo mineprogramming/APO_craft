@@ -1,6 +1,5 @@
-var BufferedReader = java.io.BufferedReader;
-var FileReader = java.io.FileReader;
-var StringBuilder = java.lang.StringBuilder;
+var buildings = [];
+
 
 var GLOBAL_LOOT = [
     {
@@ -264,7 +263,7 @@ var GLOBAL_LOOT = [
 ];
 
 function Building(filename){
-    var path = __dir__ + "buildings/" + filename;
+    this.path = __dir__ + "buildings/" + filename;
     
     var blocks;
     var loot = [];
@@ -273,7 +272,11 @@ function Building(filename){
         for(var i = 0; i < array.length; i++){
             for(var j = 0; j < array[0].length; j++){
                 for(var k = 0; k < array[0][0].length; k++){
-                    array[i][j][k] = eval(array[i][j][k]);
+                    let block = array[i][j][k];
+                    if(Number.isInteger(block) || typeof block == "string"){
+                        block = {id: block, data: 0}
+                    } 
+                    array[i][j][k] = {id: eval(block.id), data: block.data || block.meta || 0};
                 }
             }
         }
@@ -299,7 +302,12 @@ function Building(filename){
         return count;
     };
     
-    var json = JSON.parse(readFile(path));
+    var json = JSON.parse(readFile(this.path));
+    if(DEBUG){
+        // Save JSON object for building editor
+        this.json = json;
+    }
+    
     if(Array.isArray(json)){
         blocks = parseBlocks(json);
     } else {
@@ -315,42 +323,45 @@ function Building(filename){
         loot.push(GLOBAL_LOOT[i]);
     }
     
-    this.debug = false;
     this.count = getCount();
+    this.size = {
+        x: blocks[0].length,
+        y: blocks.length,
+        z: blocks[0][0].length
+    }
     
-    this.build = function(x1, y1, z1){
+    this.build = function(x1, y1, z1, edit){
         //Choose random block for generation
         var randoms = [];
         for(var key in json.randomizer){
             var randomizer = json.randomizer[key];
             var arr = randomizer.variations;
+            var variation = arr[randomInt(0, arr.length-1)];
             randoms.push({
-                "block": randomizer.block, 
-                "variation": arr[Math.round(Math.random()*(arr.length-1))]
+                "block": {id: eval(randomizer.block.id), data: randomizer.block.data || randomizer.block.meta || 0}, 
+                "variation": {id: eval(variation.id), data: variation.data || variation.meta || 0}
             });
         }
         
-        //Signs with numbers
-        if(this.debug){
-            //World.setBlock(x - 1, y + 1, z - 1, 68, 0);
-            //Game.message(JSON.stringify(World.getContainer(x - 1, y + 1, z - 1)))
-        }
-                    
         //generation itself
         for(var y = 0; y < blocks.length; y++){
             for(var x = 0; x < blocks[0].length; x++){
                 for(var z = 0; z < blocks[0][0].length; z++){
                     var block = blocks[y][x][z];
-                    if(block == 0 || block.id == 0)
+                    
+                    if(!edit && block.id == 0)
                         continue;
-                    block.meta = block.meta || 0;
-                    for(var key in randoms){
-                        var random = randoms[key];
-                        if(random.block.id == block.id && random.block.meta == block.meta){
-                            block = random.variation;
+                    
+                    if(!edit){
+                        for(var key in randoms){
+                            var random = randoms[key];
+                            if(random.block.id == block.id && (random.block.meta || random.block.data) == block.data){
+                                block = random.variation;
+                            }
                         }
                     }
-                    World.setBlock(x + x1, y + y1, z + z1, block.id, block.meta);
+                    
+                    World.setBlock(x + x1, y + y1, z + z1, block.id, block.data);
                     if(block.id == 54 && loot){
                         var container = World.getContainer(x + x1, y + y1, z + z1);
                         if(container != null){
@@ -358,7 +369,7 @@ function Building(filename){
                                 let item = loot[key];
                                 if(Math.random() < item.rarity){
                                     var count = Math.floor(Math.random() * (item.count.max - item.count.min + 1) + item.count.min);
-                                    container.setSlot(Math.floor(Math.random() * 27), item.id, count, item.meta);
+                                    container.setSlot(Math.floor(Math.random() * 27), item.id, count, item.meta || item.data || 0);
                                 }
                             }
                         }
@@ -368,6 +379,13 @@ function Building(filename){
         }
     }
 }
+
+Callback.addCallback("PostLoaded", function(){
+    for(var i = 0; i < 46; i++){
+       buildings.push(new Building(i + ".json"));
+    }
+});
+
 
 function readFile(path){
     var reader = new BufferedReader(new FileReader(path));
@@ -384,3 +402,128 @@ function readFile(path){
         Game.message(e);
     }
 }
+
+
+
+/* BUILDING EDITOR 
+ * Module that allows for quick and easy building editing.
+ *  - place the building you want to edit wherever you want using Structure Placer
+ *  - edit it as you like
+ *  - save it by typing //save command
+ * You should reload Inner Core to see the effects
+*/
+
+if(DEBUG){
+    const GOLD = "§6";
+    const AQUA = "§b";
+    const GREEN = "§a";
+    const RED = "§c";
+    
+    
+    // Structure Placer
+    IDRegistry.genItemID("placerStructure");
+    Item.createItem("placerStructure", "Structure Placer", {name: "place", meta: 0},{isTech:false,stack: 1});
+    
+    var BuildingEditor = {
+        edit: function(x, y, z){
+            runAsUI(function(){
+                var items = [];
+                for(i in buildings){
+                    items.push("Build #" + i + " (" + buildings[i].count + " blocks)");
+                }
+                
+                var dialog = new AlertDialog.Builder(ctx);
+                dialog.setTitle("What do you want to build?");
+                dialog.setItems(items, function(d, item){
+                    BuildingEditor.current = buildings[item];
+                    BuildingEditor.current.build(x, y, z, true);
+                    BuildingEditor.position = {x: x, y: y, z: z};
+                    Game.message(AQUA + "Editing building with id: " + item);
+                });
+                dialog.create().show();
+            });
+        },
+        
+        save: function(){
+            if(Array.isArray(BuildingEditor.current.json)){
+                BuildingEditor.current.json = BuildingEditor.getBlocks();
+            } else {
+                BuildingEditor.current.json.blocks = BuildingEditor.getBlocks();
+            }
+            FileTools.WriteText(BuildingEditor.current.path, JSON.stringify(BuildingEditor.current.json));
+            Game.message(GREEN + "Successfully saved to " + BuildingEditor.current.path);
+        },
+        
+        getBlocks: function(){
+            let blocks  = [];
+            let ztiles = [];
+            let xtiles = [];
+            
+            let x1 = BuildingEditor.position.x;
+            let y1 = BuildingEditor.position.y;
+            let z1 = BuildingEditor.position.z;
+            let x2 = x1 + BuildingEditor.current.size.x;
+            let y2 = y1 + BuildingEditor.current.size.y;
+            let z2 = z1 + BuildingEditor.current.size.z;
+
+            for(var y = y1; y <= y2; y++){
+                for(var x = x1; x <= x2; x++){
+                    for(var z = z1; z <= z2; z++){
+                        var block = World.getBlock(x, y, z);
+                        
+                        // Allow for custom blocks
+                        if(block.id > 256){
+                            for(var i in BlockID){
+                                if(BlockID[i] == block.id){
+                                    block.id = "BlockID." + i;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Drop redundant data for blocks without it
+                        if(block.data == 0){
+                            block = block.id;
+                        }
+                        ztiles[z - z1] = block;
+                    }
+                    xtiles[x - x1] = ztiles;
+                    ztiles = [];
+                }
+                blocks[y - y1] = xtiles;
+                xtiles = [];
+            }
+
+            return blocks;
+        }
+    }
+
+
+    Callback.addCallback("ItemUse", function(coords, item, block) {
+        var x = coords.relative.x;
+        var y = coords.relative.y;
+        var z = coords.relative.z;
+        
+        if(item.id == ItemID.placerStructure){
+            BuildingEditor.edit(x, y, z);
+        }
+    });
+    
+    Callback.addCallback("NativeCommand", function(command){
+        if(command.indexOf("//") == 0){
+            command = command.substring(2);
+            switch(command){
+                case "save": 
+                    BuildingEditor.save();
+                    break;
+            }
+        }
+    });
+}
+
+
+
+
+
+
+

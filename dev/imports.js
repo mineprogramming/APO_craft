@@ -6,3 +6,6 @@ var Gravity = android.view.Gravity;
 var BitmapFactory = android.graphics.BitmapFactory;
 var AlertDialog = android.app.AlertDialog;
 var View = android.view.View;
+var BufferedReader = java.io.BufferedReader;
+var FileReader = java.io.FileReader;
+var StringBuilder = java.lang.StringBuilder;

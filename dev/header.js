@@ -69,7 +69,7 @@ var BLOCK_HARD = Block.createSpecialType({
     explosionres: 2000
 });
 
-
+var DEBUG = __config__.getBool("debug_mode");
 var inCity = false;
 
 Saver.addSavesScope("inCity", 
