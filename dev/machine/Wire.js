@@ -1,14 +1,14 @@
 /* Этот код получается слишком кривым. Возможно, в светлом будущем он станет лучше. */
 
 
-// High-Voltage Transformator
-IDRegistry.genBlockID("hvTransformator");
-Block.createBlock("hvTransformator", [
-    {name: "High-Voltage Transformator", texture: [["std_bottom", 0], ["std_top", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0], ["hv_transformator", 0]], inCreative: true}
+// High-Voltage Transformer
+IDRegistry.genBlockID("hvTransformer");
+Block.createBlock("hvTransformer", [
+    {name: "High-Voltage Transformer", texture: [["std_bottom", 0], ["std_top", 0], ["hv_transformer", 0], ["hv_transformer", 0], ["hv_transformer", 0], ["hv_transformer", 0]], inCreative: true}
 ]);
-ICRender.getGroup("ic-transformator").add(BlockID.hvTransformator, -1);
+ICRender.getGroup("ic-transformer").add(BlockID.hvTransformer, -1);
 
-TileEntity.registerPrototype(BlockID.hvTransformator, {
+TileEntity.registerPrototype(BlockID.hvTransformer, {
     defaultValues: {
         transmitter: false,
         energy: 0,
@@ -79,13 +79,13 @@ TileEntity.registerPrototype(BlockID.hvTransformator, {
     isGenerator: function() {return !this.data.transmitter;}
 });
 
-EnergyTileRegistry.addEnergyTypeForId(BlockID.hvTransformator, EU);
+EnergyTileRegistry.addEnergyTypeForId(BlockID.hvTransformer, EU);
 
 Callback.addCallback("ItemUse", function(coords, item, block){
     let x = coords.relative.x;
     let y = coords.relative.y;
     let z = coords.relative.z;
-    if(block.id == BlockID.hvTransformator && item.id == BlockID.hvConnector){
+    if(block.id == BlockID.hvTransformer && item.id == BlockID.hvConnector){
         World.setBlock(x, y, z, BlockID.hvConnector, 0);
     }
 });
@@ -238,7 +238,7 @@ var WireSystem = {
             let z = sideCoords[i].z;
             let tileEntity = World.getTileEntity(x, y, z);
             let block = World.getBlockID(x, y, z);
-            if(tileEntity != null && block == BlockID.hvTransformator && transmitter == tileEntity.data.transmitter){ 
+            if(tileEntity != null && block == BlockID.hvTransformer && transmitter == tileEntity.data.transmitter){
                 consumers.push({x: x, y: y, z: z});
             }
         }

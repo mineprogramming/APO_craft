@@ -14,7 +14,7 @@ RenderTools.setupConnectorRender = function(id) {
         {side: [0, 0, -1], box: [0.5 - width / 2, 0.5 - width / 2, 0, 0.5 + width / 2, 0.5 + width / 2, 0.5 - width / 2]},
     ]
    
-    var group = ICRender.getGroup("ic-transformator");
+    var group = ICRender.getGroup("ic-transformer");
    
     for (var i in boxes) {
         var box = boxes[i];
