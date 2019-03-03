@@ -14,7 +14,7 @@ var setRandomWall = function(x, y, z){
 }
 
 Underground.generateTunnel = function(x, y, z, direction){
-    var generateSingleTunnel = function(x, y, z,){
+    var generateSingleTunnel = function(x, y, z){
         if(direction == DIRECTION_X){
             for(var dx = 0; dx < 16; dx++){
                 //bottom and top
