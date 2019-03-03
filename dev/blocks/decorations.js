@@ -143,7 +143,7 @@ Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
     var place = coords.relative;
     if(GenerationUtils.isTransparentBlock(World.getBlockID(place.x, place.y, place.z))){
         World.setBlock(place.x, place.y, place.z, BlockID.mushroomRadioactiveSmall);
-        Player.setCarriedItem(item.id, item.count - 1, item.data);
+        Player.decreaseCarriedItem(1);
     }
 });
 Renderer.setSaplingRender(BlockID.mushroomRadioactiveSmall, 0);
