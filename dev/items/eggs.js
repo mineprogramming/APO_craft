@@ -18,6 +18,16 @@ Item.registerUseFunctionForID(ItemID.eggSurvived, function(coords, item, block) 
 });
 
 
+// Mutant
+IDRegistry.genItemID("eggMutant");
+Item.createItem("eggMutant", "Mutant Egg", {name: "egg_mutant", meta: 0}, {isTech:false, stack: 64});
+
+Item.registerUseFunctionForID(ItemID.eggMutant, function(coords, item, block) {
+    coords = coords.relative;
+    Mutant.spawn(coords.x + .5, coords.y + .5, coords.z + .5);
+});
+
+
 // Dementor
 IDRegistry.genItemID("eggDementor");
 Item.createItem("eggDementor", "Dementor Egg", {name: "egg_dementor", meta: 0}, {isTech:false, stack: 64});

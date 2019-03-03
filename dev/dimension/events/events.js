@@ -1,7 +1,7 @@
 const EVENT_FREQUENCY_EXPLOSION_FIRE = 0.1;
 const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
-var CUSTOM_MOBS = [Dementor, Military, Survived];
+var CUSTOM_MOBS = [Dementor, Military, Survived, Mutant];
 
 
 RandomEvents.registerEvent("mod", 0.0005, function() {

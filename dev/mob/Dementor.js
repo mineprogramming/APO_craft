@@ -1,6 +1,4 @@
-var mobDementor = MobRegistry.registerEntity("dementor");
-
-function getDemonRender(){
+function getDementorRender(){
     var render = new Render();
     var partHead = [
         {
@@ -200,28 +198,6 @@ function getDemonRender(){
     return render;
 }
 
-var dementor_model = new EntityModel();
-dementor_model.setRender(getDemonRender());
-var dementor_texture = new Texture("mob/dementor.png");
-dementor_model.setTexture(dementor_texture);
-
-mobDementor.customizeVisual({ 
-    getModels: function() {
-        return {
-            "main": dementor_model
-        };
-    }
-});
-
-mobDementor.customizeDescription({
-    getHitbox: function(){
-        return {w: 1.2, h: 2.8}
-    },
-    
-    getDrop: function(){
-        return GLOBAL_LOOT;
-    }
-});
 
 var EntityAISwim = new EntityAIClass({getDefaultPriority: function () {
     return -1;
@@ -265,49 +241,47 @@ var EntityAIDementorAttack = new EntityAIClass({params: {
     }
 }});
 
-mobDementor.customizeAI({ 
-    getAITypes: function(){ 
-        return { 
-            wander: { 
-                type: EntityAI.Wander,
-                priority: 4,
-                speed: 0.09,
-                angular_speed: 0.1,
-                delay_weigth: 0.2
-            },
-            
-            follow: { 
-                type: EntityAI.Follow,
-                priority: 0,
-                speed: 0.2,
-                rotateHead: true
-            },
-            
-            attack: { 
-                type: EntityAIDementorAttack,
-                priority: 0
-            }, 
-            
-            enemy_watcher: {
-                type: AdvancedAI.EnemyWatcher,
-                attackAI: "attack",
-                followAI: "follow",
-                find_delay: 20,
-                priority_on_attack: 5,
-                priority_on_idle: 0,
-                feelingModifier: 18
-            },
-            
-            swim: { 
-                type: EntityAISwim,
-            },
-        } 
-    } 
+
+var Dementor = new Mob({
+    id: "dementor",
+    name: "Dementor",
+    render: getDementorRender(),
+    texture: "mob/dementor.png",
+    hitbox: {w: 1.2, h: 2.8},
+    aiTypes: {
+        wander: { 
+            type: EntityAI.Wander,
+            priority: 4,
+            speed: 0.09,
+            angular_speed: 0.1,
+            delay_weigth: 0.2
+        },
+        
+        follow: { 
+            type: EntityAI.Follow,
+            priority: 0,
+            speed: 0.2,
+            rotateHead: true
+        },
+        
+        attack: { 
+            type: EntityAIDementorAttack,
+            priority: 0
+        }, 
+        
+        enemy_watcher: {
+            type: AdvancedAI.EnemyWatcher,
+            attackAI: "attack",
+            followAI: "follow",
+            find_delay: 20,
+            priority_on_attack: 5,
+            priority_on_idle: 0,
+            feelingModifier: 18
+        },
+        
+        swim: { 
+            type: EntityAISwim,
+        },
+    },
+    loot: GLOBAL_LOOT
 });
-
-var Dementor = {
-    spawn: function(x, y, z){
-        let entity = Entity.spawnCustom("dementor", x, y, z);
-    }
-}
-

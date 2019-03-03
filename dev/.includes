@@ -64,8 +64,10 @@ machine/LightningGenerator.js
 dimension/loot.js
 
 mob/ArmorSet.js
-mob/Military.js
+mob/Mob.js
 mob/Dementor.js
+mob/Military.js
+mob/Mutant.js
 mob/Survived.js
 
 dimension/events/RandomEvents.js
