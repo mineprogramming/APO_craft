@@ -265,4 +265,3 @@ RecipesManager.addShaped({id: BlockID.blockUranium, count: 1, data: 0}, [
     "aaa",
     "aaa"
 ], ['a', ItemID.ingotUranium, 0]);
-

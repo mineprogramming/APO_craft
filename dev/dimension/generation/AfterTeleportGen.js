@@ -67,5 +67,3 @@ Callback.addCallback("GenerateChunkUnderground", function(chunkX, chunkZ){
         GenerationUtils.generateOre(coords.x, coords.y, coords.z, BlockID.oreMagnesium, 0, 5);           
     }
 });
-
-

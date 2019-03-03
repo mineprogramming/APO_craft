@@ -1,6 +1,5 @@
 var buildings = [];
 
-
 function Building(filename){
     this.path = __dir__ + "buildings/" + filename;
     
@@ -272,10 +271,3 @@ if(DEBUG){
         }
     });
 }
-
-
-
-
-
-
-

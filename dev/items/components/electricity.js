@@ -187,15 +187,3 @@ Item.createItem("chipVideo", "Video Chip", {name: "chip_video"});
 // Space-Time Frequency Generator Chip
 IDRegistry.genItemID("chipGeneratorSpaceTime");
 Item.createItem("chipGeneratorSpaceTime", "Space-Time Frequency Generator Chip", {name: "chip_generator_space_time"});
-
-
-
-
-
-
-
-
-
-
-
-

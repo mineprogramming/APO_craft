@@ -136,5 +136,3 @@ Block.registerDropFunction("oreRuby", function(coords, blockID, blockData, level
     }
     return [];
 }, 2);
-
-

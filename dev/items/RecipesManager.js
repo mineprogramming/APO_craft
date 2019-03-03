@@ -104,7 +104,3 @@ if(!__config__.getBool("late_recipes_registration")){
         Logger.Log("RecipesManager", "Recipes successfully loaded!");
     });
 }
-
-
-
-

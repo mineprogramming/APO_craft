@@ -138,5 +138,3 @@ Callback.addCallback("tick", function(){
         }
     }
 });
-
-

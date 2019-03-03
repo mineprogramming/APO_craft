@@ -156,9 +156,4 @@ Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Mo
 ToolAPI.registerBlockMaterial(BlockID.stemMushroomRadioactive, "plant");
 
 IDRegistry.genBlockID("capMushroomRadioactive");
-Block.createBlock("capMushroomRadioactive", [{name: "Radioactive Mushroom Cap", texture:[["GLmush_block_skin", 0]],inCreative: true}], BLOCK_LOW_LIGHT); 
-
-
-
-
-
+Block.createBlock("capMushroomRadioactive", [{name: "Radioactive Mushroom Cap", texture:[["GLmush_block_skin", 0]],inCreative: true}], BLOCK_LOW_LIGHT);

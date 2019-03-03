@@ -1,5 +1,3 @@
-
-
 var Underground = {
     railOnData: new ItemExtraData()
 };
@@ -176,7 +174,3 @@ Underground.exit = function(x, y, z, direction){
         }
     }
 }
-
-
-
-

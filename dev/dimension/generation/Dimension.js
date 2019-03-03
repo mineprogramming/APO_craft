@@ -78,8 +78,6 @@ var APOCity = new Dimension({
 
 //APOCity.debugTerrainSlice(128, 1, true);
 
-
-
 var APOCityTransferSequence = new TransferSequence(APOCity);
 APOCityTransferSequence.setPortalTimeout(40);
 
@@ -96,4 +94,3 @@ APOCityTransferSequence.setLoadingScreenParams({
 
 PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
 APOCityTransferSequence.setPortalTiles(BlockID.aetherPortal);
-

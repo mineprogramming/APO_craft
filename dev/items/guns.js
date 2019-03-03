@@ -134,5 +134,3 @@ GunRegistry.registerGun({
     fov: 20,
     automatic: 3
 });
-
-

@@ -183,8 +183,3 @@ TileEntity.registerPrototype(BlockID.stabilizer, {
         return guiRectifier;
     }
 });
-
-
-
-
-

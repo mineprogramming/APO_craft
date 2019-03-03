@@ -319,5 +319,3 @@ Saver.addSavesScope("RadiatorsPosition",
         return sObj
     }
 );
-
-

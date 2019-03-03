@@ -37,7 +37,3 @@ Item.createItem("drawingPcbCardVideo", "Video Card PCB Drawing", {name: "drawing
 // HDD Controller PCB Drawing
 IDRegistry.genItemID("drawingPcbControllerHdd");
 Item.createItem("drawingPcbControllerHdd", "HDD Controller PCB Drawing", {name: "drawing_pcb_controller_hdd"});
-
-
-
-

@@ -39,5 +39,3 @@ var Mutant = new Mob({
     },
     loot: GLOBAL_LOOT
 });
-
-
