@@ -23,7 +23,7 @@ TileEntity.registerPrototype(BlockID.hvTransformator, {
             Game.message("Transmitter");
             this.updateConsumers();
         } else {
-            Game.message("Reciever");
+            Game.message("Receiver");
         }
         return true;
     },

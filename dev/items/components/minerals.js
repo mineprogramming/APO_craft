@@ -1,6 +1,6 @@
-// Gallium Andesite
+// Gallium Arsenite
 IDRegistry.genItemID("galliumArsenite");
-Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
+Item.createItem("galliumArsenite", "Gallium Arsenite", {name: "gallium_arsenite", meta: 0}, {});
 
 
 // Ruby

@@ -3,7 +3,7 @@ Block.createBlockWithRotation("crystalizer", [
     {name: "Crystalizer", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
 ], "opaque");
 
-var guicrystalizer = new UI.StandartWindow({
+var guiCrystalizer = new UI.StandartWindow({
     standart: {
         header: {text: {text: "Crystalizer"}},
         inventory: {standart: true},
@@ -34,7 +34,7 @@ MachineEssentials.registerStandart(BlockID.crystalizer, {
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
-    guiScreen: guicrystalizer,
+    guiScreen: guiCrystalizer,
     
     resultFunc: function(resultSlots, result){
         resultSlots[0].id = result.id;

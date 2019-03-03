@@ -4,12 +4,12 @@ var rnd = new Random();
 // GENERATION
 const GENERATION_HEIGHT = 78;
 const ROADS_FREQUENCY = 0.15;
-const UNDERGROUNG_FREQUENCY = 0.05;
+const UNDERGROUND_FREQUENCY = 0.05;
 const UNDERGROUND_MAX_HEIGHT = 65;
 const UNDERGROUND_X_HEIGHT = 55; //Default: 50
 const BUILDING_FREQUENCY = 0.7;
 const BUILDINGS_COUNT = 46;
-const EXPLOSION_FREQENCY = 0.1;
+const EXPLOSION_FREQUENCY = 0.1;
 const GRAVEL_FREQUENCY = 0.3;
 
 
@@ -22,26 +22,26 @@ APOGen.generate = function(x, z){
     //Generate underground
     var generated = false;
     
-    if(srand(x) > 1 - UNDERGROUNG_FREQUENCY && srand(z) > 1 - UNDERGROUNG_FREQUENCY){
+    if(srand(x) > 1 - UNDERGROUND_FREQUENCY && srand(z) > 1 - UNDERGROUND_FREQUENCY){
         Underground.generateStation(x, UNDERGROUND_X_HEIGHT, z, DIRECTION_X);
         Underground.generateStation(x, UNDERGROUND_X_HEIGHT - 10, z, DIRECTION_Z);
     }
     
-    else if(srand(z) > 1 - UNDERGROUNG_FREQUENCY){
+    else if(srand(z) > 1 - UNDERGROUND_FREQUENCY){
         Underground.generateTunnel(x, UNDERGROUND_X_HEIGHT, z, DIRECTION_X);
-        if(srand(x - 16) > 1 - UNDERGROUNG_FREQUENCY){
+        if(srand(x - 16) > 1 - UNDERGROUND_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 2, z, DIRECTION_X);
-        } else if(srand(x - 32) > 1 - UNDERGROUNG_FREQUENCY){
+        } else if(srand(x - 32) > 1 - UNDERGROUND_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 18, z, DIRECTION_X);
             generated = true;
         }
     }
     
-    else if(srand(x) > 1 - UNDERGROUNG_FREQUENCY){
+    else if(srand(x) > 1 - UNDERGROUND_FREQUENCY){
         Underground.generateTunnel(x, UNDERGROUND_X_HEIGHT - 10, z, DIRECTION_Z);
-        if(srand(z - 16) > 1 - UNDERGROUNG_FREQUENCY){
+        if(srand(z - 16) > 1 - UNDERGROUND_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT - 8, z, DIRECTION_Z);
-        } else if(srand(z - 32) > 1 - UNDERGROUNG_FREQUENCY){
+        } else if(srand(z - 32) > 1 - UNDERGROUND_FREQUENCY){
             Underground.exit(x, UNDERGROUND_X_HEIGHT + 8, z, DIRECTION_Z);
              generated = true;
         }
@@ -87,9 +87,9 @@ APOGen.lateGen = function(x, z){
         
     } 
     
-    // Caused issue in surival
+    // Caused issue in survival
     // CRATERS AND EXPLOSIONS
-    //if(Math.random() < EXPLOSION_FREQENCY){
+    //if(Math.random() < EXPLOSION_FREQUENCY){
     //    var coords = GenerationUtils.findSurface(x + Math.random() * 16, GENERATION_HEIGHT, z + Math.random() * 16);
     //    World.explode(coords.x, coords.y, coords.z, Math.random() * 16, false);
     //}
@@ -108,7 +108,7 @@ APOGen.unmarkChunk = function(x, z){
 }
 
 
-APOGen.isChankMarked = function(x, z){
+APOGen.isChunkMarked = function(x, z){
     return World.getBlockID(x, 0, z) == 49;
 }
 
@@ -128,7 +128,7 @@ Callback.addCallback("tick", function(){
                 for(var dz = 0; dz < 5; dz++){
                     let cx = chunkX - 32 + dx * 16;
                     let cz = chunkZ - 32 + dz * 16;
-                    if(APOGen.isChankMarked(cx, cz)){
+                    if(APOGen.isChunkMarked(cx, cz)){
                         APOGen.unmarkChunk(cx, cz);
                         APOGen.lateGen(cx, cz);
                         return;

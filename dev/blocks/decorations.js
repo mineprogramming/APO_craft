@@ -1,8 +1,8 @@
 //DansTS decorations and ambience code 
 var Renderer={
         setSaplingRender:function(id,x){
-        var shape = new ICRender.CollisionShape();     
-        BlockRenderer.setCustomCollisionShape(Block.getNumericId(id), -1, shape);    
+        var shape = new ICRender.CollisionShape();
+        BlockRenderer.setCustomCollisionShape(Block.getNumericId(id), -1, shape);
         BlockRenderer.addRenderCallback(id, function(api, coords,block) {
             if(x!=0){
                 for(var i = 0;i < 1/x;i+=x){
@@ -20,9 +20,9 @@ var Renderer={
 };
 
 
-// Titanuim Block
-IDRegistry.genBlockID("blockTitanium"); 
-Block.createBlock("blockTitanium", [{name: "Titanuim Block", texture: [["block_titanium", 0]], inCreative: true}], "opaque");
+// Titanium Block
+IDRegistry.genBlockID("blockTitanium");
+Block.createBlock("blockTitanium", [{name: "Titanium Block", texture: [["block_titanium", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockTitanium, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockTitanium, "stone", 3, true);
 
@@ -34,7 +34,7 @@ RecipesManager.addShaped({id: BlockID.blockTitanium, count: 1, data: 0}, [
 
 
 // Lead Block
-IDRegistry.genBlockID("blockLead"); 
+IDRegistry.genBlockID("blockLead");
 Block.createBlock("blockLead", [{name: "Lead Block", texture: [["block_lead", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockLead, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockLead, "stone", 2, true);
@@ -47,7 +47,7 @@ RecipesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
 
 
 // Aluminium Block
-IDRegistry.genBlockID("blockAluminium"); 
+IDRegistry.genBlockID("blockAluminium");
 Block.createBlock("blockAluminium", [
     {name: "Aluminium Block", texture: [["block_aluminium", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockAluminium, 3);
@@ -61,7 +61,7 @@ RecipesManager.addShaped({id: BlockID.blockAluminium, count: 1, data: 0}, [
 
 
 // Sulfur Block
-IDRegistry.genBlockID("blockSulfur"); 
+IDRegistry.genBlockID("blockSulfur");
 Block.createBlock("blockSulfur", [{name: "Sulfur Block", texture: [["block_sulfur", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockSulfur, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockSulfur, "stone", 2, true);
@@ -74,7 +74,7 @@ RecipesManager.addShaped({id: BlockID.blockSulfur, count: 1, data: 0}, [
 
 
 // Fluorite Block
-IDRegistry.genBlockID("blockFluorite"); 
+IDRegistry.genBlockID("blockFluorite");
 Block.createBlock("blockFluorite", [
     {name: "Fluorite Block", texture: [["block_fluorite", 0]], inCreative: true}], BLOCK_LIGHT_O);
 Block.setDestroyTime(BlockID.blockFluorite, 3);
@@ -88,7 +88,7 @@ RecipesManager.addShaped({id: BlockID.blockFluorite, count: 1, data: 0}, [
 
 
 // Copper Block
-IDRegistry.genBlockID("blockCopper"); 
+IDRegistry.genBlockID("blockCopper");
 Block.createBlock("blockCopper", [
     {name: "Copper Block", texture: [["block_copper", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockCopper,3);
@@ -102,7 +102,7 @@ RecipesManager.addShaped({id: BlockID.blockCopper, count: 1, data: 0}, [
 
 
 // Tin Block
-IDRegistry.genBlockID("blockTin"); 
+IDRegistry.genBlockID("blockTin");
 Block.createBlock("blockTin", [{name: "Tin Block", texture: [["block_tin", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.blockTin, 3);
 ToolAPI.registerBlockMaterial(BlockID.blockTin, "stone", 3, true);
@@ -114,9 +114,9 @@ RecipesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
 ], ['a', ItemID.ingotTin, 0]);
 
 
-// Concerete bricks
+// Concrete bricks
 IDRegistry.genBlockID("bricksConcrete");
-Block.createBlock("bricksConcrete", [{name: "Concerete Bricks", texture:[["brick_concrete", 0]],inCreative: true}], "opaque");
+Block.createBlock("bricksConcrete", [{name: "Concrete Bricks", texture:[["brick_concrete", 0]],inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.bricksConcrete, 4);
 ToolAPI.registerBlockMaterial(BlockID.bricksConcrete, "stone", 3, true);
 
@@ -128,9 +128,9 @@ Block.setDestroyTime(BlockID.bricksLight, 6);
 ToolAPI.registerBlockMaterial(BlockID.bricksLight, "stone", 5, true);
 
 
-// Radioactive Musroom
+// Radioactive Mushroom
 IDRegistry.genBlockID("mushroomRadioactiveSmall");
-Block.createBlock("mushroomRadioactiveSmall", [{name: "Radioactive Musroom", texture: [["empty", 0], ["empty", 0], ["GLmush", 0]], inCreative: false}], BLOCK_LIGHT);
+Block.createBlock("mushroomRadioactiveSmall", [{name: "Radioactive Mushroom", texture: [["empty", 0], ["empty", 0], ["GLmush", 0]], inCreative: false}], BLOCK_LIGHT);
 ToolAPI.registerBlockMaterial(BlockID.mushroomRadioactiveSmall, "plant");
 
 IDRegistry.genItemID("mushroomRadioactive");
@@ -149,7 +149,7 @@ Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
 Renderer.setSaplingRender(BlockID.mushroomRadioactiveSmall, 0);
 
 IDRegistry.genBlockID("stemMushroomRadioactive");
-Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Moshroom Stem", texture: [
+Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Mushroom Stem", texture: [
     ["GLmush_block_inside", 0],["GLmush_block_inside", 0],["GLmush_block_stem", 0],["GLmush_block_stem", 0], ["GLmush_block_stem", 0],["GLmush_block_stem", 0]
 ], inCreative: true}], BLOCK_LOW_LIGHT);
 
