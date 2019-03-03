@@ -150,7 +150,7 @@ Plane.bomb.customizeEvents({
     death: function(attacker){
         let coords = Entity.getPosition(this.entity);
         Entity.remove(this.entity);
-        World.explode(coords.x, coords.y, coords.z, 5, true);
+        // World.explode(coords.x, coords.y, coords.z, 5, true);
     }
 });
 Plane.bomb.customizeDescription({

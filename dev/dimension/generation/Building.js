@@ -81,6 +81,10 @@ function Building(filename){
                 "variation": {id: eval(variation.id), data: variation.data || variation.meta || 0}
             });
         }
+
+        if(DEBUG) {
+            NativeAPI.setTileUpdateAllowed(false);
+        }
         
         //generation itself
         for(var y = 0; y < blocks.length; y++){
@@ -115,6 +119,10 @@ function Building(filename){
                     }
                 }
             }
+        }
+
+        if(DEBUG) {
+            NativeAPI.setTileUpdateAllowed(true);
         }
     }
 }
