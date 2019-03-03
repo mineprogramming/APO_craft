@@ -1,25 +1,3 @@
-//DansTS decorations and ambience code 
-var Renderer={
-        setSaplingRender:function(id,x){
-        var shape = new ICRender.CollisionShape();
-        BlockRenderer.setCustomCollisionShape(Block.getNumericId(id), -1, shape);
-        BlockRenderer.addRenderCallback(id, function(api, coords,block) {
-            if(x!=0){
-                for(var i = 0;i < 1/x;i+=x){
-                api.renderBoxId(coords.x, coords.y, coords.z,0+i, 0.01, 0+i, x+i, 0.99, x+i,id, block.data);
-                api.renderBoxId(coords.x, coords.y, coords.z,(1-x)-i, 0.01, 0+i,1-i, 0.99, x+i,id, block.data);
-                }
-            }
-            else{
-                api.renderBoxId(coords.x, coords.y, coords.z, 0.4999, 0.01, 0, 0.5, 0.99, 1,id, block.data);
-                api.renderBoxId(coords.x, coords.y, coords.z, 0, 0.01, 0.4999, 1, 0.99, 0.5, id, block.data);
-            }
-        })
-        BlockRenderer.enableCustomRender(id);
-    }
-};
-
-
 // Titanium Block
 IDRegistry.genBlockID("blockTitanium");
 Block.createBlock("blockTitanium", [{name: "Titanium Block", texture: [["block_titanium", 0]], inCreative: true}], "opaque");
@@ -126,34 +104,3 @@ IDRegistry.genBlockID("bricksLight");
 Block.createBlock("bricksLight", [{name: "Light Bricks", texture:[["brick_light", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.bricksLight, 6);
 ToolAPI.registerBlockMaterial(BlockID.bricksLight, "stone", 5, true);
-
-
-// Radioactive Mushroom
-IDRegistry.genBlockID("mushroomRadioactiveSmall");
-Block.createBlock("mushroomRadioactiveSmall", [{name: "Radioactive Mushroom", texture: [["empty", 0], ["empty", 0], ["GLmush", 0]], inCreative: false}], BLOCK_LIGHT);
-ToolAPI.registerBlockMaterial(BlockID.mushroomRadioactiveSmall, "plant");
-
-IDRegistry.genItemID("mushroomRadioactive");
-Item.createItem("mushroomRadioactive", "Radioactive Mushroom", {name: "GLmush"});
-//Block.registerDropFunction("mushroomRadioactiveSmall", function(){
-//    return [{id: ItemID.mushroomRadioactive}];
-//});
-
-Item.registerUseFunction("mushroomRadioactive", function(coords, item, block){
-    var place = coords.relative;
-    if(GenerationUtils.isTransparentBlock(World.getBlockID(place.x, place.y, place.z))){
-        World.setBlock(place.x, place.y, place.z, BlockID.mushroomRadioactiveSmall);
-        Player.decreaseCarriedItem(1);
-    }
-});
-Renderer.setSaplingRender(BlockID.mushroomRadioactiveSmall, 0);
-
-IDRegistry.genBlockID("stemMushroomRadioactive");
-Block.createBlockWithRotation("stemMushroomRadioactive", [{name: "Radioactive Mushroom Stem", texture: [
-    ["GLmush_block_inside", 0],["GLmush_block_inside", 0],["GLmush_block_stem", 0],["GLmush_block_stem", 0], ["GLmush_block_stem", 0],["GLmush_block_stem", 0]
-], inCreative: true}], BLOCK_LOW_LIGHT);
-
-ToolAPI.registerBlockMaterial(BlockID.stemMushroomRadioactive, "plant");
-
-IDRegistry.genBlockID("capMushroomRadioactive");
-Block.createBlock("capMushroomRadioactive", [{name: "Radioactive Mushroom Cap", texture:[["GLmush_block_skin", 0]],inCreative: true}], BLOCK_LOW_LIGHT);
