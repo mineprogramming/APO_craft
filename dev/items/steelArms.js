@@ -23,6 +23,3 @@ Item.createItem("swordBig", "Butterfly", {name: "big_sword", meta: 0}, {
 });
 
 ToolAPI.registerSword(ItemID.swordBig, {level: 0, durability: 1024, damage: 7}, {damage:7});
-
-
-

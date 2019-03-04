@@ -132,5 +132,3 @@ RecipesManager.addShaped({id: ItemID.hazmatBootsApo, count: 1, data: 0}, [
     "x x",
     "x x"
 ], ['x', ItemID.clothHazmat, 0]);
-
-

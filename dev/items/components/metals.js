@@ -149,11 +149,3 @@ RecipesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
 
 // Liquid solder
 LiquidRegistry.registerLiquid("liquidSolder", "Liquid Solder", ["liquid_solder"]);
-
-
-
-
-
-
-
-

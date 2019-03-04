@@ -59,4 +59,4 @@ var RandomEvents = {
             }
         }
     }
-}
+};

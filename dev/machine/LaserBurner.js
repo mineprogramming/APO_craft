@@ -54,8 +54,6 @@ MachineEssentials.registerStandart(BlockID.burnerLaser, {
     },
 });
 
-
-
 Callback.addCallback("PreLoaded", function(){
     // Recipes
     MachineRecipeRegistry.registerRecipesFor("burnerLaser", [
@@ -81,4 +79,3 @@ Callback.addCallback("PreLoaded", function(){
         }
     ]);
 });
-

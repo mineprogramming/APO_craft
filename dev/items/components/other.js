@@ -171,7 +171,3 @@ RecipesManager.addShapeless({id: ItemID.silicon, count: 1, data: 0}, [{id: ItemI
 // Silicon Crystal
 IDRegistry.genItemID("crystalSilicon");
 Item.createItem("crystalSilicon", "Silicon Crystal", {name: "crystal_silicon", meta: 0}, {});
-
-
-
-

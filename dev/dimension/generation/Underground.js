@@ -1,5 +1,3 @@
-
-
 var Underground = {
     railOnData: new ItemExtraData()
 };
@@ -16,7 +14,7 @@ var setRandomWall = function(x, y, z){
 }
 
 Underground.generateTunnel = function(x, y, z, direction){
-    var generateSingleTunnel = function(x, y, z, dirtection){
+    var generateSingleTunnel = function(x, y, z){
         if(direction == DIRECTION_X){
             for(var dx = 0; dx < 16; dx++){
                 //bottom and top
@@ -65,10 +63,10 @@ Underground.generateTunnel = function(x, y, z, direction){
         }
     }
     
-    generateSingleTunnel(x, y, z, direction);
+    generateSingleTunnel(x, y, z);
     if(direction == DIRECTION_X)
-        generateSingleTunnel(x, y, z + 10, direction);
-    else generateSingleTunnel(x + 10, y, z, direction);
+        generateSingleTunnel(x, y, z + 10);
+    else generateSingleTunnel(x + 10, y, z);
 }
 
 
@@ -176,7 +174,3 @@ Underground.exit = function(x, y, z, direction){
         }
     }
 }
-
-
-
-

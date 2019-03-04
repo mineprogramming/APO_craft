@@ -14,7 +14,7 @@ RenderTools.setupConnectorRender = function(id) {
         {side: [0, 0, -1], box: [0.5 - width / 2, 0.5 - width / 2, 0, 0.5 + width / 2, 0.5 + width / 2, 0.5 - width / 2]},
     ]
    
-    var group = ICRender.getGroup("ic-transformator");
+    var group = ICRender.getGroup("ic-transformer");
    
     for (var i in boxes) {
         var box = boxes[i];
@@ -28,7 +28,6 @@ RenderTools.setupConnectorRender = function(id) {
     var model = BlockRenderer.createModel();
     model.addBox(0.5 - width / 2, 0.5 - width / 2, 0.5 - width / 2, 0.5 + width / 2, 0.5 + width / 2, 0.5 + width / 2, id, 0);
     render.addEntry(model);
-    
-    width = Math.max(width, 0.5);
+
     Block.setBlockShape(id, {x: 0.5 - width/2, y: 0.5 - width/2, z: 0.5 - width/2}, {x: 0.5 + width/2, y: 0.5 + width/2, z: 0.5 + width/2});
 }

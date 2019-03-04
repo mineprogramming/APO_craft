@@ -1,6 +1,6 @@
-// Gallium Andesite
+// Gallium Arsenite
 IDRegistry.genItemID("galliumArsenite");
-Item.createItem("galliumArsenite", "Gallium Andesite", {name: "gallium_arsenite", meta: 0}, {});
+Item.createItem("galliumArsenite", "Gallium Arsenite", {name: "gallium_arsenite", meta: 0}, {});
 
 
 // Ruby
@@ -16,7 +16,7 @@ Item.createItem("dustFluorite", "Fluorite Dust", {name: "fluorite"});
 
 // Sulfur Dust
 IDRegistry.genItemID("dustSulfur");
-Item.createItem("dustSulfur", "Sulfur Dust", {name: "sulfur"});
+Item.createItem("dustSulfur", "Sulfur Dust", {name: "dust_sulfur", meta: 0});
 
 // Blaze Dust
 IDRegistry.genItemID("dustFire");

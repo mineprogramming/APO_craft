@@ -78,8 +78,6 @@ var APOCity = new Dimension({
 
 //APOCity.debugTerrainSlice(128, 1, true);
 
-
-
 var APOCityTransferSequence = new TransferSequence(APOCity);
 APOCityTransferSequence.setPortalTimeout(40);
 
@@ -94,6 +92,5 @@ APOCityTransferSequence.setLoadingScreenParams({
     texture: "default_dimension_loading_screen"
 });
 
-PortalRegistry.newPortalBlock("aetherPortal", ["aether_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
+PortalRegistry.newPortalBlock("aetherPortal", ["apo_portal", 0], APOCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
 APOCityTransferSequence.setPortalTiles(BlockID.aetherPortal);
-

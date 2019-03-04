@@ -38,4 +38,3 @@ MachineEssentials.registerGenerator(BlockID.generatorLightning, {
         Entity.spawn(scope.x + Math.random() - 0.5, scope.y + 1, scope.z + Math.random() - 0.5, Native.EntityType.LIGHTNING_BOLT);
     }
 });
-

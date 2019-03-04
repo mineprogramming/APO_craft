@@ -79,7 +79,7 @@ Callback.addCallback("PreLoaded", function(){
             "result": {id: ItemID.motherboard, count: 1, data: 0}
         },
         {
-            "source": [{id: ItemID.pcbPowerSupply, data: 0}, {id: ItemID.transformator, data: 0}, {id: ItemID.smd, data: 0}],
+            "source": [{id: ItemID.pcbPowerSupply, data: 0}, {id: ItemID.transformer, data: 0}, {id: ItemID.smd, data: 0}],
             "result": {id: ItemID.powerSupply, count: 1, data: 0}
         },
         {
@@ -96,4 +96,3 @@ Callback.addCallback("PreLoaded", function(){
         }
     ]);
 });
-

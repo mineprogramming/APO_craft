@@ -101,10 +101,6 @@ RecipesManager.addRecipeWithCraftingTool = function(result, data, tool){
 if(!__config__.getBool("late_recipes_registration")){
     Callback.addCallback("PostLoaded", function(){
         RecipesManager.onRegisterRecipesNeeded();
-        Logger.Log("RecipesManager", "Recipes successfully loaded!");
+        Logger.Log("Recipes successfully loaded!", "RecipesManager");
     });
 }
-
-
-
-

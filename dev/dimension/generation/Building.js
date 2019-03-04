@@ -1,6 +1,5 @@
 var buildings = [];
 
-
 function Building(filename){
     this.path = __dir__ + "buildings/" + filename;
     
@@ -227,8 +226,8 @@ if(DEBUG){
         
         getBlocks: function(){
             let blocks  = [];
-            let ztiles = [];
-            let xtiles = [];
+            let zTiles = [];
+            let xTiles = [];
             
             let x1 = WorldEdit.pos1.x;
             let y1 = WorldEdit.pos1.y;
@@ -256,13 +255,13 @@ if(DEBUG){
                         if(block.data == 0){
                             block = block.id;
                         }
-                        ztiles[z - z1] = block;
+                        zTiles[z - z1] = block;
                     }
-                    xtiles[x - x1] = ztiles;
-                    ztiles = [];
+                    xTiles[x - x1] = zTiles;
+                    zTiles = [];
                 }
-                blocks[y - y1] = xtiles;
-                xtiles = [];
+                blocks[y - y1] = xTiles;
+                xTiles = [];
             }
 
             return blocks;
@@ -280,10 +279,3 @@ if(DEBUG){
         }
     });
 }
-
-
-
-
-
-
-

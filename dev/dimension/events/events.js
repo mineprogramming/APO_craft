@@ -3,7 +3,6 @@ const EVENT_FREQUENCY_SPAWN_HUSK = 0.1;
 
 var CUSTOM_MOBS = [Dementor, Military, Survived, Mutant];
 
-
 RandomEvents.registerEvent("mod", 0.0005, function() {
     if(Entity.getAll().length < ENTITIES_MAX_COUNT){
         var coords = RandomEvents.randomCoordsNearPlayer();
@@ -64,4 +63,3 @@ RandomEvents.registerTimedEvent({
 RandomEvents.registerEvent("planes", 0.0001, function(){
     spawnPlanes(7);
 });
-

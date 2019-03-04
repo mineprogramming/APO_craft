@@ -36,5 +36,3 @@ Item.registerUseFunctionForID(ItemID.eggDementor, function(coords, item, block) 
     coords = coords.relative;
     Dementor.spawn(coords.x + .5, coords.y + .5, coords.z + .5);
 });
-
-

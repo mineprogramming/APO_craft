@@ -106,9 +106,3 @@ Item.createItem("sensorNitrates", "Nitrates Sensor", {name: "sensor_nitrates", m
 //LED Display
 IDRegistry.genItemID("displayLed");
 Item.createItem("displayLed", "LED Display", {name: "display_led", meta: 0}, {});
-
-
-
-
-
-

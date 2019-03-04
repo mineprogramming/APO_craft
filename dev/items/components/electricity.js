@@ -116,10 +116,10 @@ for(var i = ItemID.ledRed; i <= ItemID.ledGreen; i++){
 }
 
 
-// Transformator
-IDRegistry.genItemID("transformator");
-Item.createItem("transformator", "Transformator", {name: "transformator", data: 0});
-RecipesManager.addShaped({id: ItemID.transformator, count: 1, data: 0}, [
+// transformer
+IDRegistry.genItemID("transformer");
+Item.createItem("transformer", "Transformer", {name: "transformer", data: 0});
+RecipesManager.addShaped({id: ItemID.transformer, count: 1, data: 0}, [
      "aa",
      "aa"
 ], ['a', ItemID.coilCopper, 0]);
@@ -187,15 +187,3 @@ Item.createItem("chipVideo", "Video Chip", {name: "chip_video"});
 // Space-Time Frequency Generator Chip
 IDRegistry.genItemID("chipGeneratorSpaceTime");
 Item.createItem("chipGeneratorSpaceTime", "Space-Time Frequency Generator Chip", {name: "chip_generator_space_time"});
-
-
-
-
-
-
-
-
-
-
-
-

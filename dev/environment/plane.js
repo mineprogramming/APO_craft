@@ -165,5 +165,3 @@ Plane.bomb.customizeVisual({
         };
     }
 });
-
-

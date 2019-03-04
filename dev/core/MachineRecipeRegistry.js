@@ -1,4 +1,3 @@
-
 /** Simple object used to store recipes for different  */
 
 MachineRecipeRegistry = {
