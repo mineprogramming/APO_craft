@@ -5,13 +5,10 @@ RenderTools.js
 items/RecipesManager.js
 items/drawings.js
 
-api/GunRegistry.js
-
+core/GunRegistry.js
 core/IC2Integration.js
 core/MachineEssentials.js
 core/MachineRecipeRegistry.js
-
-events.js
 
 blocks/ores.js
 
@@ -79,5 +76,7 @@ dimension/generation/APOGen.js
 dimension/generation/Roads.js
 dimension/generation/Underground.js
 dimension/generation/AfterTeleportGen.js
+
+core/shared.js
 
 
