@@ -44,24 +44,8 @@ var ENTITIES_MAX_COUNT = 46;
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 var ctx = UI.getContext();
 
-
-var BLOCK_LIGHT = Block.createSpecialType({
-    lightlevel: 7,
-    opaque: false
-});
-
 var BLOCK_LIGHT_O = Block.createSpecialType({
     lightlevel: 7,
-    opaque: true
-});
-
-var BLOCK_LOW_LIGHT = Block.createSpecialType({
-    lightlevel: 9,
-    opaque: true
-});
-
-var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
-    lightlevel: 4,
     opaque: true
 });
 
@@ -90,8 +74,6 @@ Saver.addSavesScope("inCity",
         return {inCity: inCity};
     }
 );
-
-
 
 /* Just some useful functions */
 
