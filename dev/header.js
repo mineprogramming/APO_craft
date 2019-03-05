@@ -37,6 +37,8 @@ const DIRECTION_X = 0;
 const DIRECTION_Z = 1;
 const DIRECTION_BOTH = 2;
 
+const CUSTOM_BLOCK_IDS_OFFSET = 8192;
+
 var GUI_BAR_STANDART_SCALE = 3.2;
 var CRAFTING_TOOL_MAX_DAMAGE = 96;
 var ENTITIES_MAX_COUNT = 23;
@@ -44,24 +46,8 @@ var ENTITIES_MAX_COUNT = 23;
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 var ctx = UI.getContext();
 
-
-var BLOCK_LIGHT = Block.createSpecialType({
-    lightlevel: 7,
-    opaque: false
-});
-
 var BLOCK_LIGHT_O = Block.createSpecialType({
     lightlevel: 7,
-    opaque: true
-});
-
-var BLOCK_LOW_LIGHT = Block.createSpecialType({
-    lightlevel: 9,
-    opaque: true
-});
-
-var BLOCK_LOWEST_LIGHT = Block.createSpecialType({
-    lightlevel: 4,
     opaque: true
 });
 
@@ -90,8 +76,6 @@ Saver.addSavesScope("inCity",
         return {inCity: inCity};
     }
 );
-
-
 
 /* Just some useful functions */
 

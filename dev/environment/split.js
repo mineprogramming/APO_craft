@@ -13,14 +13,14 @@ var Split = {
     },
     
     buildRecursive: function(x, y, z){
-        World.setBlock(x, y, z, BlockID.aetherPortal, 0);
-        World.setBlock(x, y - 1, z, 1, 0);
+        World.setBlock(x, y, z, BlockID.apoPortal, 0);
+		    World.setBlock(x, y - 1, z, 1, 0);
         for(var i = 0; i < 4; i++){
             var dx = (i - 2) % 2;
             var dz = (i - 1) % 2;
             
             var block = World.getBlockID(x + dx, y, z + dz);
-            if(block != BlockID.aetherPortal){
+            if(block != BlockID.apoPortal){
                 if(Math.random() < 0.3){
                     Split.buildRecursive(x + dx, y, z + dz);
                 } else {

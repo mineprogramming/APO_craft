@@ -148,7 +148,7 @@ TileEntity.registerPrototype(BlockID.stabilizer, {
                 if(z == this.z && x == this.x){
                     continue;
                 }
-                World.setBlock(x, this.y - 1, z, BlockID.aetherPortal, 0);
+                World.setBlock(x, this.y - 1, z, BlockID.apoPortal, 0);
             }
         }
         // Bedrock in the corners
