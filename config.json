@@ -2,5 +2,6 @@
     "enabled": true,
     "debug_mode": true,
     "late_recipes_registration": false,
-    "split_on_start": true
+    "split_on_start": true,
+    "events": true
 }

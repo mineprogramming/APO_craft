@@ -1,4 +1,4 @@
-RenderTools = {};
+var RenderTools = {};
 
 RenderTools.setupConnectorRender = function(id) {
     const width = 0.5;

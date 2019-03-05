@@ -41,7 +41,7 @@ const CUSTOM_BLOCK_IDS_OFFSET = 8192;
 
 var GUI_BAR_STANDART_SCALE = 3.2;
 var CRAFTING_TOOL_MAX_DAMAGE = 96;
-var ENTITIES_MAX_COUNT = 46;
+var ENTITIES_MAX_COUNT = 23;
 
 var EU = EnergyTypeRegistry.assureEnergyType("Eu", 1);
 var ctx = UI.getContext();

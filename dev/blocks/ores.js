@@ -13,7 +13,7 @@ ToolAPI.registerBlockMaterial(BlockID.oreGalliumArsenide, "stone", 3, true);
 Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, level, enchant){
      if(level > 2){
         if(enchant.silk){
-            return [[blockID, 1, 0]];
+            return [[id, 1, 0]];
         }
         var drop = [[ItemID.galliumArsenite, 1, 0]];
         if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
@@ -32,7 +32,7 @@ ToolAPI.registerBlockMaterial(BlockID.oreMagnesium, "stone", 3, true);
 Block.registerDropFunction("oreMagnesium", function(coords, id, data, level, enchant){
      if(level > 2){
         if(enchant.silk){
-            return [[blockID, 1, 0]];
+            return [[id, 1, 0]];
         }
         var drop = [[ItemID.magnesium, 1, 0]];
         if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
