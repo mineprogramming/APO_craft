@@ -104,3 +104,12 @@ IDRegistry.genBlockID("bricksLight");
 Block.createBlock("bricksLight", [{name: "Light Bricks", texture:[["brick_light", 0]], inCreative: true}], "opaque");
 Block.setDestroyTime(BlockID.bricksLight, 6);
 ToolAPI.registerBlockMaterial(BlockID.bricksLight, "stone", 5, true);
+
+// Machine Casing
+IDRegistry.genBlockID("machineBlockBasic");
+Block.createBlock("machineBlockBasic", [{name: "Machine Casing", texture: [["machine_top", 0]], inCreative: true}], "opaque");
+RecipesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
+    "aaa",
+    "a a",
+    "aaa"
+], ['a', ItemID.plateIren, 0]);

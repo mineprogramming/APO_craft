@@ -2,6 +2,12 @@ IDRegistry.genBlockID("extruder");
 Block.createBlockWithRotation("extruder", [
     {name: "Extruder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_side", 0], ["extruder_side", 1]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.extruder, count: 1, data: 0}, [
+    "ac",
+    "b0b",
+    " c "
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoMega, 0, 'c', ItemID.roller, 0, 'b', ItemID.lineAssembly, 0]);
+
 
 var guiExtruder = new UI.StandartWindow({
     standart: {

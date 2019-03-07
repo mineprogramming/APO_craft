@@ -103,27 +103,6 @@ RecipesManager.addShaped({id: ItemID.textoliteFoil, count: 3, data: 0}, [
 IDRegistry.genItemID("granulesPolypropylene");
 Item.createItem("granulesPolypropylene", "Granules of Polypropylene", {name: "granules_polypropylene", meta: 0}, {});
 
-
-/* Press Forms */
-
-// Plate Press Form
-IDRegistry.genItemID("pressFormPlate");
-Item.createItem("pressFormPlate", "Plate Press Form", {name: "press_form", meta: 0}, {});
-
-// Blade Press Form
-IDRegistry.genItemID("pressFormBlade");
-Item.createItem("pressFormBlade", "Blade Press Form", {name: "press_form_blade", meta: 0}, {});
-
-// Radiator Press Form
-IDRegistry.genItemID("pressFormRadiator");
-Item.createItem("pressFormRadiator", "Radiator Press Form", {name: "press_form_radiator", meta: 0}, {});
-
-// Rod Press Form 
-IDRegistry.genItemID("pressFormRod");
-Item.createItem("pressFormRod", "Rod Press Form", {name: "press_form_rod", meta: 0}, {});
-
-
-
 // Polypropylene Plate
 IDRegistry.genItemID("platePolypropylene");
 Item.createItem("platePolypropylene", "Polypropylene Plate", {name: "plate_polypropylene", meta: 0}, {});
@@ -135,7 +114,6 @@ Item.createItem("bladePolypropylene", "Polypropylene Blade", {name: "blade_polyp
 // Polypropylene Casing
 IDRegistry.genItemID("casingPolypropylene");
 Item.createItem("casingPolypropylene", "Polypropylene Casing", {name: "casing_polypropylene", meta: 0}, {});
-
 RecipesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
      "aa",
      "aa",
@@ -149,9 +127,26 @@ RecipesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
 IDRegistry.genItemID("can");
 Item.createItem("can", "Can", {name: "can", meta: 0}, {});
 
+// Assembly Line
+IDRegistry.genItemID("lineAssembly");
+Item.createItem("lineAssembly", "Assembly Line", {name: "line_assembly", meta: 0}, {});
+RecipesManager.addShaped({id: ItemID.lineAssembly, count: 1, data: 0}, [
+     "aaa",
+     "b b"
+], ['a', ItemID.plateIron, 0, 'b', ItemID.roller, 0]);
 
+// Chopper
+IDRegistry.genItemID("chopper");
+Item.createItem("chopper", "Chopper", {name: "chopper", meta: 0}, {});
+RecipesManager.addShaped({id: ItemID.chopper, count: 0, data: 0}, [
+     " a ",
+     "a a",
+     " a ",
+], ['a', 265, 0]);
+
+
+//Scrap from Waste
 Callback.addCallback("ICore", function(api){
-    //Scrap from Waste
     RecipesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
         "aaa",
         "aaa",
@@ -171,3 +166,5 @@ RecipesManager.addShapeless({id: ItemID.silicon, count: 1, data: 0}, [{id: ItemI
 // Silicon Crystal
 IDRegistry.genItemID("crystalSilicon");
 Item.createItem("crystalSilicon", "Silicon Crystal", {name: "crystal_silicon", meta: 0}, {});
+
+

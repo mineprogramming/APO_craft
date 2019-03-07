@@ -14,6 +14,13 @@ Recipes.addFurnace(BlockID.oreTitanium, ItemID.ingotTitanium, 0);
 // Steel Ingot
 IDRegistry.genItemID("ingotSteel");
 Item.createItem("ingotSteel", "Steel Ingot", {name: "ingot_steel"});
+// If IC2 is not installed, enable steel production in furnace
+Callback.addCallback("PostLoaded", function(){
+    if(!ICore){ 
+        Recipes.addFurnace(265, ItemID.ingotSteel, 0);
+    }
+});
+
 
 // Lead Ingot
 IDRegistry.genItemID("ingotLead");
@@ -132,6 +139,10 @@ Item.createItem("rodIron", "Iron Rod", {name: "rod_iron", meta: 0});
 IDRegistry.genItemID("rodTitanium");
 Item.createItem("rodTitanium", "Titanium Rod", {name: "rod_titanium", meta: 0});
 
+// Copper Rod
+IDRegistry.genItemID("rodCopper");
+Item.createItem("rodCopper", "Copper Rod", {name: "rod_copper", meta: 0});
+
 
 /* COILS */
 
@@ -145,7 +156,16 @@ RecipesManager.addShaped({id: ItemID.coilCopper, count: 1, data: 0}, [
 ], ['a', ItemID.cableCopper0, 0, 'b', ItemID.rodIron, 0]);
 
 
+/* ROLLER */
+
+// Roller
+IDRegistry.genItemID("roller");
+Item.createItem("roller", "Roller", {name: "roller", meta: 0});
+
+
 /* Liquids */
 
 // Liquid solder
 LiquidRegistry.registerLiquid("liquidSolder", "Liquid Solder", ["liquid_solder"]);
+
+

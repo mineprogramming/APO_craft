@@ -2,6 +2,12 @@ IDRegistry.genBlockID("pressPlastic");
 Block.createBlockWithRotation("pressPlastic", [
     {name: "Plastic Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ]);
+RecipesManager.addShaped({id: BlockID.pressPlastic, count: 1, data: 0}, [
+    "acb",
+    "a0a",
+    "ddd"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoUno, 0, 'c', ItemID.rodIron, 0, 'b', ItemID.engine, 0, 'd', ItemID.ingotSteel, 0]);
+
 
 (function(){
     var render = new ICRender.Model();

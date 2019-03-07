@@ -2,6 +2,11 @@ IDRegistry.genBlockID("polymerizer");
 Block.createBlockWithRotation("polymerizer", [
     {name: "Polymerizer", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["polymerizer_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.pressPlastic, count: 1, data: 0}, [
+    "a b",
+    "c0c"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', ItemID.rodIron, 0, 'b', ItemID.engine, 0, 'c', ItemID.plateAluminium, 0]);
+
 
 var guiPolymerizer = new UI.StandartWindow({
     standart: {

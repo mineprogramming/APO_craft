@@ -2,6 +2,12 @@ IDRegistry.genBlockID("rectifier");
 Block.createBlockWithRotation("rectifier", [
     {name: "Rectifier", texture: [["std_bottom", 0], ["rectifier_top", 0], ["std_side", 0], ["rectifier_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.rectifier, count: 1, data: 0}, [
+    "ac ",
+    "b0b",
+    "bbb"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoMega, 0, 'c', 61, 0, 'b', ItemID.plateTitanium, 0]);
+
 
 var layoutRectifier = {
     standart: {

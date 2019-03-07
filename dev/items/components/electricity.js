@@ -135,6 +135,14 @@ RecipesManager.addShaped({id: ItemID.laser, count: 1, data: 0}, [
 ], ['a', ItemID.ruby, 0, 'b', 331, 0]);
 
 
+// Engine
+IDRegistry.genItemID("engine");
+Item.createItem("engine", "Engine", {name: "engine", data: 0});
+RecipesManager.addShaped({id: ItemID.engine, count: 1, data: 0}, [
+     "aba"
+], ['a', ItemID.coke, 0, 'b', ItemID.coilCopper, 0]);
+
+
 /* Printed Circuit Boards */
 
 // Motherboard PCB

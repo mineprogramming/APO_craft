@@ -2,6 +2,12 @@ IDRegistry.genBlockID("pressMetal");
 Block.createBlockWithRotation("pressMetal", [
     {name: "Metal Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ]);
+RecipesManager.addShaped({id: BlockID.pressMetal, count: 1, data: 0}, [
+    "bcb",
+    "a0e",
+    " d "
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoMega, 0, 'c', ItemID.rodTitanium, 0, 'e', ItemID.plateCopper, 0, 'b', ItemID.engine, 0, 'd', 145, 0]);
+
 
 (function(){
     var render = new ICRender.Model();
@@ -127,10 +133,24 @@ Callback.addCallback("PreLoaded", function(){
             }
         },
         {
+            "source": {"id": ItemID.ingotCopper, "data": 0},
+            "result": {
+                "ItemID.pressFormRod": {id: ItemID.rodCopper, count: 1, data: 0}
+            }
+        },
+        {
             "source": {"id": ItemID.ingotTitanium, "data": 0},
             "result": {
                 "ItemID.pressFormRod": {id: ItemID.rodTitanium, count: 1, data: 0}
             }
-        }
+        },
+        {
+            "source": {"id": ItemID.ingotSteel, "data": 0},
+            "result": {
+                "ItemID.pressFormRoller": {id: ItemID.roller, count: 1, data: 0}
+            }
+        },
     ]);
 });
+
+

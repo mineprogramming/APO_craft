@@ -389,4 +389,10 @@ var GLOBAL_LOOT = [
         "chance": 0.01,
         "count": { "min": 3, "max": 5 }
     },
+    {
+        "id": ItemID.pressFormRoller,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
 ];
