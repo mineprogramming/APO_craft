@@ -2,6 +2,12 @@ IDRegistry.genBlockID("shredder");
 Block.createBlockWithRotation("shredder", [
     {name: "Shredder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.shredder, count: 1, data: 0}, [
+    "a* ",
+    "*0*",
+    "b*b"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoUno, 0, '*', ItemID.chopper, 0, 'b', ItemID.plateLead, 0]);
+
 
 var guiShredder = new UI.StandartWindow({
     standart: {

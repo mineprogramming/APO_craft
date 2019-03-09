@@ -147,7 +147,8 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": {"id": ItemID.ingotSteel, "data": 0},
             "result": {
-                "ItemID.pressFormRoller": {id: ItemID.roller, count: 1, data: 0}
+                "ItemID.pressFormRoller": {id: ItemID.roller, count: 1, data: 0},
+                "ItemID.pressFormRod": {id: ItemID.rodSteel, count: 1, data: 0}
             }
         },
     ]);

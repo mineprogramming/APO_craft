@@ -5,7 +5,7 @@ Block.createBlockWithRotation("polymerizer", [
 RecipesManager.addShaped({id: BlockID.pressPlastic, count: 1, data: 0}, [
     "a b",
     "c0c"
-], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', ItemID.rodIron, 0, 'b', ItemID.engine, 0, 'c', ItemID.plateAluminium, 0]);
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', ItemID.plateTin, 0, 'b', ItemID.engine, 0]);
 
 
 var guiPolymerizer = new UI.StandartWindow({

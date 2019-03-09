@@ -112,4 +112,4 @@ RecipesManager.addShaped({id: BlockID.blockTin, count: 1, data: 0}, [
     "aaa",
     "a a",
     "aaa"
-], ['a', ItemID.plateIren, 0]);
+], ['a', ItemID.plateIron, 0]);

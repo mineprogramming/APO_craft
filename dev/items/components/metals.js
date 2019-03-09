@@ -135,6 +135,10 @@ RecipesManager.addRecipeWithCraftingTool({id: ItemID.cableLead0, count: 3, data:
 IDRegistry.genItemID("rodIron");
 Item.createItem("rodIron", "Iron Rod", {name: "rod_iron", meta: 0});
 
+// Steel Rod
+IDRegistry.genItemID("rodSteel");
+Item.createItem("rodSteel", "Steel Rod", {name: "rod_steel", meta: 0});
+
 // Titanium Rod
 IDRegistry.genItemID("rodTitanium");
 Item.createItem("rodTitanium", "Titanium Rod", {name: "rod_titanium", meta: 0});

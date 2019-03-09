@@ -2,6 +2,12 @@ IDRegistry.genBlockID("solderingStation");
 Block.createBlockWithRotation("solderingStation", [
     {name: "Soldering Station", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.solderingStation, count: 1, data: 0}, [
+    "cb-",
+    "c  ",
+    "a0 "
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'b', ItemID.casingPolypropylene, 0, 'c', ItemID.cableCopper0, 0, '-', ItemID.rodCopper, 0]);
+
 
 var guiMetalPress = new UI.StandartWindow({
     standart: {

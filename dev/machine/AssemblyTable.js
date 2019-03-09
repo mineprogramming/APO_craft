@@ -2,6 +2,12 @@ IDRegistry.genBlockID("tableAssembly");
 Block.createBlockWithRotation("tableAssembly", [
     {name: "Assembly Table", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.tableAssembly, count: 1, data: 0}, [
+    "abc",
+    "b0b",
+    "dbd"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', 331, 0, 'b', 58, 0, 'd', ItemID.plateAluminium, 0]);
+
 
 var guiMetalPress = new UI.StandartWindow({
     standart: {

@@ -2,6 +2,10 @@ IDRegistry.genBlockID("crystalizer");
 Block.createBlockWithRotation("crystalizer", [
     {name: "Crystalizer", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.crystalizer, count: 1, data: 0}, [
+    "ac",
+    "b0b"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', 390, 0, 'b', ItemID.plateAluminium, 0]);
 
 var guiCrystalizer = new UI.StandartWindow({
     standart: {

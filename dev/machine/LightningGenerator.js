@@ -2,6 +2,12 @@ IDRegistry.genBlockID("generatorLightning");
 Block.createBlockWithRotation("generatorLightning", [
     {name: "Lightning Energy Generator", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], BLOCK_HARD);
+RecipesManager.addShaped({id: BlockID.generatorLightning, count: 1, data: 0}, [
+    "af ",
+    "b0b",
+    "ddd"
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoMega, 0, 'f', ItemID.rodSteel, 0, 'b', ItemID.storageBattery, 0, 'd', ItemID.transformer, 0]);
+
 
 var guiLightningGenerator = new UI.StandartWindow({
     standart: {

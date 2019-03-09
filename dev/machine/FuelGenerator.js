@@ -2,6 +2,12 @@ IDRegistry.genBlockID("generatorFuel");
 Block.createBlockWithRotation("generatorFuel", [
     {name: "Fuel Generator", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.generatorFuel, count: 1, data: 0}, [
+    "ac ",
+    "b0b",
+    " d "
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoUno, 0, 'c', 61, 0, 'b', ItemID.storageBattery, 0, 'd', ItemID.transformer, 0]);
+
 
 var guiFuelGenerator = new UI.StandartWindow({
     standart: {

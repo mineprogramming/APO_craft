@@ -2,6 +2,12 @@ IDRegistry.genBlockID("cokeOven");
 Block.createBlockWithRotation("cokeOven", [
     {name: "Coke Oven", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["coke_oven_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
 ], "opaque");
+RecipesManager.addShaped({id: BlockID.cokeOven, count: 1, data: 0}, [
+    "a  ",
+    "b0b",
+    " b "
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.arduinoUno, 0, 'b', 112, 0]);
+
 
 var guiCokeOven = new UI.StandartWindow({
     standart: {
