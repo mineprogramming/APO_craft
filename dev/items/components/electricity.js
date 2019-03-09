@@ -145,6 +145,18 @@ RecipesManager.addShaped({id: ItemID.engine, count: 1, data: 0}, [
 
 /* Printed Circuit Boards */
 
+// Arduino Mega PCB Drawing
+IDRegistry.genItemID("pcbArduinoMega");
+Item.createItem("pcbArduinoMega", "Arduino Uno PCB", {name: "pcb_arduino_mega"});
+
+// Arduino Uno PCB Drawing
+IDRegistry.genItemID("pcbArduinoUno");
+Item.createItem("pcbArduinoUno", "Arduino Uno PCB", {name: "pcb_arduino_uno"});
+
+// Raspberry PI 3 PCB Drawing
+IDRegistry.genItemID("pcbRaspberry3");
+Item.createItem("pcbRaspberry3", "Raspberry PI 3 PCB", {name: "pcb_raspberry"});
+
 // Motherboard PCB
 IDRegistry.genItemID("pcbMotherboard");
 Item.createItem("pcbMotherboard", "Motherboard PCB", {name: "pcb_motherboard", data: 0});
@@ -168,9 +180,13 @@ Item.createItem("pcbControllerHdd", "HDD Controller PCB", {name: "pcb_controller
 
 /* Chips */
 
-// Arduino Central Chip
-IDRegistry.genItemID("chipArduino");
-Item.createItem("chipArduino", "Arduino Central Chip", {name: "chip", meta: 0}, {});
+// ATmega2560
+IDRegistry.genItemID("ATmega2560");
+Item.createItem("ATmega2560", "ATmega2560 Chip", {name: "chip", meta: 0}, {});
+
+// ATmega328
+IDRegistry.genItemID("ATmega328");
+Item.createItem("ATmega328", "ATmega328 Chip", {name: "chip", meta: 0}, {});
 
 // Raspberry PI Central Chip
 IDRegistry.genItemID("chipRaspberry");

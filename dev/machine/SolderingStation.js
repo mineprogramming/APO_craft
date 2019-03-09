@@ -81,6 +81,18 @@ Callback.addCallback("PreLoaded", function(){
     // Recipes
     MachineRecipeRegistry.registerRecipesFor("solderingStation", [
         {
+            "source": [{id: ItemID.pcbArduinoMega, data: 0}, {id: ItemID.ATmega2560, data: 0}, {id: ItemID.smd, data: 0}],
+            "result": {id: ItemID.arduinoMega, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbArduinoUno, data: 0}, {id: ItemID.ATmega328, data: 0}, {id: ItemID.smd, data: 0}],
+            "result": {id: ItemID.arduinoUno, count: 1, data: 0}
+        },
+        {
+            "source": [{id: ItemID.pcbRaspberry3, data: 0}, {id: ItemID.chipRaspberry, data: 0}, {id: ItemID.smd, data: 0}, {id: ItemID.smd, data: 0}],
+            "result": {id: ItemID.raspberryPi3, count: 1, data: 0}
+        },
+        {
             "source": [{id: ItemID.pcbMotherboard, data: 0}, {id: ItemID.chipset, data: 0}, {id: ItemID.socket, data: 0}, {id: ItemID.smd, data: 0}],
             "result": {id: ItemID.motherboard, count: 1, data: 0}
         },

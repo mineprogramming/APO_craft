@@ -1,4 +1,16 @@
-/* Drawings */
+/* Chip Drawings */
+
+// ATmega2560 Chip Drawing
+IDRegistry.genItemID("drawingATmega2560");
+Item.createItem("drawingATmega2560", "ATmega2560 Chip Drawing", {name: "drawing_atmega_2560"});
+
+// ATmega328 Chip Drawing
+IDRegistry.genItemID("drawingATmega328");
+Item.createItem("drawingATmega328", "ATmega328 Chip Drawing", {name: "drawing_atmega_328"});
+
+// Raspberry PI Central Chip Drawing
+IDRegistry.genItemID("drawingChipRaspberry");
+Item.createItem("drawingChipRaspberry", "Raspberry PI Central Chip Drawing", {name: "drawing_chip_raspberry"});
 
 // Chipset Drawing
 IDRegistry.genItemID("drawingChipset");
@@ -19,6 +31,21 @@ Item.createItem("drawingChipVideo", "Video Chip Drawing", {name: "drawing_chip_v
 // Space-Time Frequency Generator Chip Drawing
 IDRegistry.genItemID("drawingChipGeneratorSpaceTime");
 Item.createItem("drawingChipGeneratorSpaceTime", "Space-Time Frequency Generator Chip Drawing", {name: "drawing_chip_generator_space_time"});
+
+
+/* Plate Drawings */
+
+// Arduino Mega PCB Drawing
+IDRegistry.genItemID("drawingPcbArduinoMega");
+Item.createItem("drawingPcbArduinoMega", "Arduino Uno PCB Drawing", {name: "drawing_pcb_arduino_mega"});
+
+// Arduino Uno PCB Drawing
+IDRegistry.genItemID("drawingPcbArduinoUno");
+Item.createItem("drawingPcbArduinoUno", "Arduino Uno PCB Drawing", {name: "drawing_pcb_arduino_uno"});
+
+// Raspberry PI 3 PCB Drawing
+IDRegistry.genItemID("drawingPcbRaspberry3");
+Item.createItem("drawingPcbRaspberry3", "Raspberry PI 3 PCB Drawing", {name: "drawing_pcb_raspberry"});
 
 // Motherboard PCB Drawing
 IDRegistry.genItemID("drawingPcbMotherboard");

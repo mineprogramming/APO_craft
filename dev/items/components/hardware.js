@@ -85,7 +85,7 @@ Item.createItem("arduinoMega", "Arduino Mega", {name: "arduino_mega", meta: 0}, 
 
 // Raspberry PI 3
 IDRegistry.genItemID("raspberryPi3");
-Item.createItem("raspberryPi3", "Raspberry PI 3", {name: "raspberry_pi", meta: 3}, {});
+Item.createItem("raspberryPi3", "Raspberry PI 3", {name: "raspberry", meta: 0}, {});
 
 
 // Radiation Sensor

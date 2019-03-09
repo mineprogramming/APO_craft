@@ -65,6 +65,9 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": {"id": ItemID.textoliteFoil, "data": 0},
             "result": {
+                "ItemID.drawingPcbArduinoMega": {id: ItemID.pcbArduinoMega, count: 1, data: 0},
+                "ItemID.drawingPcbArduinoUno": {id: ItemID.pcbArduinoUno, count: 1, data: 0},
+                "ItemID.drawingPcbRaspberry3": {id: ItemID.pcbRaspberry3, count: 1, data: 0},
                 "ItemID.drawingPcbMotherboard": {id: ItemID.pcbMotherboard, count: 1, data: 0},
                 "ItemID.drawingPcbPowerSupply": {id: ItemID.pcbPowerSupply, count: 1, data: 0},
                 "ItemID.drawingPcbControllerHdd": {id: ItemID.pcbControllerHdd, count: 1, data: 0},
@@ -75,6 +78,9 @@ Callback.addCallback("PreLoaded", function(){
         {
             "source": {"id": ItemID.crystalSilicon, "data": 0},
             "result": {
+                "ItemID.drawingATmega2560": {id: ItemID.ATmega2560, count: 1, data: 0},
+                "ItemID.drawingATmega328": {id: ItemID.ATmega328, count: 1, data: 0},
+                "ItemID.drawingChipRaspberry": {id: ItemID.chipRaspberry, count: 1, data: 0},
                 "ItemID.drawingChipset": {id: ItemID.chipset, count: 1, data: 0},
                 "ItemID.drawingCpu": {id: ItemID.cpu, count: 1, data: 0},
                 "ItemID.drawingChipRam": {id: ItemID.chipRam, count: 1, data: 0},
