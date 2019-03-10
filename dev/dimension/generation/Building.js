@@ -198,7 +198,7 @@ if(DEBUG){
     
     // Structure Placer
     IDRegistry.genItemID("placerStructure");
-    Item.createItem("placerStructure", "Structure Placer", {name: "place", meta: 0},{isTech:false,stack: 1});
+    Item.createItem("placerStructure", "Structure Placer", {name: "place", meta: 0},{stack: 1});
     
     var BuildingEditor = {
         edit: function(x, y, z){
