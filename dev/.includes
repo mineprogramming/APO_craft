@@ -12,6 +12,8 @@ core/MachineRecipeRegistry.js
 
 blocks/ores.js
 
+items/craftingTools.js
+
 items/components/minerals.js
 items/components/metals.js
 items/components/other.js
@@ -24,23 +26,12 @@ items/eggs.js
 items/armor.js
 items/guns.js
 items/steelArms.js
-items/craftingTools.js
 
 blocks/decorations.js
 blocks/roads.js
 blocks/signs.js
 blocks/bench.js
 blocks/radiators.js
-
-environment/fog.js
-environment/split.js
-environment/plane.js
-environment/exoskeleton.js
-environment/splitConditions.js
-
-scales/chemical.js
-scales/radiation.js
-scales/biological.js
 
 machine/CokeOven.js
 machine/Extruder.js
@@ -58,7 +49,15 @@ machine/Shredder.js
 machine/FuelGenerator.js
 machine/LightningGenerator.js
 
-dimension/loot.js
+environment/fog.js
+environment/split.js
+environment/plane.js
+environment/exoskeleton.js
+environment/splitConditions.js
+
+scales/chemical.js
+scales/radiation.js
+scales/biological.js
 
 mob/ArmorSet.js
 mob/Mob.js
@@ -66,6 +65,8 @@ mob/Dementor.js
 mob/Military.js
 mob/Mutant.js
 mob/Survived.js
+
+dimension/loot.js
 
 dimension/events/RandomEvents.js
 dimension/events/events.js

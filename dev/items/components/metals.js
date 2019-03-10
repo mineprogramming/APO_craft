@@ -173,3 +173,17 @@ Item.createItem("roller", "Roller", {name: "roller", meta: 0});
 LiquidRegistry.registerLiquid("liquidSolder", "Liquid Solder", ["liquid_solder"]);
 
 
+/* Crafting tools recipes - depend on metals */
+RecipesManager.addShaped({id: ItemID.craftingHammer, count: 1, data: 0}, [
+    "xx ",
+    "x##",
+    "xx "
+], ['x', 265, 0, '#', 280, 0]);
+
+RecipesManager.addShaped({id: ItemID.craftingCutter, count: 1, data: 0}, [
+    "x x",
+    " x ",
+    "a a"
+], ['a', 265, 0, 'x', ItemID.plateIron, 0]);
+
+
