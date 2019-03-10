@@ -5,7 +5,7 @@ Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
 
 // Battery Cap
 IDRegistry.genItemID("batteryCap");
-Item.createItem("batteryCap", "Battery cCap", {name: "cap_aluminium"});
+Item.createItem("batteryCap", "Battery Cap", {name: "cap_aluminium"});
 
 
 // Battery
@@ -147,7 +147,7 @@ RecipesManager.addShaped({id: ItemID.engine, count: 1, data: 0}, [
 
 // Arduino Mega PCB Drawing
 IDRegistry.genItemID("pcbArduinoMega");
-Item.createItem("pcbArduinoMega", "Arduino Uno PCB", {name: "pcb_arduino_mega"});
+Item.createItem("pcbArduinoMega", "Arduino Mega PCB", {name: "pcb_arduino_mega"});
 
 // Arduino Uno PCB Drawing
 IDRegistry.genItemID("pcbArduinoUno");

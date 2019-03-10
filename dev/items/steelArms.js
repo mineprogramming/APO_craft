@@ -18,7 +18,7 @@ ToolAPI.registerSword(ItemID.knifeButterfly, {level: 0, durability: 1856, damage
 
 // Big Sword
 IDRegistry.genItemID("swordBig");
-Item.createItem("swordBig", "Butterfly", {name: "big_sword", meta: 0}, {
+Item.createItem("swordBig", "Big Sword", {name: "big_sword", meta: 0}, {
     stack: 1
 });
 

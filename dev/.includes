@@ -1,5 +1,6 @@
 header.js
 imports.js
+translation.js
 
 RenderTools.js
 items/RecipesManager.js

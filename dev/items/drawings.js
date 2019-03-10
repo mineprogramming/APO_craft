@@ -37,7 +37,7 @@ Item.createItem("drawingChipGeneratorSpaceTime", "Space-Time Frequency Generator
 
 // Arduino Mega PCB Drawing
 IDRegistry.genItemID("drawingPcbArduinoMega");
-Item.createItem("drawingPcbArduinoMega", "Arduino Uno PCB Drawing", {name: "drawing_pcb_arduino_mega"});
+Item.createItem("drawingPcbArduinoMega", "Arduino Mega PCB Drawing", {name: "drawing_pcb_arduino_mega"});
 
 // Arduino Uno PCB Drawing
 IDRegistry.genItemID("drawingPcbArduinoUno");
