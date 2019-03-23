@@ -127,7 +127,7 @@ function Building(filename){
 }
 
 Callback.addCallback("PostLoaded", function(){
-    for(var i = 0; i < 46; i++){
+    for(var i = 0; i < 45; i++){
        buildings.push(new Building(i + ".json"));
     }
 });
