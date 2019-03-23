@@ -220,7 +220,7 @@ var EntityAIDementorAttack = new EntityAIClass({params: {
     attack_damage_close: 6, 
     attack_range_close: 2.5, 
     attack_damage_far: 1,
-    attack_range_far: 8,
+    attack_range_far: 4,
     attack_rate: 12
 }, data: {timer: 0, target: null}, execute: function () {
     if (this.data.target) {

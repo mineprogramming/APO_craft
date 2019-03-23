@@ -1,4 +1,262 @@
 var GLOBAL_LOOT = [
+
+    /* Materials */
+    {
+        "id": ItemID.silver,
+        "data": 0,
+        "chance": 0.03,
+        "count": { "min": 1, "max": 4 }
+    },
+    {
+        "id": ItemID.can,
+        "data": 0,
+        "chance": 0.03,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.batteryCasing,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.batteryCap,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.magnesium,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotTitanium,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotSteel,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotLead,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotAluminium,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotCopper,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 6 }
+    },
+    {
+        "id": ItemID.ingotTin,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.ingotSolder,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateTitanium,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateIron,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateAluminium,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateSteel,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateLead,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateGold,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateAlloy,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateCopper,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.plateTin,
+        "data": 0,
+        "chance": 0.006,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": ItemID.textolite,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.textoliteFoil,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.granulesPolypropylene,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 5 }
+    },
+    {
+        "id": ItemID.crystalSilicon,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 5 }
+    },
+    {
+        "id": ItemID.galliumArsenite,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 5 }
+    },
+    {
+        "id": ItemID.dustSulfur,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 5 }
+    },
+
+    /* Components */
+    {
+        "id": BlockID.casingStabilizer,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.storageBattery,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.ledRed,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 16 }
+    },
+    {
+        "id": BlockID.ledYellow,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 16 }
+    },
+    {
+        "id": BlockID.ledGreen,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 16 }
+    },
+    {
+        "id": BlockID.capacitor,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": BlockID.transistor,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": BlockID.diode,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": BlockID.resistor,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": BlockID.laser,
+        "data": 0,
+        "chance": 0.0007,
+        "count": { "min": 1, "max": 3 }
+    },
+    {
+        "id": BlockID.craftingHammer,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+    {
+        "id": BlockID.craftingCutter,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+
+    /* Press Forms and drawings - not so rare */
+    {
+        "id": ItemID.drawingATmega2560,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.drawingATmega328,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.drawingChipRaspberry,
+        "data": 0,
+        "chance": 0.007,
+        "count": { "min": 1, "max": 1 }
+    },
     {
         "id": ItemID.drawingChipset,
         "data": 0,
@@ -36,6 +294,24 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 1 }
     },
     {
+        "id": ItemID.drawingPcbArduinoMega,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.drawingPcbArduinoUno,
+        "data": 0,
+        "chance": 0.013,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.drawingPcbRaspberry3,
+        "data": 0,
+        "chance": 0.008,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
         "id": ItemID.drawingPcbMotherboard,
         "data": 0,
         "chance": 0.01,
@@ -43,6 +319,12 @@ var GLOBAL_LOOT = [
     },
     {
         "id": ItemID.drawingPcbPowerSupply,
+        "data": 0,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.drawingPcbRam,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 1 }
@@ -60,79 +342,7 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 1 }
     },
     {
-        "id": BlockID.tableAssembly,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.cokeOven,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.crystalizer,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.extruder,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.burnerLaser,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.pressdatal,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.pressPlastic,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.polymerizer,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.rectifier,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.solderingStation,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.generatorLightning,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.generatorFuel,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": BlockID.casingStabilizer,
+        "id": ItemID.pressFormRoller,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 1 }
@@ -161,6 +371,175 @@ var GLOBAL_LOOT = [
         "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
+
+    /* Ready to use PCBs and chips */
+    {
+        "id": ItemID.pcbArduinoMega,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbArduinoUno,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbRaspberry3,
+        "data": 0,
+        "chance": 0.002,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbMotherboard,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbPowerSupply,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbRam,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbCardVideo,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.pcbControllerHdd,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.ATmega2560,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.ATmega328,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chipRaspberry,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chipset,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.cpu,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chipRam,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": ItemID.chipVideo,
+        "data": 0,
+        "chance": 0.0024,
+        "count": { "min": 1, "max": 1 }
+    },
+    
+
+    /* Mechanisms, quite rare, though */
+    {
+        "id": BlockID.tableAssembly,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.cokeOven,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.crystalizer,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.extruder,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.burnerLaser,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.pressPlastic,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.pressMetal,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.polymerizer,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.rectifier,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.solderingStation,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.generatorLightning,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+    {
+        "id": BlockID.generatorFuel,
+        "data": 0,
+        "chance": 0.001,
+        "count": { "min": 1, "max": 1 }
+    },
+
+    /* Guns & weapons */
     {
         "id": ItemID.karambitGradient,
         "data": 0,
@@ -257,6 +636,8 @@ var GLOBAL_LOOT = [
         "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
+
+    /* Armor */
     {
         "id": ItemID.helmetMilitary,
         "data": 0,
@@ -315,12 +696,6 @@ var GLOBAL_LOOT = [
         "id": ItemID.bootsArmy,
         "data": 0,
         "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
-    },
-    {
-        "id": ItemID.can,
-        "data": 0,
-        "chance": 0.1,
         "count": { "min": 1, "max": 1 }
     },
     {
@@ -388,11 +763,5 @@ var GLOBAL_LOOT = [
         "data": 0,
         "chance": 0.01,
         "count": { "min": 3, "max": 5 }
-    },
-    {
-        "id": ItemID.pressFormRoller,
-        "data": 0,
-        "chance": 0.01,
-        "count": { "min": 1, "max": 1 }
     },
 ];
