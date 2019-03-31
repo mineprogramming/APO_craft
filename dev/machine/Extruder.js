@@ -1,3 +1,4 @@
+// Extruder
 IDRegistry.genBlockID("extruder");
 Block.createBlockWithRotation("extruder", [
     {name: "Extruder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_side", 0], ["extruder_side", 1]], inCreative: true}

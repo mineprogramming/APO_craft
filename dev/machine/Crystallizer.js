@@ -1,15 +1,16 @@
+// Crystallizer
 IDRegistry.genBlockID("crystalizer");
 Block.createBlockWithRotation("crystalizer", [
-    {name: "Crystalizer", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
+    {name: "Crystallizer", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.crystalizer, count: 1, data: 0}, [
     "ac",
     "b0b"
-], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', 390, 0, 'b', ItemID.plateAluminium, 0]);
+], ['0', BlockID.machineBlockBasic, 0, 'a', ItemID.raspberryPi3, 0, 'c', 390, 0, 'b', ItemID.plateAluminum, 0]);
 
-var guiCrystalizer = new UI.StandartWindow({
+var guiCrystallizer = new UI.StandartWindow({
     standart: {
-        header: {text: {text: "Crystalizer"}},
+        header: {text: {text: "Crystallizer"}},
         inventory: {standart: true},
         background: {standart: true}
     },
@@ -38,7 +39,7 @@ MachineEssentials.registerStandart(BlockID.crystalizer, {
     result_slots: ["slotResult"],
     progress_scale: "progressScale",
     energy_scale: "energyScale",
-    guiScreen: guiCrystalizer,
+    guiScreen: guiCrystallizer,
     
     resultFunc: function(resultSlots, result){
         resultSlots[0].id = result.id;

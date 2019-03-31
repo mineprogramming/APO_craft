@@ -24,18 +24,18 @@ RecipesManager.addShaped({id: BlockID.blockLead, count: 1, data: 0}, [
 ], ['a', ItemID.ingotLead, 0]);
 
 
-// Aluminium Block
-IDRegistry.genBlockID("blockAluminium");
-Block.createBlock("blockAluminium", [
-    {name: "Aluminium Block", texture: [["block_aluminium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.blockAluminium, 3);
-ToolAPI.registerBlockMaterial(BlockID.blockAluminium, "stone", 2, true);
+// Aluminum Block
+IDRegistry.genBlockID("blockAluminum");
+Block.createBlock("blockAluminum", [
+    {name: "Aluminum Block", texture: [["block_aluminum", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.blockAluminum, 3);
+ToolAPI.registerBlockMaterial(BlockID.blockAluminum, "stone", 2, true);
 
-RecipesManager.addShaped({id: BlockID.blockAluminium, count: 1, data: 0}, [
+RecipesManager.addShaped({id: BlockID.blockAluminum, count: 1, data: 0}, [
     "aaa",
     "aaa",
     "aaa"
-], ['a', ItemID.ingotAluminium, 0]);
+], ['a', ItemID.ingotAluminum, 0]);
 
 
 // Sulfur Block

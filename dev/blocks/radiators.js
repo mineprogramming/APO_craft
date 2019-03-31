@@ -126,15 +126,15 @@ RadiatorsManager.bakeRadiatorRender(BlockID.radiatorLead, "block_lead", 0);
 Recipes.addFurnace(BlockID.radiatorLead, BlockID.blockLead, 0);
 
 
-// Aluminium Radiator
-IDRegistry.genBlockID("radiatorAluminium");
-Block.createBlock("radiatorAluminium", [{
-    name: "Aluminium Radiator",
-    texture: [["block_aluminium", 0]],
+// Aluminum Radiator
+IDRegistry.genBlockID("radiatorAluminum");
+Block.createBlock("radiatorAluminum", [{
+    name: "Aluminum Radiator",
+    texture: [["block_aluminum", 0]],
     inCreative: true
 }]);
-RadiatorsManager.bakeRadiatorRender(BlockID.radiatorAluminium, "block_aluminium", 0);
-Recipes.addFurnace(BlockID.radiatorAluminium, BlockID.blockAluminium, 0);
+RadiatorsManager.bakeRadiatorRender(BlockID.radiatorAluminum, "block_aluminum", 0);
+Recipes.addFurnace(BlockID.radiatorAluminum, BlockID.blockAluminum, 0);
 
 
 // Copper Radiator
@@ -242,7 +242,7 @@ RadiatorsManager.addId(BlockID.radiatorIron);
 RadiatorsManager.addId(BlockID.radiatorGold);
 RadiatorsManager.addId(BlockID.radiatorTitanium);
 RadiatorsManager.addId(BlockID.radiatorLead);
-RadiatorsManager.addId(BlockID.radiatorAluminium);
+RadiatorsManager.addId(BlockID.radiatorAluminum);
 RadiatorsManager.addId(BlockID.radiatorCopper);
 RadiatorsManager.addId(BlockID.radiatorTin);
 

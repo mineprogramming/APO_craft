@@ -1,3 +1,4 @@
+// Chemical Contamination Level Detector
 IDRegistry.genItemID("chemicalLD");
 Item.createItem("chemicalLD", "Chemical Contamination Level Detector", {name: "chemical_ld", meta: 0}, {});
 
@@ -12,7 +13,7 @@ RecipesManager.addShaped({id: ItemID.chemicalLD, count: 1, data: 0}, [
     'e', ItemID.buttonSet, 0]);
 
 
-
+// Radiation Level Detector
 IDRegistry.genItemID("radiationLD");
 Item.createItem("radiationLD", "Radiation Level Detector", {name: "radiation_ld", meta: 0}, {});
 
@@ -30,6 +31,7 @@ RecipesManager.addShaped({id: ItemID.radiationLD, count: 1, data: 0}, [
     'h', ItemID.ledGreen, 0]);
 
 
+// Biological Contamination Level Detector
 IDRegistry.genItemID("biologicalLD");
 Item.createItem("biologicalLD", "Biological Contamination Level Detector", {name: "biological_ld", meta: 0}, {});
 
@@ -45,6 +47,7 @@ RecipesManager.addShaped({id: ItemID.biologicalLD, count: 1, data: 0}, [
     'h', ItemID.ledGreen, 0]);
 
 
+// Multi-Purpose Level Detector 
 IDRegistry.genItemID("multiPurposeLD");
 Item.createItem("multiPurposeLD", "Multi-Purpose Level Detector", {name: "multi_purpose_ld", meta: 0}, {});
 

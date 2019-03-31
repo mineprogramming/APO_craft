@@ -1,3 +1,4 @@
+// Metal Press
 IDRegistry.genBlockID("pressMetal");
 Block.createBlockWithRotation("pressMetal", [
     {name: "Metal Press", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
@@ -109,9 +110,9 @@ Callback.addCallback("PreLoaded", function(){
             }
         },
         {
-            "source": {"id": BlockID.blockAluminium, "data": 0},
+            "source": {"id": BlockID.blockAluminum, "data": 0},
             "result": {
-                "ItemID.pressFormRadiator": {id: BlockID.radiatorAluminium, count: 1, data: 0}
+                "ItemID.pressFormRadiator": {id: BlockID.radiatorAluminum, count: 1, data: 0}
             }
         },
         {

@@ -50,7 +50,7 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": ItemID.ingotAluminium,
+        "id": ItemID.ingotAluminum,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 3 }
@@ -86,7 +86,7 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": ItemID.plateAluminium,
+        "id": ItemID.plateAluminum,
         "data": 0,
         "chance": 0.006,
         "count": { "min": 1, "max": 3 }
@@ -152,7 +152,7 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 5 }
     },
     {
-        "id": ItemID.galliumArsenite,
+        "id": ItemID.galliumArsenide,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 5 }
@@ -233,6 +233,30 @@ var GLOBAL_LOOT = [
     },
     {
         "id": BlockID.craftingCutter,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+    {
+        "id": BlockID.sensorRadiation,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+    {
+        "id": BlockID.sensorViruses,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+    {
+        "id": BlockID.sensorNitrates,
+        "data": 0,
+        "chance": 0.0015,
+        "count": { "min": 1, "max": 0 }
+    },
+    {
+        "id": BlockID.displayLed,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }

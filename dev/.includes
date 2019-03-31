@@ -44,7 +44,7 @@ machine/MetalPress.js
 machine/AssemblyTable.js
 machine/SolderingStation.js
 machine/LaserBurner.js
-machine/Crystalizer.js
+machine/Crystallizer.js
 machine/Stabilizer.js
 machine/Shredder.js
 machine/FuelGenerator.js

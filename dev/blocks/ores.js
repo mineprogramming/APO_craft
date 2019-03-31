@@ -15,7 +15,7 @@ Block.registerDropFunction("oreGalliumArsenide", function(coords, id, data, leve
         if(enchant.silk){
             return [[id, 1, 0]];
         }
-        var drop = [[ItemID.galliumArsenite, 1, 0]];
+        var drop = [[ItemID.galliumArsenide, 1, 0]];
         if(Math.random() < enchant.fortune / 3 - 1 / 3){drop.push(drop[0]);}
         ToolAPI.dropOreExp(coords, 3, 7, enchant.experience);
         return drop;
@@ -57,11 +57,11 @@ Block.setDestroyTime(BlockID.oreLead, 2);
 ToolAPI.registerBlockMaterial(BlockID.oreLead, "stone", 2, true);
 
 
-// Aluminium Ore
-IDRegistry.genBlockID("oreAluminium"); 
-Block.createBlock("oreAluminium", [{name: "Aluminium Ore", texture: [["ore_aluminium", 0]], inCreative: true}], "opaque");
-Block.setDestroyTime(BlockID.oreAluminium, 2);
-ToolAPI.registerBlockMaterial(BlockID.oreAluminium, "stone", 2, true);
+// Aluminum Ore
+IDRegistry.genBlockID("oreAluminum"); 
+Block.createBlock("oreAluminum", [{name: "Aluminum Ore", texture: [["ore_aluminum", 0]], inCreative: true}], "opaque");
+Block.setDestroyTime(BlockID.oreAluminum, 2);
+ToolAPI.registerBlockMaterial(BlockID.oreAluminum, "stone", 2, true);
 
 
 // Sulfur Ore

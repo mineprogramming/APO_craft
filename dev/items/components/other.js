@@ -1,38 +1,38 @@
 /* Trading */
 
-//Silver
+// Silver
 IDRegistry.genItemID("silver");
 Item.createItem("silver", "Silver", {name: "silver", meta: 0}, {});
 
 
 /*Oil distillation products */
 
-//Waste
+// Waste
 IDRegistry.genItemID("waste");
 Item.createItem("waste", "Waste", {name: "waste", meta: 0}, {});
 
-//Quartz Dust
+// Quartz Dust
 IDRegistry.genItemID("dustQuartz");
 Item.createItem("dustQuartz", "Quartz Dust", {name: "dust_quartz", meta: 0}, {});
 
-//Bitumen
+// Bitumen
 IDRegistry.genItemID("bitumen");
 Item.createItem("bitumen", "Bitumen", {name: "bitumen", meta: 0}, {});
 
-//Propylene
+// Propylene
 IDRegistry.genItemID("propylene");
 Item.createItem("propylene", "Propylene", {name: "propylene", meta: 0}, {});
 
-//Oil Resin
+// Oil Resin
 IDRegistry.genItemID("oilResin");
 Item.createItem("oilResin", "Oil Resin", {name: "oil_resin", meta: 0}, {});
 
-//Fuel Oil
+// Fuel Oil
 IDRegistry.genItemID("oilFuel");
 Item.createItem("oilFuel", "Fuel Oil", {name: "oil_fuel", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.oilFuel, 0, 1000);
 
-//Petrol
+// Petrol
 IDRegistry.genItemID("petrol");
 Item.createItem("petrol", "Petrol", {name: "petrol", meta: 0}, {});
 Recipes.addFurnaceFuel(ItemID.petrol, 0, 3000);
@@ -145,7 +145,7 @@ RecipesManager.addShaped({id: ItemID.chopper, count: 0, data: 0}, [
 ], ['a', 265, 0]);
 
 
-//Scrap from Waste
+// Scrap from Waste
 Callback.addCallback("ICore", function(api){
     RecipesManager.addShaped({id: ItemID.scrap, count: 1, data: 0}, [
         "aaa",

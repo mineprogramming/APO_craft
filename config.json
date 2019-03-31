@@ -1,7 +1,7 @@
 {
     "enabled": true,
-    "debug_mode": true,
-    "late_recipes_registration": false,
-    "split_on_start": true,
+    "debug_mode": false,
+    "late_recipes_registration": true,
+    "split_on_start": false,
     "events": true
 }

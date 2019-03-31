@@ -1,3 +1,4 @@
+// Coke Oven
 IDRegistry.genBlockID("cokeOven");
 Block.createBlockWithRotation("cokeOven", [
     {name: "Coke Oven", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["coke_oven_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}

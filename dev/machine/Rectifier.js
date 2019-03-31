@@ -1,3 +1,4 @@
+// Rectifier
 IDRegistry.genBlockID("rectifier");
 Block.createBlockWithRotation("rectifier", [
     {name: "Rectifier", texture: [["std_bottom", 0], ["rectifier_top", 0], ["std_side", 0], ["rectifier_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}

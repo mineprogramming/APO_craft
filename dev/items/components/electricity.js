@@ -5,7 +5,7 @@ Item.createItem("batteryCasing", "Battery Casing", {name: "battery_corp"});
 
 // Battery Cap
 IDRegistry.genItemID("batteryCap");
-Item.createItem("batteryCap", "Battery Cap", {name: "cap_aluminium"});
+Item.createItem("batteryCap", "Battery Cap", {name: "cap_aluminum"});
 
 
 // Battery
@@ -52,19 +52,19 @@ RecipesManager.addShaped({id: ItemID.ledRed, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
-], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+], ['a', 20, 0, 'b', 351, 1, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenide, 0, 'e', ItemID.cableCopper0, 0]);
 
 RecipesManager.addShaped({id: ItemID.ledYellow, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
-], ['a', 20, 0, 'b', 351, 11, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+], ['a', 20, 0, 'b', 351, 11, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenide, 0, 'e', ItemID.cableCopper0, 0]);
 
 RecipesManager.addShaped({id: ItemID.ledGreen, count: 16, data: 0}, [
      " a ",
      "cbc",
      "ede"
-], ['a', 20, 0, 'b', 351, 2, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenite, 0, 'e', ItemID.cableCopper0, 0]);
+], ['a', 20, 0, 'b', 351, 2, 'c', ItemID.platePolypropylene, 0, 'd', ItemID.galliumArsenide, 0, 'e', ItemID.cableCopper0, 0]);
 
 
 // Capacitor
@@ -83,13 +83,13 @@ Item.createItem("transistor", "Transistor", {name: "transistor", data: 0});
 RecipesManager.addShaped({id: ItemID.transistor, count: 1, data: 0}, [
      "aaa",
      " a "
-], ['a', ItemID.galliumArsenite, 0]);
+], ['a', ItemID.galliumArsenide, 0]);
 
 
 // Diode
 IDRegistry.genItemID("diode");
 Item.createItem("diode", "Diode", {name: "diode", data: 0});
-RecipesManager.addShapeless({id: ItemID.diode, count: 1, data: 0}, [{id: ItemID.galliumArsenite, data: 0}, {id: ItemID.galliumArsenite, data: 0}]);
+RecipesManager.addShapeless({id: ItemID.diode, count: 1, data: 0}, [{id: ItemID.galliumArsenide, data: 0}, {id: ItemID.galliumArsenide, data: 0}]);
 
 
 // Resistor
@@ -116,7 +116,7 @@ for(var i = ItemID.ledRed; i <= ItemID.ledGreen; i++){
 }
 
 
-// transformer
+// Transformer
 IDRegistry.genItemID("transformer");
 Item.createItem("transformer", "Transformer", {name: "transformer", data: 0});
 RecipesManager.addShaped({id: ItemID.transformer, count: 1, data: 0}, [

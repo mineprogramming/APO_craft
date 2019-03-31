@@ -1,6 +1,7 @@
+// Soldering Station
 IDRegistry.genBlockID("solderingStation");
 Block.createBlockWithRotation("solderingStation", [
-    {name: "Soldering Station", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+    {name: "Soldering Station", texture: [["soldering_bottom", 0], ["soldering_top", 0], ["soldering_side", 0], ["soldering_front", 0], ["soldering_side", 0], ["soldering_side", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.solderingStation, count: 1, data: 0}, [
     "cb-",

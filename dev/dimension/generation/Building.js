@@ -41,6 +41,11 @@ function Building(filename){
     };
     
     var json = JSON.parse(readFile(this.path));
+    
+    if(!json){
+        throw "Building file not found or is not valid: " + this.path;
+    }
+    
     if(DEBUG){
         // Save JSON object for building editor
         this.json = json;
@@ -127,7 +132,7 @@ function Building(filename){
 }
 
 Callback.addCallback("PostLoaded", function(){
-    for(var i = 0; i < 45; i++){
+    for(var i = 0; i < BUILDINGS_COUNT; i++){
        buildings.push(new Building(i + ".json"));
     }
 });

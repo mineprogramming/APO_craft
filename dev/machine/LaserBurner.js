@@ -1,3 +1,4 @@
+// Laser Burner
 IDRegistry.genBlockID("burnerLaser");
 Block.createBlockWithRotation("burnerLaser", [
     {name: "Laser Burner", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}

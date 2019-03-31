@@ -1,3 +1,4 @@
+// Shredder
 IDRegistry.genBlockID("shredder");
 Block.createBlockWithRotation("shredder", [
     {name: "Shredder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}

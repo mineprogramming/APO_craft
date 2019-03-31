@@ -16,7 +16,7 @@ Item.createItem("drawingChipRaspberry", "Raspberry PI Central Chip Drawing", {na
 IDRegistry.genItemID("drawingChipset");
 Item.createItem("drawingChipset", "Chipset Drawing", {name: "drawing_chipset"});
 
-// CPU
+// CPU Drawing
 IDRegistry.genItemID("drawingCpu");
 Item.createItem("drawingCpu", "CPU Drawing", {name: "drawing_cpu"});
 

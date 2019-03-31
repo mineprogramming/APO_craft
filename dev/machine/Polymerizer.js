@@ -1,3 +1,4 @@
+// Polymerizer
 IDRegistry.genBlockID("polymerizer");
 Block.createBlockWithRotation("polymerizer", [
     {name: "Polymerizer", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["polymerizer_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}

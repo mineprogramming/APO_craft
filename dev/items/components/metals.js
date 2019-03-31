@@ -27,10 +27,10 @@ IDRegistry.genItemID("ingotLead");
 Item.createItem("ingotLead", "Lead Ingot", {name: "ingot_lead"});
 Recipes.addFurnace(BlockID.oreLead, ItemID.ingotLead, 0);
 
-// Aluminium Ingot
-IDRegistry.genItemID("ingotAluminium");
-Item.createItem("ingotAluminium", "Aluminium Ingot", {name: "ingot_aluminium"});
-Recipes.addFurnace(BlockID.oreAluminium, ItemID.ingotAluminium, 0);
+// Aluminum Ingot
+IDRegistry.genItemID("ingotAluminum");
+Item.createItem("ingotAluminum", "Aluminum Ingot", {name: "ingot_aluminum"});
+Recipes.addFurnace(BlockID.oreAluminum, ItemID.ingotAluminum, 0);
 
 // Copper Ingot
 IDRegistry.genItemID("ingotCopper");
@@ -65,13 +65,15 @@ IDRegistry.genItemID("plateIron");
 Item.createItem("plateIron", "Iron Plate", {name: "plate_iron"});
 RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateIron, count: 1, data: 0}, [{id: 265, data: 0}], ItemID.craftingHammer);
 
-// Aluminium Plate
-IDRegistry.genItemID("plateAluminium");
-Item.createItem("plateAluminium", "Aluminium Plate", {name: "plate_aluminium"});
+// Aluminum Plate
+IDRegistry.genItemID("plateAluminum");
+Item.createItem("plateAluminum", "Aluminum Plate", {name: "plate_aluminum"});
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateAluminum, count: 1, data: 0}, [{id: ItemID.ingotAluminum, data: 0}], ItemID.craftingHammer);
 
 // Steel Plate
 IDRegistry.genItemID("plateSteel");
 Item.createItem("plateSteel", "Steel Plate", {name: "plate_steel"});
+RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateSteel, count: 1, data: 0}, [{id: ItemID.ingotSteel, data: 0}], ItemID.craftingHammer);
 
 // Lead Plate
 IDRegistry.genItemID("plateLead");
@@ -103,6 +105,12 @@ RecipesManager.addRecipeWithCraftingTool({id: ItemID.plateTin, count: 1, data: 0
 // Lead Nugget
 IDRegistry.genItemID("nuggetLead");
 Item.createItem("nuggetLead", "Lead Nugget", {name: "nugget_lead"});
+RecipesManager.addShapeless({id: ItemID.nuggetLead, count: 9, data: 0}, [{id: ItemID.ingotLead, data: 0}]);
+RecipesManager.addShaped({id: ItemID.ingotLead, count: 1, data: 0}, [
+    "aaa",
+    "aaa",
+    "aaa"
+], ['a', ItemID.nuggetLead, 0]);
 
 
 /* DUSTS */
