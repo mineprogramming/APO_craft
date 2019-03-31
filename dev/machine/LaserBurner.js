@@ -1,7 +1,7 @@
 // Laser Burner
 IDRegistry.genBlockID("burnerLaser");
 Block.createBlockWithRotation("burnerLaser", [
-    {name: "Laser Burner", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+    {name: "Laser Burner", texture: [["burner_top", 0], ["burner_top", 0], ["soldering_bottom", 0], ["burner_side", 0], ["soldering_bottom", 0], ["soldering_bottom", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.burnerLaser, count: 1, data: 0}, [
     "ab",

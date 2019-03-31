@@ -1,7 +1,7 @@
 // Fuel Generator
 IDRegistry.genBlockID("generatorFuel");
 Block.createBlockWithRotation("generatorFuel", [
-    {name: "Fuel Generator", texture: [["std_bottom", 0], ["std_top", 0], ["std_side", 0], ["plastic_press_front", 0], ["std_side", 0], ["std_side", 0]], inCreative: true}
+    {name: "Fuel Generator", texture: [["soldering_bottom", 0], ["soldering_bottom", 0], ["soldering_bottom", 0], ["fuel_front", 0], ["soldering_bottom", 0], ["soldering_bottom", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.generatorFuel, count: 1, data: 0}, [
     "ac ",

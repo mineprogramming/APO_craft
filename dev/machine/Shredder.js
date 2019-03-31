@@ -1,7 +1,7 @@
 // Shredder
 IDRegistry.genBlockID("shredder");
 Block.createBlockWithRotation("shredder", [
-    {name: "Shredder", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
+    {name: "Shredder", texture: [["soldering_bottom", 0], ["soldering_bottom", 0], ["soldering_side", 0], ["shredder_front", 0], ["soldering_side", 0], ["soldering_side", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.shredder, count: 1, data: 0}, [
     "a* ",

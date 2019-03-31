@@ -60,14 +60,14 @@ scales/chemical.js
 scales/radiation.js
 scales/biological.js
 
+dimension/loot.js
+
 mob/ArmorSet.js
 mob/Mob.js
 mob/Dementor.js
 mob/Military.js
 mob/Mutant.js
 mob/Survived.js
-
-dimension/loot.js
 
 dimension/events/RandomEvents.js
 dimension/events/events.js

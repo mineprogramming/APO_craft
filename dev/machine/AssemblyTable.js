@@ -1,7 +1,7 @@
 // Assembly Table
 IDRegistry.genBlockID("tableAssembly");
 Block.createBlockWithRotation("tableAssembly", [
-    {name: "Assembly Table", texture: [["std_bottom", 0], ["std_top", 0], ["table_assembley_side", 0], ["table_assembley_side", 0], ["table_assembley_side", 0], ["table_assembley_side", 0]], inCreative: true}
+    {name: "Assembly Table", texture: [["soldering_bottom", 0], ["assembley_top", 0], ["assembley_side", 0], ["assembley_side", 0], ["assembley_side", 0], ["assembley_side", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.tableAssembly, count: 1, data: 0}, [
     "abc",

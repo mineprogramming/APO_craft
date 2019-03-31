@@ -1,7 +1,7 @@
 // Crystallizer
 IDRegistry.genBlockID("crystalizer");
 Block.createBlockWithRotation("crystalizer", [
-    {name: "Crystallizer", texture: [["std_bottom", 0], ["extruder_top", 0], ["std_side", 0], ["extruder_front", 0], ["extruder_front", 0], ["extruder_front", 1]], inCreative: true}
+    {name: "Crystallizer", texture: [["burner_top", 0], ["burner_top", 0], ["soldering_bottom", 0], ["crystallizer_front", 0], ["soldering_bottom", 0], ["soldering_bottom", 0]], inCreative: true}
 ], "opaque");
 RecipesManager.addShaped({id: BlockID.crystalizer, count: 1, data: 0}, [
     "ac",
