@@ -236,7 +236,7 @@ Block.registerDropFunction("bigRadiator", function () {
     model.addBox(-8 / 16, 2 / 16, -8 / 16, -6 / 16, 16 / 16, -6 / 16, texture, 0);
 
     render.addEntry(model);
-})("hopper_side");
+})("block_aluminum");
 
 RadiatorsManager.addId(BlockID.radiatorIron);
 RadiatorsManager.addId(BlockID.radiatorGold);
