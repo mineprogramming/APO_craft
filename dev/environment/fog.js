@@ -16,6 +16,7 @@ function addFog(coords, radius, count){
     }
 }
 
+var FOG_DENCITY = __config__.getNumber('fog_density');
 
 Callback.addCallback("tick", function(){
     if(fog){

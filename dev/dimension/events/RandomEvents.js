@@ -2,16 +2,12 @@ var RandomEvents = {
     events: [],
     
     registerEvent: function(eventName, eventFrequency, eventCallback){
-        if(__config__.getBool("events")){
-            this.events.push({name: eventName, frequency: eventFrequency, callback: eventCallback});
-        }
+        this.events.push({name: eventName, frequency: eventFrequency, callback: eventCallback});
     },
     
     registerTimedEvent: function(data){
-        if(__config__.getBool("events")){
-            data.enabled = false;
-            this.events.push(data);
-        }
+        data.enabled = false;
+        this.events.push(data);
     },
     
     randomCoordsNearPlayer: function(){
