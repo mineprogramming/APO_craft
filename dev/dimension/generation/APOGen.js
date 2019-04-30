@@ -76,7 +76,7 @@ APOGen.lateGen = function(x, z){
     // GENERATE BUILDINGS
     else if(Math.random() < BUILDING_FREQUENCY){
         var i = Math.floor(Math.random() * BUILDINGS_COUNT);
-        buildings[i].build(x, GENERATION_HEIGHT, z);
+        BuildingsSystem.build(buildings[i], x, GENERATION_HEIGHT, z);
     }
     
     // GRAVEL DUMPS

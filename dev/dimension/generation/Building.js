@@ -3,9 +3,6 @@ var buildings = [];
 function Building(filename){
     this.path = __dir__ + "buildings/" + filename;
     
-    var blocks;
-    var loot = [];
-    
     var parseBlocks = function(array){
         for(var i = 0; i < array.length; i++){
             for(var j = 0; j < array[0].length; j++){
@@ -13,8 +10,11 @@ function Building(filename){
                     let block = array[i][j][k];
                     if(Number.isInteger(block) || typeof block == "string"){
                         block = {id: block, data: 0}
-                    } 
-                    array[i][j][k] = {id: eval(block.id), data: block.data || block.meta || 0};
+                    }
+                    if(typeof block.id == "string"){
+                        block.id = eval(block.id);
+                    }
+                    array[i][j][k] = {id: block.id, data: block.data || block.meta || 0};
                 }
             }
         }
@@ -23,66 +23,77 @@ function Building(filename){
     
     var parseLoot = function(array){
         for(var i in array){
-            array[i].id = eval(array[i].id);
+            if(typeof array[i].id == "string"){
+                array[i].id = eval(array[i].id);
+            }
         }
         return array;
     };
     
-    var getCount = function(){
-        var count = 0;
-        for(a in blocks){
-            for(b in blocks[a]){
-                for(c in blocks[a][b]){
-                    count += 1;
-                }
-            }
-        }
-        return count;
-    };
+    this.json = JSON.parse(readFile(this.path));
     
-    var json = JSON.parse(readFile(this.path));
-    
-    if(!json){
+    if(!this.json){
         throw "Building file not found or is not valid: " + this.path;
     }
-    
-    if(DEBUG){
-        // Save JSON object for building editor
-        this.json = json;
-    }
-    
-    if(Array.isArray(json)){
-        blocks = parseBlocks(json);
+        
+    if(Array.isArray(this.json)){
+        this.blocks = parseBlocks(this.json);
     } else {
-        blocks = parseBlocks(json.blocks);
-        loot = parseLoot(json.loot);
+        this.blocks = parseBlocks(this.json.blocks);
+        this.loot = parseLoot(this.json.loot);
     }
     
-    if(!Array.isArray(loot)){
-        loot = [];
+    if(!Array.isArray(this.loot)){
+        this.loot = [];
     }
     
     for(var i in GLOBAL_LOOT){
-        loot.push(GLOBAL_LOOT[i]);
+        this.loot.push(GLOBAL_LOOT[i]);
     }
     
-    this.count = getCount();
     this.size = {
-        x: blocks[0].length,
-        y: blocks.length,
-        z: blocks[0][0].length
+        x: this.blocks[0].length,
+        y: this.blocks.length,
+        z: this.blocks[0][0].length
     }
     
-    this.build = function(x1, y1, z1, edit){
+    this.count = this.size.x * this.size.y * this.size.z; 
+}
+
+
+Callback.addCallback("PostLoaded", function(){
+    var caching = __config__.getBool("caching");
+    if(!caching || !BuildingsSystem.loadCache()){
+        // load from mods file and parse
+        BuildingsSystem.loadNormal();
+        if(caching){
+            BuildingsSystem.saveCache();
+        }
+    }
+    BuildingsSystem.customLoading("Post Initialization...");
+});
+
+var BuildingsSystem = {
+    staticidsFile: FileTools.getFullPath("games/com.mojang/mods/.staticids"),
+    checksumFile: FileTools.getFullPath("games/com.mojang/innercore/cache/checksum.txt"),
+    cacheFile: FileTools.getFullPath("games/com.mojang/innercore/cache/apo.json"),
+    
+    build: function(building, x1, y1, z1, edit){
         //Choose random block for generation
         var randoms = [];
-        for(var key in json.randomizer){
-            var randomizer = json.randomizer[key];
+        for(var key in building.json.randomizer){
+            var randomizer = building.json.randomizer[key];
+            if(typeof randomizer.block.id == "string"){
+                randomizer.block.id = eval(randomizer.block.id);
+            }
             var arr = randomizer.variations;
             var variation = arr[randomInt(0, arr.length-1)];
+            if(typeof variation.id == "string"){
+                variation.id = eval(variation.id);
+            }
             randoms.push({
-                "block": {id: eval(randomizer.block.id), data: randomizer.block.data || randomizer.block.meta || 0}, 
-                "variation": {id: eval(variation.id), data: variation.data || variation.meta || 0}
+                "block": {id: randomizer.block.id, data: randomizer.block.data || randomizer.block.meta || 0}, 
+                "variation": {id: variation.id, data: variation.data || variation.meta || 0}
             });
         }
 
@@ -91,10 +102,10 @@ function Building(filename){
         }
         
         //generation itself
-        for(var y = 0; y < blocks.length; y++){
-            for(var x = 0; x < blocks[0].length; x++){
-                for(var z = 0; z < blocks[0][0].length; z++){
-                    var block = blocks[y][x][z];
+        for(var y = 0; y < building.blocks.length; y++){
+            for(var x = 0; x < building.blocks[0].length; x++){
+                for(var z = 0; z < building.blocks[0][0].length; z++){
+                    var block = building.blocks[y][x][z];
                     
                     if(!edit && block.id == 0)
                         continue;
@@ -109,11 +120,11 @@ function Building(filename){
                     }
                     
                     World.setBlock(x + x1, y + y1, z + z1, block.id, block.data);
-                    if(block.id == 54 && loot){
+                    if(block.id == 54 && building.loot){
                         var container = World.getContainer(x + x1, y + y1, z + z1);
                         if(container != null){
-                            for(var key in loot){
-                                let item = loot[key];
+                            for(var key in building.loot){
+                                let item = building.loot[key];
                                 if(Math.random() < item.chance){
                                     var count = randomInt(item.count.min, item.count.max);
                                     container.setSlot(Math.floor(Math.random() * 27), item.id || 0, count, item.meta || item.data || 0);
@@ -128,14 +139,52 @@ function Building(filename){
         if(DEBUG) {
             NativeAPI.setTileUpdateAllowed(true);
         }
+    },
+    
+    loadNormal: function(){
+        var time = Date.now();
+        for(var i = 0; i < BUILDINGS_COUNT; i++){
+            BuildingsSystem.customLoading("[A.P.O. Craft] Loading buildings: " + (i + 1) + "/" + BUILDINGS_COUNT);
+            buildings.push(new Building(i + ".json"));
+        }
+        Logger.Log(BUILDINGS_COUNT + " buildings loaded in " + (Date.now() - time) + " milliseconds", "A.P.O. Craft");
+    },
+    
+    loadCache: function(){
+        BuildingsSystem.customLoading("[A.P.O. Craft] Loading buildings from cache...");
+        
+        // Get cached .staticids size
+        this.currentLength = new java.io.File(this.staticidsFile).length();
+        var cachedLength = FileTools.ReadText(this.checksumFile);
+      
+        if(this.currentLength == cachedLength){
+            // load from cache
+            var time = Date.now();
+            buildings = FileTools.ReadJSON(this.cacheFile);
+            if(!buildings || buildings.length == 0){
+                return false;
+            }
+            Logger.Log(BUILDINGS_COUNT + " buildings loaded from cache in " + (Date.now() - time) + " milliseconds", "A.P.O. Craft");
+            return true;
+        }
+        
+        return false;
+    },
+    
+    saveCache: function(){
+        // Save cache
+        BuildingsSystem.customLoading("[A.P.O. Craft] Saving cache...");
+        var time = Date.now();
+        FileTools.WriteJSON(this.cacheFile, buildings);
+        FileTools.WriteText(this.checksumFile, "" + this.currentLength);
+        Logger.Log("Cache files generated in " + (Date.now() - time) + " milliseconds", "A.P.O. Craft");
+    },
+    
+    customLoading: function(text){
+        var clazz = java.lang.Class.forName("zhekasmirnov.launcher.ui.LoadingUI", true, UI.getContext().getClass().getClassLoader());
+        clazz.getMethod("setText", new java.lang.String().getClass()).invoke(null, new java.lang.String(text));
     }
 }
-
-Callback.addCallback("PostLoaded", function(){
-    for(var i = 0; i < BUILDINGS_COUNT; i++){
-       buildings.push(new Building(i + ".json"));
-    }
-});
 
 
 function readFile(path){
@@ -217,7 +266,7 @@ if(DEBUG){
                 dialog.setTitle("What do you want to build?");
                 dialog.setItems(items, function(d, item){
                     BuildingEditor.current = buildings[item];
-                    BuildingEditor.current.build(x, y, z, true);
+                    BuildingsSystem.build(BuildingEditor.current, x, y, z, true);
                     WorldEdit.selectPosition({x: x, y: y, z: z}, {
                         x: x + BuildingEditor.current.size.x,
                         y: y + BuildingEditor.current.size.y,
