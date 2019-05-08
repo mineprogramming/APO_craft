@@ -1,4 +1,4 @@
-var CHEMICAL_RESISTANT_ARMOR = [ItemID.helmetOpsCore, ItemID.hazmatMask, ItemID.hazmatHelmetApo];
+var CHEMICAL_RESISTANT_ARMOR = [ItemID.helmetOpsCore, ItemID.hazmatMask, ItemID.hazmatHelmetApo, ItemID.helmetExo];
 
 var chemicalScale = new ScalesRPG.Scale({
     bitmaps:{
