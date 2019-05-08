@@ -7,20 +7,70 @@ var fogParticle = Particles.registerParticleType({
 
 var fog = false;
 
-function addFog(coords, radius, count){
-    for(var i = 0; i < count; i++){
-        let x = coords.x - radius + Math.random() * radius * 2;
-        let y = coords.y - radius + Math.random() * radius * 2;
-        let z = coords.z - radius + Math.random() * radius * 2;
-        Particles.addParticle(fogParticle, x, y, z, 0, 0.01, 0);
-    }
-}
+
 
 var FOG_DENCITY = __config__.getNumber('fog_density');
 
-Callback.addCallback("tick", function(){
-    if(fog){
-        let coords = Entity.getPosition(Player.get());
-        addFog(coords, 3, 7);
+var Fog = {
+    ticks: 0,
+    
+    tick: function(){
+        this.ticks++;
+        if(this.ticks % 200 == 0){
+            var helmet = Player.getArmorSlot(Native.ArmorType.helmet).id;
+            Game.message(helmet);
+            if(CHEMICAL_RESISTANT_ARMOR.indexOf(helmet) == -1){
+                chemicalScale.increase();
+                if(chemicalScale.getValue() == 20){
+                    Entity.damageEntity(Player.get(), 5, "chemistry");
+                }
+            }
+        }
+    },
+    
+    disable: function(){
+        this.ticks = 0;
+    },
+    
+    add: function(coords, radius, count){
+        for(var i = 0; i < count; i++){
+            let x = coords.x - radius + Math.random() * radius * 2;
+            let y = coords.y - radius + Math.random() * radius * 2;
+            let z = coords.z - radius + Math.random() * radius * 2;
+            Particles.addParticle(fogParticle, x, y, z, 0, 0.01, 0);
+        }
+    }
+}
+
+
+if(__config__.getBool("weather")){
+    RandomEvents.registerTimedEvent({
+        name: "toxic_fog",
+        frequency: 0.01, // 0.0001,
+        time: 1000,
+        
+        enable: function(){
+            
+        },
+        
+        tick: function(){
+            Fog.tick();
+            let coords = Entity.getPosition(Player.get());
+            Fog.add(coords, 3, 7);
+        },
+        
+        disable: function(){
+            Fog.disable();
+        }
+    });
+}
+
+Callback.addCallback("ItemUse", function(coords, item, block){
+    let x = coords.relative.x;
+    let y = coords.relative.y;
+    let z = coords.relative.z;
+    if(item.id == 280){
+        chemicalScale.setValue(10);  
+        Player.setHunger(10);
     }
 });

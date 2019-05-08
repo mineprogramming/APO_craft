@@ -50,12 +50,6 @@ machine/Shredder.js
 machine/FuelGenerator.js
 machine/LightningGenerator.js
 
-environment/fog.js
-environment/split.js
-environment/plane.js
-environment/exoskeleton.js
-environment/splitConditions.js
-
 scales/chemical.js
 scales/radiation.js
 scales/biological.js
@@ -71,6 +65,12 @@ mob/Survived.js
 
 dimension/events/RandomEvents.js
 dimension/events/events.js
+
+environment/fog.js
+environment/split.js
+environment/plane.js
+environment/exoskeleton.js
+environment/splitConditions.js
 
 dimension/generation/Dimension.js
 dimension/generation/Building.js

@@ -33,6 +33,10 @@ var RandomEvents = {
             //Timed event timers
             if(event.enabled){
                 event.timeLeft -= 1;
+                if(event.tick){
+                    event.tick();
+                }
+                
                 if(event.timeLeft <= 0){
                     event.disable();
                     event.enabled = false;

@@ -33,20 +33,6 @@ if(__config__.getBool("weather")){
             });
         }
     });
-    
-    RandomEvents.registerTimedEvent({
-        name: "toxic_fog",
-        frequency: 0.0001,
-        time: 1000,
-        
-        enable: function(){
-            fog = true;
-        },
-        
-        disable: function(){
-            fog = false;
-        }
-    });
 }
 
 
