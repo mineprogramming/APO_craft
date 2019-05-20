@@ -18,7 +18,6 @@ var Fog = {
         this.ticks++;
         if(this.ticks % 200 == 0){
             var helmet = Player.getArmorSlot(Native.ArmorType.helmet).id;
-            Game.message(helmet);
             if(CHEMICAL_RESISTANT_ARMOR.indexOf(helmet) == -1){
                 chemicalScale.increase();
                 if(chemicalScale.getValue() == 20){
@@ -64,13 +63,3 @@ if(__config__.getBool("weather")){
         }
     });
 }
-
-Callback.addCallback("ItemUse", function(coords, item, block){
-    let x = coords.relative.x;
-    let y = coords.relative.y;
-    let z = coords.relative.z;
-    if(item.id == 280){
-        chemicalScale.setValue(10);  
-        Player.setHunger(10);
-    }
-});

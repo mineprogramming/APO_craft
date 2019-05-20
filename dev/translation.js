@@ -136,6 +136,18 @@ Translation.addTranslation("Polypropylene Plate", {ru: "Полипропилен
 Translation.addTranslation("Polypropylene Blade", {ru: "Полипропиленовая лопасть"});
 Translation.addTranslation("Polypropylene Casing", {ru: "Полипропиленовый корпус"});
 Translation.addTranslation("Can", {ru: "Консервная банка"});
+Translation.addTranslation("Canned Apple", {ru: "Консервированые яблоки"});
+Translation.addTranslation("Canned Beef", {ru: "Консервированая говядина"});
+Translation.addTranslation("Canned Beetroot", {ru: "Консервированая редиска"});
+Translation.addTranslation("Canned Carrot", {ru: "Консервированая морковка"});
+Translation.addTranslation("Canned Cereals", {ru: "Консервированые злаки"});
+Translation.addTranslation("Canned Chicken", {ru: "Консервированая курица"});
+Translation.addTranslation("Canned Melon", {ru: "Консервированый арбуз"});
+Translation.addTranslation("Canned Mushrooms", {ru: "Консервированые грибы"});
+Translation.addTranslation("Canned Mutton", {ru: "Консервированая баранина"});
+Translation.addTranslation("Canned Porkchop", {ru: "Консервированая свинина"});
+Translation.addTranslation("Canned Potato", {ru: "Консервированый картофель"});
+Translation.addTranslation("Canned Rabbit", {ru: "Консервированый кролик"});
 Translation.addTranslation("Assembly Line", {ru: "Конвеер"});
 Translation.addTranslation("Chopper", {ru: "Измельчитель"});
 Translation.addTranslation("Silicon", {ru: "Кремний"});

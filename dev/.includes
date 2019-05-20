@@ -17,6 +17,7 @@ items/craftingTools.js
 
 items/components/minerals.js
 items/components/metals.js
+items/components/canned.js
 items/components/other.js
 items/components/electricity.js
 items/components/hardware.js

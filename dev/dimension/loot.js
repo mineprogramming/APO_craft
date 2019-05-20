@@ -10,7 +10,79 @@ var GLOBAL_LOOT = [
     {
         "id": ItemID.can,
         "data": 0,
-        "chance": 0.03,
+        "chance": 0.01,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canApple,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canBeef,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canBeetroot,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canCarrot,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canCereals,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canChicken,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canMelon,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canMushrooms,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canMutton,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canPorkchop,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canPotato,
+        "data": 0,
+        "chance": 0.003,
+        "count": { "min": 1, "max": 10 }
+    },
+    {
+        "id": ItemID.canRabbit,
+        "data": 0,
+        "chance": 0.003,
         "count": { "min": 1, "max": 10 }
     },
     {

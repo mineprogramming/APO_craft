@@ -123,10 +123,6 @@ RecipesManager.addShaped({id: ItemID.casingPolypropylene, count: 3, data: 0}, [
 
 /* Other materials */
 
-// Can
-IDRegistry.genItemID("can");
-Item.createItem("can", "Can", {name: "can", meta: 0}, {});
-
 // Assembly Line
 IDRegistry.genItemID("lineAssembly");
 Item.createItem("lineAssembly", "Assembly Line", {name: "line_assembly", meta: 0}, {});
