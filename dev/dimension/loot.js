@@ -244,91 +244,91 @@ var GLOBAL_LOOT = [
         "count": { "min": 1, "max": 1 }
     },
     {
-        "id": BlockID.storageBattery,
+        "id": ItemID.storageBattery,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 1 }
     },
     {
-        "id": BlockID.ledRed,
+        "id": ItemID.ledRed,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 16 }
     },
     {
-        "id": BlockID.ledYellow,
+        "id": ItemID.ledYellow,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 16 }
     },
     {
-        "id": BlockID.ledGreen,
+        "id": ItemID.ledGreen,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 16 }
     },
     {
-        "id": BlockID.capacitor,
+        "id": ItemID.capacitor,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": BlockID.transistor,
+        "id": ItemID.transistor,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": BlockID.diode,
+        "id": ItemID.diode,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": BlockID.resistor,
+        "id": ItemID.resistor,
         "data": 0,
         "chance": 0.01,
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": BlockID.laser,
+        "id": ItemID.laser,
         "data": 0,
         "chance": 0.0007,
         "count": { "min": 1, "max": 3 }
     },
     {
-        "id": BlockID.craftingHammer,
+        "id": ItemID.craftingHammer,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
     },
     {
-        "id": BlockID.craftingCutter,
+        "id": ItemID.craftingCutter,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
     },
     {
-        "id": BlockID.sensorRadiation,
+        "id": ItemID.sensorRadiation,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
     },
     {
-        "id": BlockID.sensorViruses,
+        "id": ItemID.sensorViruses,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
     },
     {
-        "id": BlockID.sensorNitrates,
+        "id": ItemID.sensorNitrates,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
     },
     {
-        "id": BlockID.displayLed,
+        "id": ItemID.displayLed,
         "data": 0,
         "chance": 0.0015,
         "count": { "min": 1, "max": 0 }
