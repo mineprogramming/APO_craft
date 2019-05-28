@@ -45,7 +45,7 @@ var Fog = {
 if(__config__.getBool("weather")){
     RandomEvents.registerTimedEvent({
         name: "toxic_fog",
-        frequency: 0.01, // 0.0001,
+        frequency: 0.0001,
         time: 1000,
         
         enable: function(){
