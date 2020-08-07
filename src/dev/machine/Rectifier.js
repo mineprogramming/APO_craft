@@ -47,7 +47,7 @@ var guiRectifier = new UI.StandartWindow(layoutRectifier);
 
 
 
-MachineEssentials.registerStandart(BlockID.rectifier, {
+MachineEssentials.registerStandard(BlockID.rectifier, {
     machine_name: "rectifier",
     source_slots: ["slotSource"],
     result_slots: resultSlotsRectifier,

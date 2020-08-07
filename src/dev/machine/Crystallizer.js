@@ -33,7 +33,7 @@ var guiCrystallizer = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.crystalizer, {
+MachineEssentials.registerStandard(BlockID.crystalizer, {
     machine_name: "crystalizer",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

@@ -37,7 +37,7 @@ var guiCokeOven = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.cokeOven, {
+MachineEssentials.registerStandard(BlockID.cokeOven, {
     machine_name: "cokeOven",
     source_slots: ["slotSource"],
     result_slots: ["slotResult0", "slotResult1", "slotResult2"],

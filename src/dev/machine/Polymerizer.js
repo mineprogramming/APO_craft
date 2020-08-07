@@ -34,7 +34,7 @@ var guiPolymerizer = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.polymerizer, {
+MachineEssentials.registerStandard(BlockID.polymerizer, {
     machine_name: "polymerizer",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

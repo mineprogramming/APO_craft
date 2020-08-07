@@ -1,5 +1,5 @@
 var MachineEssentials = {
-    registerStandart: function(id, params){
+    registerStandard: function(id, params){
         let prototype = {};
         
         //Prototype's standart params and functions

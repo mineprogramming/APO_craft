@@ -35,7 +35,7 @@ var guiExtruder = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.extruder, {
+MachineEssentials.registerStandard(BlockID.extruder, {
     machine_name: "extruder",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

@@ -25,14 +25,6 @@
     },
     "resources": [
         {
-            "path": "src/assets/resource_packs/*",
-            "type": "minecraft_resource_pack"
-        },
-        {
-            "path": "src/assets/behavior_packs/*",
-            "type": "minecraft_behavior_pack"
-        },
-        {
             "path": "src/assets/assets",
             "type": "resource_directory"
         },

@@ -55,7 +55,7 @@ var guiPlasticPress = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.pressPlastic, {
+MachineEssentials.registerStandard(BlockID.pressPlastic, {
     machine_name: "pressPlastic",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

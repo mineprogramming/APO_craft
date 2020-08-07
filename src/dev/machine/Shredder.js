@@ -35,7 +35,7 @@ var guiShredder = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.shredder, {
+MachineEssentials.registerStandard(BlockID.shredder, {
     machine_name: "shredder",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

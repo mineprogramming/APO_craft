@@ -43,13 +43,13 @@ if(__config__.getBool("visual_effects")){
         time: 5,
         
         enable: function(){
-            APOCity.getWrappedObject().setSkyColor(Math.random(), Math.random(), Math.random());
-            APOCity.getWrappedObject().setFogColor(Math.random(), Math.random(), Math.random());
+            apoCity.setSkyColor(Math.random(), Math.random(), Math.random());
+            apoCity.setFogColor(Math.random(), Math.random(), Math.random());
         },
         
         disable: function(){
-            APOCity.getWrappedObject().setSkyColor(SKY_COLOR[0], SKY_COLOR[1], SKY_COLOR[2]);
-            APOCity.getWrappedObject().setFogColor(FOG_COLOR[0], FOG_COLOR[1], FOG_COLOR[2]);
+            apoCity.setSkyColor(SKY_COLOR[0], SKY_COLOR[1], SKY_COLOR[2]);
+            apoCity.setFogColor(FOG_COLOR[0], FOG_COLOR[1], FOG_COLOR[2]);
         }
     });
 }

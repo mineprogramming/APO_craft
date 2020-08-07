@@ -21,7 +21,6 @@
  
 */
 
-IMPORT("dimensions");
 IMPORT("ScalesRPG");
 IMPORT("NativeAPI");
 IMPORT("SettingsManager");

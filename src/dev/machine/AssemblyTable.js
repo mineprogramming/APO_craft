@@ -38,7 +38,7 @@ var guiMetalPress = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.tableAssembly, {
+MachineEssentials.registerStandard(BlockID.tableAssembly, {
     machine_name: "tableAssembly",
     source_slots: ["slotSource0", "slotSource1", "slotSource2", "slotSource3"],
     result_slots: ["slotResult"],

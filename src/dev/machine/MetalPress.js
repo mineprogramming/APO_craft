@@ -55,7 +55,7 @@ var guiMetalPress = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.pressMetal, {
+MachineEssentials.registerStandard(BlockID.pressMetal, {
     machine_name: "pressMetal",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

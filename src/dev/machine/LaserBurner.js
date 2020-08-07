@@ -35,7 +35,7 @@ var guiMetalPress = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.burnerLaser, {
+MachineEssentials.registerStandard(BlockID.burnerLaser, {
     machine_name: "burnerLaser",
     source_slots: ["slotSource"],
     result_slots: ["slotResult"],

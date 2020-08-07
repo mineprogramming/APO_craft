@@ -41,7 +41,7 @@ var guiMetalPress = new UI.StandartWindow({
     }
 });
 
-MachineEssentials.registerStandart(BlockID.solderingStation, {
+MachineEssentials.registerStandard(BlockID.solderingStation, {
     machine_name: "solderingStation",
     source_slots: ["slotSource0", "slotSource1", "slotSource2", "slotSource3"],
     result_slots: ["slotResult"],

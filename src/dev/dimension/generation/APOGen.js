@@ -76,7 +76,7 @@ APOGen.lateGen = function(x, z){
     // GENERATE BUILDINGS
     else if(Math.random() < BUILDING_FREQUENCY){
         var i = Math.floor(Math.random() * BUILDINGS_COUNT);
-        BuildingsSystem.build(buildings[i], x, GENERATION_HEIGHT, z);
+        BuildingsSystem.build(buildings[i], x, GENERATION_HEIGHT + 1, z);
     }
     
     // GRAVEL DUMPS
@@ -114,7 +114,7 @@ APOGen.isChunkMarked = function(x, z){
 
 var lategenTick = 5;
 Callback.addCallback("tick", function(){
-    if(!APOCity.isInDimension()) return;
+    if(Player.getDimension() != apoCity.id) return;
     lategenTick --;
     if(lategenTick <= 0){
         lategenTick = 5;
