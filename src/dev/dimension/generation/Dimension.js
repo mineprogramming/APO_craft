@@ -28,7 +28,7 @@ apoCity.setGenerator(dimensionGenerator);
 
 Callback.addCallback("ItemUse", function(coords, item){
     if(item.id == 280){
-        Dimensions.transfer(Player.get(), Player.getDimension() == 0 ? apoCity.id: 0);
+        Split.summon(coords.x, coords.y + 2, coords.z);
     }
 });
 
@@ -53,103 +53,21 @@ Callback.addCallback("DimensionLoaded", function(id){
         let position = Player.getPosition();
         position = GenerationUtils.findSurface(position.x, position.y, position.z);
         Player.setPosition(position.x, position.y + 2, position.z);
-        Debug.m(position);
         NativeAPI.setRespawnCoords(position.x, position.y, position.z);
     }
 });
 
 
+var apoCityTransferSequence = new TransferSequence(apoCity.id);
+apoCityTransferSequence.setPortalTimeout(40);
 
-// var apoCity = new Dimension({
-//     name: "apoCity",
-    
-//     generation: {
-//         layers: [
-//             {
-//                 range: [2, 80],
-//                 noise: {
-//                     octaves: {
-//                         count: 4,
-//                         weight: 0.5,
-//                         scale: [1, 0.6, 1]
-//                     }
-//                 },
-                
-//                 gradient: [[-1, 1], [0.2, 0.5], [0.4, 0.3], [0.6, 0.7], [1, 0.25]],
-               
-//                 terrain: {
-//                     cover: {
-//                         height: 4,
-//                         top: {id: 1, data: 5},
-//                         block: 3
-//                     }
-//                 }
-//             },
-//             {
-//                 range: [1,2],
-//                 noise:{
-//                     octaves:{
-//                         count:8,
-//                         weight: 0.4,
-//                         scale: [.01,.02,.04,.08]
-//                     }
-//                 },
-//                 gradient:[
-//                     [0,1],
-//                     [1,-1],
-//                     [0.05,.4],
-//                     [.2,-.8]
-//                 ],
-//                 terrain:{
-//                     base: 7
-//                 }
-//             },
-//         ],
-        
-//         decoration: {
-//             biome: 2,
-//             features: false
-//         }
-//     },
-    
-//     environment: {
-//         sky: SKY_COLOR,
-//         fog: FOG_COLOR
-//     },
-    
-//     callbacks: {
-//         tick: function() {
-//             RandomEvents.tick();
-//         },
-        
-//         generateChunk: function(chunkX, chunkZ) {
-//             APOGen.generate(chunkX * 16, chunkZ * 16);
-//         },
-        
-//         loaded: function(){
-//             inCity = true;
-//             RecipesManager.onRegisterRecipesNeeded();
-//             let position = Player.getPosition();
-//             NativeAPI.setRespawnCoords(position.x, position.y, position.z);
-//         }
-//     }
-// });
 
-// //apoCity.debugTerrainSlice(128, 1, true);
+apoCityTransferSequence.setPortalOverlay(new PortalOverlayWindow({
+    frames: 32, 
+    rate: 20, 
+    fade: 1, 
+    texture: "aether_portal_overlay_animation"
+}));
 
-// var apoCityTransferSequence = new TransferSequence(apoCity);
-// apoCityTransferSequence.setPortalTimeout(40);
-
-// apoCityTransferSequence.setPortalOverlay(new PortalOverlayWindow({
-//     frames: 32, 
-//     rate: 20, 
-//     fade: 1, 
-//     texture: "aether_portal_overlay_animation"
-// }));
-
-// apoCityTransferSequence.setLoadingScreenParams({
-//     texture: "default_dimension_loading_screen"
-// });
-
-// PortalRegistry.newPortalBlock("apoPortal", ["apo_portal", 0], apoCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
-// apoCityTransferSequence.setPortalTiles(BlockID.apoPortal);
+PortalRegistry.newPortalBlock("apoPortal", ["apo_portal", 0], apoCityTransferSequence.getPortal(), {type: "h-plane", frameId: 4}, true);
+apoCityTransferSequence.setPortalTiles(BlockID.apoPortal);

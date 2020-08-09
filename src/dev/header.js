@@ -21,12 +21,12 @@
  
 */
 
+IMPORT("DimensionUtils");
 IMPORT("ScalesRPG");
 IMPORT("NativeAPI");
 IMPORT("SettingsManager");
 IMPORT("EntityState");
 IMPORT("ThirstLib");
-IMPORT("DevAPI");
 IMPORT("energylib");
 IMPORT("TradeLib");
 IMPORT("Inventory");
