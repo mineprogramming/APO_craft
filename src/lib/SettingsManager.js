@@ -1,12 +1,12 @@
 LIBRARY({
     name: "SettingsManager",
-    version: 2,
+    version: 3,
     shared: true,
     api: "CoreEngine"
 });
 
 var settings = [];
-var SETTINGS_PATH = "/storage/emulated/0/games/com.mojang/minecraftpe/options.txt";
+var SETTINGS_PATH = "/storage/emulated/0/games/horizon/minecraftpe/options.txt";
 var prev_opened = false;
 
 
@@ -44,6 +44,10 @@ var SettingsManager = {
     
     getMusicVolume: function(){
         return settings["audio_music"];
+    },
+
+    getUiProfile: function(){
+        return settings["gfx_ui_profile"];
     }
 };
 
